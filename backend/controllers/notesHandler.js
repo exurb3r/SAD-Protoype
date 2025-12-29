@@ -1,12 +1,20 @@
 const Notes = require('../models/Notes');
-const { logMake, logGet } = require('../middleware/logEvents');
+const { logMake, errorLog} = require('../middleware/logEvents');
 
 const noteFetcher = async (req, res) => {
-    const { username } = req.body
-    if (!username) return res.status(400).json({message: "Needs username"});
-    const notes = await Notes.findOne({username});
-    if (!notes) return res.status(404).json({'message': 'user does not exists'});
-    res.json(notes);
+    try{
+        const { username } = req.body
+        if (!username) return res.status(400).json({message: "Needs username"});
+        const notes = await Notes.findOne({username});
+        if (!notes) return res.status(404).json({'message': 'user does not exists'});
+
+        res.json(notes);
+        logMake({username}, "Fetched Notes");
+
+    } catch (err) {
+        res.status(500).json({ message: err.message});
+        errorLog(err.message);
+    }
 }
 
 const noteAdder = async (req, res) => {
@@ -26,14 +34,14 @@ const noteAdder = async (req, res) => {
             },
             { new: true} // to return this updated?
         );
-
         if (!notes) return res.status(404).json({'message': 'user does not exist'});
 
         res.status(200).json(notes);
+        logMake({username}, "Added Notes");
     
     } catch (err){
-        console.error(err);
         res.status(500).json({ message: err.message});
+        errorLog(err.message);
     }
 }
 
@@ -46,13 +54,14 @@ const noteDeleter = async (req, res) => {
             { $pull: {notes: {_id: noteId} } },
             { new: true} // to return this updated?
         );
-        
         if (!notes) return res.status(404).json({'message': 'user does not exists'});
+
         res.status(200).json(notes);
+        logMake({username}, "Deleted Notes");
     
     } catch (err){
-        console.error(err);
         res.status(500).json({ message: err.message});
+        errorLog(err.message);
     }
 }
 
@@ -70,13 +79,14 @@ const noteEditor = async (req, res) => {
             },
             { new: true }
         );
-
         if (!notes) return res.status(404).json({'message': 'user does not exists'});
 
-        res.status(200).json(notes)
+        res.status(200).json(notes);
+        logMake({username}, "Edited Notes");
 
     } catch (err){
-        res.status(500).json({ message: err.message})
+        res.status(500).json({ message: err.message});
+        errorLog(err.message);
     }
 }
 module.exports = { noteFetcher, noteAdder, noteDeleter, noteEditor };

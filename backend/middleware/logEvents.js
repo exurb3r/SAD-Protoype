@@ -3,11 +3,9 @@ const path = require('path');
 const fs = require('fs');
 const fsPromises = require('fs').promises;
 
-
 const logMake = async (name, message) => {
     const date = `${format(new Date(), 'yyyy/MM/dd\tHH::mm:ss')}`;
-    const messageLog = `At ${date}, ${name} have sent this message: ${message}\n`;
-
+    const messageLog = `${date}, User: ${name.username} Event: ${message}\n`;
     try{
         if(!fs.existsSync(path.join(__dirname, '..', 'logs'))){
             await fsPromises.mkdir(path.join(__dirname, '..', 'logs'))
@@ -17,35 +15,23 @@ const logMake = async (name, message) => {
         return true;
     } catch (err) {
         console.error(err);
-
-    }
-    
+    } 
 }
 
-const logGet = async () => {
-    try{
-        const logPath = path.join(__dirname, "..", "logs", "messageLog.txt");
-        const data = await fsPromises.readFile(logPath, 'utf-8');
-        const lines = data.split('\n').filter(Boolean);
+const errorLog = async (errorMessage) => {
+    const date = `${format(new Date(), 'yyyy/MM/dd\tHH::mm:ss')}`;
+    const errorLog = `${date}   ${errorMessage}`;
+    try {
+        if(!fs.existsSync(path.join(__dirname, '..', 'logs'))){
+            await fsPromises.mkdir(path.join(__dirname, '..', 'logs'));
+        }
+        await fsPromises.appendFile(path.join(__dirname, '..', 'logs', 'errorLogs.txt'), errorLog);
 
-        const messages = lines.map(line => {
-
-            const[, rest] = line.split('At ');
-            const [dateInfo, messageInfo] = rest.split(', ');
-
-            const name = messageInfo.split(' have sent this message: ')[0];
-            const message = messageInfo.split(' have sent this message: ')[1];
-        });
-
-           return{messages}
-
-
-
-    } catch (err){
-        console.error(err);
+        return true;
+        
+    } catch (err) {
+        console.error(err);     
     }
-
 }
 
-
-module.exports = { logMake, logGet }
+module.exports = { logMake, logGet, errorLog }
