@@ -34,4 +34,4 @@ const errorLog = async (errorMessage) => {
     }
 }
 
-module.exports = { logMake, logGet, errorLog }
+module.exports = { logMake, errorLog };

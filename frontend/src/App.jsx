@@ -1,11 +1,12 @@
 import './App.css'
+import NoteApp from './Notes'
 
 function App() {
 
 
   return (
     <>
-      
+      <NoteApp/>
     </>
   )
 }
