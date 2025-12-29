@@ -143,10 +143,9 @@ function NoteApp(){
 
     return(
         <div className='noteAPP'>
-            <div className=''>
-                <h1>Notes Application</h1>
-            </div>
-            <div className=''>
+            <h1 className='noteApp-title'>Notes Application</h1>
+
+            <div className='addNotes'>
                 <form onSubmit={addNotes}>
                     <input type='text' placeholder='Your Title' value={title} onChange={(e) => handleTitleChange(e)}></input>
                     <br/>
@@ -156,7 +155,7 @@ function NoteApp(){
                 </form>
             </div>
             
-            <div>
+            <div className='note-section'>
                 {loading ? (<p> Loading notes...</p>): 
                 (<ol>
                     {noteList.map(note => (
@@ -193,4 +192,5 @@ function NoteApp(){
         </div>
     );
 }
+
 export default NoteApp;

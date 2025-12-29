@@ -1,0 +1,59 @@
+.noteAPP {
+    background-color: rgb(50, 50, 50);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    max-width: 90%;
+    margin: 20px;
+    color: white;
+    font-family: Helvetica, sans-serif;
+}
+
+.noteApp-title{
+    text-align: center;
+    color: rgb(255, 255, 255);
+    margin-bottom: 20px;
+}
+
+.addNotes{
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+}
+
+.addNotes input,
+.addNotes textarea {
+    width: 100%;
+    max-width: 320px;
+}
+
+.addNotes button{
+    justify-content: right;
+    
+}
+
+
+.show-notes, .edit-notes{
+    border: 1px solid hsl(292, 100%, 10%);
+  border-radius: 10px;
+  box-shadow: 5px 5px 5px hsl(300, 76%, 72%, 0.5);
+  padding: 20px;
+  text-align: center;
+  width: 250px;
+  display: inline-block;
+  background-color: blueviolet;
+  margin: 10px;
+  float: left;
+
+}
+
+.show-notes h2, .edit-notes h2{
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+}
+
+.note-section li{
+    text-decoration: none;
+}
