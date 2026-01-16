@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from 'react';
 
 function NoteApp(){
-    const username = "exurb3r";
+    const username = "Roven";
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -63,31 +63,31 @@ function NoteApp(){
         };
         console.log(notes)
 
-       async function sendNotes(){
-            try{
-                const response = await fetch('http://localhost:3500/noteHandler/post',{
-                    method: 'POST',
-                    headers: {
-                        'Content-type': 'application/json'
-                    },
-                    body: JSON.stringify(notes)
-                });
+    async function sendNotes(){
+        try{
+            const response = await fetch('http://localhost:3500/noteHandler/post',{
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(notes)
+            });
 
-                if(!response.ok){
-                    throw new Error('Failed to add note');
-                }
-
-                const updates = await response.json();
-                setTitle('');
-                setDescription('');
-
-                setNoteList(updates.notes);
-
-            } catch (err){
-                console.error(err);
+            if(!response.ok){
+                throw new Error('Failed to add note');
             }
+
+            const updates = await response.json();
+            setTitle('');
+            setDescription('');
+
+            setNoteList(updates.notes);
+
+        } catch (err){
+            console.error(err);
         }
-        sendNotes();
+    }
+    sendNotes();
     }
 
     async function deleteNote(username, noteId) {

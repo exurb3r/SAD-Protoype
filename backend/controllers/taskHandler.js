@@ -1,8 +1,8 @@
-const Notes = require('../models/Notes');
+const Notes = require('../models/Task');
 const User = require('../models/Users');
 const { logMake, errorLog} = require('../middleware/logEvents');
 
-const noteFetcher = async (req, res) => {
+const taskFetcher = async (req, res) => {
     try{
         const { username } = req.query;
 
@@ -28,7 +28,7 @@ const noteFetcher = async (req, res) => {
     }
 }
 
-const noteAdder = async (req, res) => {
+const taskAdder = async (req, res) => {
     try{
         const {username, title, description} = req.body;
         if(!username || !title || !description) return res.status(400).json({message: "All credentials are required"})
@@ -56,7 +56,7 @@ const noteAdder = async (req, res) => {
     }
 }
 
-const noteDeleter = async (req, res) => {
+const taskDeleter = async (req, res) => {
     try{
         const {username, noteId} = req.body;
         if(!username || !noteId) return res.status(400).json({message: "All credentials are required"})
@@ -76,7 +76,7 @@ const noteDeleter = async (req, res) => {
     }
 }
 
-const noteEditor = async (req, res) => {
+const taskEditor = async (req, res) => {
     try{
         const { username, noteId, title, description } = req.body;
         if(!username || !noteId || !title || !description) return res.status(400).json({message: "All credentials are required"})
@@ -101,4 +101,4 @@ const noteEditor = async (req, res) => {
         errorLog(err.message);
     }
 }
-module.exports = { noteFetcher, noteAdder, noteDeleter, noteEditor };
+module.exports = { taskFetcher, taskAdder, taskDeleter, taskEditor };

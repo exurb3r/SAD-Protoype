@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from 'react';
 
 function NoteApp(){
-    const username = "Kurt";
+    const username = "exurb3r";
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -15,7 +15,7 @@ function NoteApp(){
     async function getNote(){
         try{
             setLoading(true);
-            const response = await fetch(`http://localhost:3500/noteHandler/get?username=${username}`);
+            const response = await fetch(`http://localhost:3500/taskHandler/get?username=${username}`);
 
             if(!response.ok){
                 throw new Error('Failed to fetch notes');
@@ -63,7 +63,7 @@ function NoteApp(){
 
        async function sendNotes(){
             try{
-                const response = await fetch('http://localhost:3500/noteHandler/post',{
+                const response = await fetch('http://localhost:3500/taskHandler/post',{
                     method: 'POST',
                     headers: {
                         'Content-type': 'application/json'
@@ -91,7 +91,7 @@ function NoteApp(){
     async function deleteNote(username, noteId) {
         const toDelete = {username, noteId}
         try{
-            const response = await fetch('http://localhost:3500/noteHandler/delete',{
+            const response = await fetch('http://localhost:3500/taskHandler/delete',{
                 method: 'DELETE',
                 headers: {
                     'Content-type': 'application/json'
@@ -115,7 +115,7 @@ function NoteApp(){
     async function updateNote(noteId) {
         const toBeUpdated = { username, noteId, title: editTitle, description: editDescription}
         try{
-            const response = await fetch('http://localhost:3500/noteHandler/put', {
+            const response = await fetch('http://localhost:3500/taskHandler/put', {
                 method: 'PUT',
                 headers: {
                     'Content-type': 'application/json'
@@ -141,8 +141,7 @@ function NoteApp(){
 
     return(
         <div className='noteAPP'>
-            <h1 className='noteApp-title'>Notes Application</h1>
-            
+            <h1 className='noteApp-title'> Task Handler</h1>            
             <div className='note-section'>
                 
                 {loading ? (<p> Loading notes...</p>): 
