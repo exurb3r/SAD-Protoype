@@ -16,7 +16,7 @@ const noteSubSchema = new Schema({
 })
 
 const noteSchema = new Schema({
-    username:{
+    email:{
         type: String,
         required: true
     }, 

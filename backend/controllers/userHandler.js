@@ -1,15 +1,15 @@
 const User = require('../models/Users');
+const bcrypt = require('bcrypt');
 
 const userFetcher = async (req, res) => {
     try{
-        const { username } = req.query;
-
-        if (!username) return res.status(400).json({message: "Needs username"});
+        const { email, password } = req.query;
+        if (!email) return res.status(400).json({message: "Needs email and password"});
         
-        const userFound = await User.findOne({username});
+        const userFound = await User.findOne({email});
         if (!userFound) return res.status(404).json({'message': 'user does not exists'});
         res.json(userFound);
-        logMake({username}, "Fetched Notes");
+        logMake({email}, "Fetched Notes");
 
     } catch (err) {
         res.status(500).json({ message: err.mesage});
@@ -24,12 +24,14 @@ const addUser = async(req, res) => {
         const newUser = await User.findOne({email});
 
         if(newUser) return res.status(400).json({message: "Email is already in use"});
+        const hashedPassword = await bcrypt.hash(password, 10);
+
         const addNewUser = await User.create({
             firstname: firstname,
             lastname: lastname,
             username: username,
             email: email,
-            password: password,
+            password: hashedPassword,
             contactNum: contactNum,
             address: address
         })

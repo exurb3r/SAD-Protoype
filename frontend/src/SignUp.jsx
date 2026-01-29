@@ -10,11 +10,82 @@ function SignUp(){
     const [contactNum, setContacNum] = useState('');
     const [address, setAddress] = useState('');
 
+    const [spanFn, setSpanFn] = useState('');
+    const [spanLn, setSpanLn] = useState('');
+    const [spanPwd, setSpanPwd] = useState('');
+    const [spanCPwdm, setSpanCPwd] = useState('');
+    const [spanEmail, setSpanEmail] = useState('');
+
+
+
+    function checker(){
+        const namePattern = /^[A-Za-z\s]+$/;
+        const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()-.+])[a-zA-Z\d!@#$%^&*()-.+]{8,}$/;
+        const emailPattern = /^[^\s@]+@gmail\.com$/;
+
+        if(firstname === ''){
+            setSpanFn('');
+        }
+        else if(!namePattern.test(firstname)){
+            setSpanFn('Invalid');
+        } else{
+            setSpanFn('');
+        }
+
+        if(lastname === ''){
+            setSpanLn('');
+        }
+        else if(!namePattern.test(lastname)){
+            setSpanLn('Invalid');
+        } else {
+            setSpanLn('');
+        }
+
+
+        if(password === ''){
+            setSpanPwd('');
+        }
+        else if(!regex.test(password)){
+            setSpanPwd('Invalid');
+        } else {
+            setSpanPwd('');
+        }
+
+
+        if(confirmPassword === ''){
+            setSpanCPwd('');
+        }
+        else if(confirmPassword !== password){
+            setSpanCPwd('Passwords do not match');
+        } else {
+            setSpanCPwd('');
+        }
+
+
+        if(email === ''){
+            setSpanEmail('');
+        }
+        else if(!emailPattern.test(email)){
+            setSpanEmail('Invalid email');
+        } else {
+            setSpanEmail('');
+
+        }
+    }
+
     async function register(event){
         event.preventDefault();
+        const emailPattern = /^[^\s@]+@gmail\.com$/;
+        const namePattern = /^[A-Za-z\s]+$/;
+        const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()-.+])[a-zA-Z\d!@#$%^&*()-.+]{8,}$/;
 
         if(firstname === '' || lastname === '' || username === '' || email === '' || password=== '' || contactNum === '' || address === ''){
             return console.log('Needs All Credentials to be filled');
+        }
+     
+        if(!namePattern.test(firstname) || !namePattern.test(lastname) || confirmPassword !== password || !emailPattern.test(email)){
+            return console.log("Invalid Credentials");
+
         }
 
         const userInfo ={
@@ -57,29 +128,34 @@ function SignUp(){
         }
     }
 
+    useEffect(() => {
+    checker();
+    }, [firstname, lastname, password, confirmPassword, email]);
+
     return(
         <div className='signUpPage'>
             <h1>Sign Up</h1>
             <form onSubmit={register} className='signUpForm'>
+                <span>{spanFn}</span>
                 <input type='text' value={firstname} onChange={(e) => setFirstname(e.target.value)} placeholder="First Name"></input>
-                
+                <span>{spanLn}</span>
                 <input type='text' value={lastname} onChange={(e) => setLastname(e.target.value)} placeholder="Last Name"></input>
-                
+                <span></span>
                 <input type='text' value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username"></input>
-                
-                <input type='text' value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password"></input>
-                
-                <input type='text' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Confirm Password"></input>
-                
+                <span>{spanPwd}</span>
+                <input type='password' value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password"></input>
+                <span>{spanCPwdm}</span>
+                <input type='password' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Confirm Password"></input>
+                <span>{spanEmail}</span>
                 <input type='text' value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email"></input>
-                
+                <span></span>
                 <input type='text' value={contactNum} onChange={(e) => setContacNum(e.target.value)} placeholder="Contact Number"></input>
-                
+                <span></span>
                 <input type='text' value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Address"></input>
                 <button> Sign Up</button>
             </form>
 
-            <p> Already have an account? <span> Log in</span></p>
+            <p> Already have an account? <a href=''>Log in</a></p>
 
         </div>
     )

@@ -1,7 +1,8 @@
 import React, { useState, useEffect} from 'react';
 
 function NoteApp(){
-    const username = "exurb3r";
+    const email = localStorage.getItem('email');
+    const sendPassword = localStorage.getItem('sendPassword');
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -15,7 +16,7 @@ function NoteApp(){
     async function getNote(){
         try{
             setLoading(true);
-            const response = await fetch(`http://localhost:3500/taskHandler/get?username=${username}`);
+            const response = await fetch(`http://localhost:3500/taskHandler/get?email=${email}&password=${sendPassword}`);
 
             if(!response.ok){
                 throw new Error('Failed to fetch notes');
@@ -55,7 +56,7 @@ function NoteApp(){
         }
 
         const notes = {
-            username,
+            email,
             title,
             description
         };
@@ -88,8 +89,8 @@ function NoteApp(){
         sendNotes();
     }
 
-    async function deleteNote(username, noteId) {
-        const toDelete = {username, noteId}
+    async function deleteNote(email, noteId) {
+        const toDelete = {email, noteId}
         try{
             const response = await fetch('http://localhost:3500/taskHandler/delete',{
                 method: 'DELETE',
@@ -113,7 +114,7 @@ function NoteApp(){
     }
 
     async function updateNote(noteId) {
-        const toBeUpdated = { username, noteId, title: editTitle, description: editDescription}
+        const toBeUpdated = { email, noteId, title: editTitle, description: editDescription}
         try{
             const response = await fetch('http://localhost:3500/taskHandler/put', {
                 method: 'PUT',
