@@ -1,10 +1,20 @@
+import React, { useState, useEffect} from 'react';
+
 function SignUp(){
+    const [firstname, setFirstname] = useState('');
+    const [lastname, setLastname] = useState('');
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [contactNum, setContacNum] = useState('');
+    const [address, setAddress] = useState('');
 
     async function register(event){
         event.preventDefault();
 
         if(firstname === '' || lastname === '' || username === '' || email === '' || password=== '' || contactNum === '' || address === ''){
-            return console.log('Needs title and description');
+            return console.log('Needs All Credentials to be filled');
         }
 
         const userInfo ={
@@ -33,24 +43,43 @@ function SignUp(){
             const updates = await response.json();
             console.log(updates)
 
+            setFirstname('');
+            setLastname('');
+            setEmail('');
+            setUsername('');
+            setPassword('');
+            setConfirmPassword('');
+            setAddress('');
+            setContacNum('');
+            
         } catch (err){
             console.error(err);
         }
     }
 
     return(
-        <div>
+        <div className='signUpPage'>
             <h1>Sign Up</h1>
-            <form onSubmit={register}>
-                <input type='text' name="firstname" placeholder="firstname"></input>
-                <input type='text' name="lastname" placeholder="lastname"></input>
-                <input type='text' name="username" placeholder="username"></input>
-                <input type='text' name="password" placeholder="password"></input>
-                <input type='text' name="email" placeholder="email"></input>
-                <input type='text' name="contactNum" placeholder="contactNum"></input>
-                <input type='text' name="address" placeholder="adress"></input>
+            <form onSubmit={register} className='signUpForm'>
+                <input type='text' value={firstname} onChange={(e) => setFirstname(e.target.value)} placeholder="First Name"></input>
+                
+                <input type='text' value={lastname} onChange={(e) => setLastname(e.target.value)} placeholder="Last Name"></input>
+                
+                <input type='text' value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username"></input>
+                
+                <input type='text' value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password"></input>
+                
+                <input type='text' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Confirm Password"></input>
+                
+                <input type='text' value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email"></input>
+                
+                <input type='text' value={contactNum} onChange={(e) => setContacNum(e.target.value)} placeholder="Contact Number"></input>
+                
+                <input type='text' value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Address"></input>
                 <button> Sign Up</button>
             </form>
+
+            <p> Already have an account? <span> Log in</span></p>
 
         </div>
     )
