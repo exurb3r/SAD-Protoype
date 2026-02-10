@@ -1,10 +1,8 @@
-<script setup>
-
-</script>
-
 <template>
-    <div>
-        <p> Hello World</p>
-    </div>
+    <SignUp></SignUp>
   
 </template>
+
+<script setup>
+import SignUp from "./components/SignUp.vue";
+</script>
