@@ -29,6 +29,10 @@ const userSchema = new Schema({
     address: {
         type: String,
         required: true
+    },
+    membershipStatus: {
+        type: String,
+        required: true
     }
 })
 
