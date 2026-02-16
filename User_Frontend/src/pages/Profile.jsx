@@ -1,6 +1,6 @@
 import React, { useState, useEffect} from 'react';
 
-function DashboardPage(){
+function SignUp(){
     return(
        <div>
 
@@ -8,4 +8,4 @@ function DashboardPage(){
     )
 }
 
-export default DashboardPage;
+export default SignUp;
