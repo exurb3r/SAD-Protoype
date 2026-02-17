@@ -3,7 +3,6 @@ import "./App.css";
 import Layout from "./layout/Layout";
 import Dashboard from "./pages/Dashboard";
 
-
 import About from "./pages/About";
 import Announcements from "./pages/Announcements";
 import Achievement from "./pages/Achievement";
@@ -20,8 +19,6 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-
-        {/* Layout wrapper */}
         <Route path="/" element={<Layout />}>
 
           <Route index element={<Dashboard />} />
@@ -37,7 +34,6 @@ function App() {
           <Route path="about" element={<About />} />
           <Route path="settings" element={<Settings />} />
 
-          {/* Catch invalid routes */}
           <Route path="*" element={<PageNotFound />} />
 
         </Route>

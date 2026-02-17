@@ -3,7 +3,7 @@ import React, { useState, useEffect} from 'react';
 function StartWorkout(){
     return(
         <div>
-            <h1> Dashboard </h1>
+            <h1> Start Work Out </h1>
         </div>
     )
 }
