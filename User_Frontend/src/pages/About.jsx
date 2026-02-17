@@ -3,6 +3,7 @@ import React, { useState, useEffect} from 'react';
 function About(){
     return(
        <div>
+        <h1> About </h1>
 
        </div>
     )

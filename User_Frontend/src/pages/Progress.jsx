@@ -1,11 +1,11 @@
 import React, { useState, useEffect} from 'react';
 
-function Profile(){
+function Progress(){
     return(
        <div>
-            <h1> Profile </h1>
+        <h1> Progress </h1>
        </div>
     )
 }
 
-export default Profile;
+export default Progress;

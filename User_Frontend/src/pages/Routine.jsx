@@ -1,11 +1,11 @@
 import React, { useState, useEffect} from 'react';
 
-function Profile(){
+function Routine(){
     return(
        <div>
-            <h1> Profile </h1>
+            <h1> Routine </h1>
        </div>
     )
 }
 
-export default Profile;
+export default Routine;

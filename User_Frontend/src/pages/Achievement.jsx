@@ -1,11 +1,11 @@
 import React, { useState, useEffect} from 'react';
 
-function AchievementPage(){
+function Achievement(){
     return(
        <div>
-
+        <h1> About </h1>
        </div>
     )
 }
 
-export default AchievementPage;
+export default Achievement;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect} from 'react';
+import '../assets/Notes.css';
 
-function NoteApp(){
+function NotesGym(){
     const email = localStorage.getItem('email');
     const sendPassword = localStorage.getItem('sendPassword');
 
@@ -192,4 +193,4 @@ function NoteApp(){
         </div>
     );
 }
-export default NoteApp;
+export default NotesGym;

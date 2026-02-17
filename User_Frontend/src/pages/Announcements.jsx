@@ -3,7 +3,7 @@ import React, { useState, useEffect} from 'react';
 function Announcements(){
     return(
        <div>
-
+        <h1> Announcements </h1>
        </div>
     )
 }

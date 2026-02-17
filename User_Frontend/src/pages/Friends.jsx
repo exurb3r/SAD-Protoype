@@ -1,11 +1,11 @@
 import React, { useState, useEffect} from 'react';
 
-function ProgressPage(){
+function Friends(){
     return(
        <div>
-
+        <h1> Dashboard </h1>
        </div>
     )
 }
 
-export default ProgressPage;
+export default Friends;
