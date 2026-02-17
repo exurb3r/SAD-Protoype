@@ -1,4 +1,6 @@
 import { NavLink } from "react-router-dom";
+import logo from "../assets/gymlogo.png";
+
 
 export default function Sidebar() {
     const links = [
@@ -19,8 +21,13 @@ export default function Sidebar() {
     return (
         <aside className="sidebar">
             <div className="sidebar-header">
-                <h2 className="sidebar-title">Armzstrong</h2>
-                <p className="sidebar-sub">Fitness Tracker</p>
+                <div className="sidebar-brand">
+                    <img src={logo} alt="Armzstrong Logo" className="sidebar-logo" />
+                    <div>
+                        <h2 className="sidebar-title">Armztrong Gym</h2>
+                        <p className="sidebar-sub">Fitness Tracker</p>
+                    </div>
+                </div>
             </div>
 
             <nav className="sidebar-nav">
