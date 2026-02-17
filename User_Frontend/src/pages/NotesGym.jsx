@@ -2,9 +2,11 @@ import React, { useState, useEffect} from 'react';
 import '../assets/Notes.css';
 
 function NotesGym(){
-    const email = localStorage.getItem('email');
-    const sendPassword = localStorage.getItem('sendPassword');
+    const email = localStorage.getItem('email') || "helloThere@gmail.com";;
+    const sendPassword = localStorage.getItem('sendPassword') || "@S1syphus";
 
+    console.log(email);
+    console.log(sendPassword)
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [noteList, setNoteList] = useState([]);

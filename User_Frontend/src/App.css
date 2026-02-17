@@ -128,7 +128,7 @@ body {
 
     cursor: pointer;
     transition: all 0.25s ease;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
 }
 
 .logout-btn:hover {
@@ -155,4 +155,10 @@ body {
     height: 45px;
     object-fit: contain;
     border-radius: 15px;
+}
+
+@media (min-width: 769px) {
+    .hamburger-btn {
+        display: none;
+    }
 }

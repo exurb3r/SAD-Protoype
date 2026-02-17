@@ -1,5 +1,5 @@
-    const Notes = require('../models/Task');
-    const User = require('../models/Users');
+    const Notes = require('../models/user_details/Task');
+    const User = require('../models/user_details/Users');
     const bcrypt = require('bcrypt');
     const { logMake, errorLog} = require('../middleware/logEvents');
 

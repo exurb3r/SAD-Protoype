@@ -1,8 +1,7 @@
 import { NavLink } from "react-router-dom";
 import logo from "../assets/gymlogo.png";
 
-
-export default function Sidebar() {
+export default function Sidebar({ isOpen, onClose }) {
     const links = [
         { path: "dashboard", label: "Dashboard" },
         { path: "startworkout", label: "Start Workout" },
@@ -19,7 +18,7 @@ export default function Sidebar() {
     ];
 
     return (
-        <aside className="sidebar">
+        <aside className={`sidebar ${isOpen ? "open" : ""}`}>
             <div className="sidebar-header">
                 <div className="sidebar-brand">
                     <img src={logo} alt="Armzstrong Logo" className="sidebar-logo" />
@@ -31,18 +30,19 @@ export default function Sidebar() {
             </div>
 
             <nav className="sidebar-nav">
-                {links.map((link) => (
+                {links.map(link => (
                     <NavLink
                         key={link.path}
                         to={link.path}
                         className={({ isActive }) =>
                             isActive ? "sidebar-link active" : "sidebar-link"
                         }
+                        onClick={onClose} 
                     >
                         {link.label}
                     </NavLink>
                 ))}
-                <button className="logout-btn">Log Out</button>
+                <button className="logout-btn" onClick={onClose}>Log Out</button>
             </nav>
         </aside>
     );

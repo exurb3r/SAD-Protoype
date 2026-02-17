@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
+import "./MobileApp.css";
 import Layout from "./layout/Layout";
 import Dashboard from "./pages/Dashboard";
 
