@@ -1,6 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import "./MobileApp.css";
+
+import LogIn from "./pages/LogIn";
+import ProtectedRoute from "./utils/ProtectedRoute";
 import Layout from "./layout/Layout";
 import Dashboard from "./pages/Dashboard";
 
@@ -20,7 +23,12 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout />}>
+        <Route path="/login" element={<LogIn />} />
+
+        <Route path="/" element={
+           <ProtectedRoute> 
+              <Layout />
+           </ProtectedRoute>}>
 
           <Route index element={<Dashboard />} />
           <Route path="dashboard" element={<Dashboard />} />

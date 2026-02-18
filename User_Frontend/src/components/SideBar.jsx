@@ -1,7 +1,9 @@
 import { NavLink } from "react-router-dom";
+import LogOutBtn from "./LogOutBtn";
 import logo from "../assets/gymlogo.png";
 
 export default function Sidebar({ isOpen, onClose }) {
+    const token = localStorage.getItem("token");
     const links = [
         { path: "dashboard", label: "Dashboard" },
         { path: "startworkout", label: "Start Workout" },
@@ -16,6 +18,8 @@ export default function Sidebar({ isOpen, onClose }) {
         { path: "about", label: "About" },
         { path: "settings", label: "Settings" }
     ];
+
+    if (!token) return null;
 
     return (
         <aside className={`sidebar ${isOpen ? "open" : ""}`}>
@@ -42,7 +46,7 @@ export default function Sidebar({ isOpen, onClose }) {
                         {link.label}
                     </NavLink>
                 ))}
-                <button className="logout-btn" onClick={onClose}>Log Out</button>
+                <LogOutBtn/>
             </nav>
         </aside>
     );

@@ -2,8 +2,8 @@ import React, { useState, useEffect} from 'react';
 import '../assets/Notes.css';
 
 function NotesGym(){
-    const email = localStorage.getItem('email') || "helloThere@gmail.com";;
-    const sendPassword = localStorage.getItem('sendPassword') || "@S1syphus";
+    const email = "helloThere@gmail.com";;
+    const sendPassword =  "@S1syphus";
 
     console.log(email);
     console.log(sendPassword)
@@ -19,7 +19,13 @@ function NotesGym(){
     async function getNote(){
         try{
             setLoading(true);
-            const response = await fetch(`http://localhost:3500/taskHandler/get?email=${email}&password=${sendPassword}`);
+            const token = localStorage.getItem("token");
+
+            const response = await fetch(`http://localhost:3500/taskHandler/get?email=${email}&password=${sendPassword}`, {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
 
             if(!response.ok){
                 throw new Error('Failed to fetch notes');

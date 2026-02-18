@@ -12,8 +12,9 @@ connectDB();
 
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use('/taskHandler', require('./routes/taskRouter'));
-app.use('/userRegister', require('./routes/userRouter'));
+app.use('/admin', require('./routes/user_routes/taskRouter'));
+app.use('/user', require('./routes/user_routes/userRouter'));
+app.use('/auth', require('./routes/auth_routes/authRouter'));
 
 app.get('/home', (req, res) =>{
     res.send("Server home");
