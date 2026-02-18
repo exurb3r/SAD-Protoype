@@ -28,6 +28,10 @@ const userMembershipSchema = new Schema({
         type: String,
         required: true
     },
+    branch: {
+        type: String,
+        required: true
+    },
     role: {
         type: Number,
         required: true

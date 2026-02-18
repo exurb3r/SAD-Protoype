@@ -34,7 +34,9 @@ const userSchema = new Schema({
     },
     membershipStatus: {
         type: String,
-        required: true
+    },
+    branch: {
+        type: String,
     },
     role: {
         type: Number,
