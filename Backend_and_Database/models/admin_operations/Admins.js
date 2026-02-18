@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-
-const userMembershipSchema = new Schema({
+const adminSchema = new Schema({
     firstname: {
         type: String,
         required: true
@@ -11,10 +10,19 @@ const userMembershipSchema = new Schema({
         type: String,
         required: true
     },
+    username: {
+        type: String,
+        required: true,
+        unique: true
+    },
     email: {
         type: String,
         required: true,
         unique: true
+    },
+    password: {
+        type: String,
+        required: true
     },
     contactNum: {
         type: String,
@@ -24,7 +32,7 @@ const userMembershipSchema = new Schema({
         type: String,
         required: true
     },
-    membershipStatus: {
+    branch: {
         type: String,
         required: true
     },
@@ -32,6 +40,6 @@ const userMembershipSchema = new Schema({
         type: Number,
         required: true
     }
-});
+})
 
-module.exports = mongoose.model('UserMembership', userMembershipSchema);
+module.exports = mongoose.model('Admins', adminSchema);

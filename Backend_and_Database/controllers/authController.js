@@ -1,8 +1,9 @@
 const User = require('../models/user_details/Users');
+const Admin = require('../models/admin_operations/Admins');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 
-const login = async (req, res) => {
+const userLogin = async (req, res) => {
     try{
         const { email, password } = req.body;
         if (!email || !password) return res.status(400).json({message: "Email and Password are required"});
@@ -14,7 +15,7 @@ const login = async (req, res) => {
         if (!match) return res.status(401).json({'message': 'Invalid Password'});
 
         const token = jwt.sign(
-            { id: userFound._id, username: userFound.username },
+            { id: userFound._id, role: userFound.role },
             process.env.ACCESS_TOKEN_SECRET,
             { expiresIn: "1h" }
         );
@@ -24,7 +25,8 @@ const login = async (req, res) => {
             user: {
                 id: userFound._id,
                 username: userFound.username,
-                email: userFound.email
+                email: userFound.email,
+                role: userFound.role
             } 
         }
         );
@@ -34,7 +36,7 @@ const login = async (req, res) => {
     }
 }
 
-const signup = async(req, res) => {
+const userSignup = async(req, res) => {
     try{
         const {firstname, lastname, username, email, password, contactNum, address} = req.body;    
         if(!firstname ||!lastname ||!username ||!email || !password || !contactNum || !address) return res.status(400).json({message: "All credentials are required"});
@@ -51,7 +53,8 @@ const signup = async(req, res) => {
             password: hashedPassword,
             contactNum: contactNum,
             address: address,
-            membershipStatus: "basic"
+            membershipStatus: "basic",
+            role: 452
         })
 
         res.status(200).json(addNewUser);
@@ -63,4 +66,67 @@ const signup = async(req, res) => {
     }
 }
 
-module.exports = {login, signup};
+const adminLogin = async (req, res) => {
+    try{
+        const { email, password } = req.body;
+        if (!email || !password) return res.status(400).json({message: "Email and Password are required"});
+        
+        const adminFound = await Admin.findOne({email});
+        if (!adminFound) return res.status(401).json({'message': 'User does not exists'});
+
+        const match = await bcrypt.compare(password, adminFound.password);
+        if (!match) return res.status(401).json({'message': 'Invalid Password'});
+
+        const token = jwt.sign(
+            { id: adminFound._id, role: adminFound.role  },
+            process.env.ACCESS_TOKEN_SECRET,
+            { expiresIn: "1h" }
+        );
+
+        res.json({
+            token,
+            user: {
+                id: adminFound._id,
+                username: adminFound.username,
+                email: adminFound.email,
+                role: adminFound.role
+            } 
+        }
+        );
+
+    } catch (err) {
+        res.status(500).json({ message: err.message});
+    }
+}
+
+const adminSignup = async(req, res) => {
+    try{
+        const {firstname, lastname, username, email, password, contactNum, address} = req.body;    
+        if(!firstname ||!lastname ||!username ||!email || !password || !contactNum || !address) return res.status(400).json({message: "All credentials are required"});
+        const newAdmin = await Admin.findOne({email});
+
+        if(newAdmin) return res.status(400).json({message: "Email is already in use"});
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const addNewAdmin = await Admin.create({
+            firstname: firstname,
+            lastname: lastname,
+            username: username,
+            email: email,
+            password: hashedPassword,
+            contactNum: contactNum,
+            address: address,
+            branch: "General_Luna",
+            role: 765
+        })
+
+        res.status(200).json(addNewAdmin);
+
+
+    } catch (err) {
+        res.status(500).json({ message: err.message});
+        console.error(err);
+    }
+}
+
+module.exports = {userLogin, userSignup, adminLogin, adminSignup};
