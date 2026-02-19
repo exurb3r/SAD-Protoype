@@ -1,9 +1,9 @@
 import React, { useState, useEffect} from 'react';
 
-function Dashboard(){
+function GymLoginHistory(){
     return(
        <div className='page'>
-            <h1> Dashboard </h1>
+            <h1> Gym Login History </h1>
             <div className='container-box'>
                 <div className='box'></div>
                 <div className='box'></div>
@@ -24,4 +24,4 @@ function Dashboard(){
     )
 }
 
-export default Dashboard;
+export default GymLoginHistory;

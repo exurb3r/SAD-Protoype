@@ -23,4 +23,4 @@ const noteSchema = new Schema({
     notes: [noteSubSchema]
 });
 
-module.exports = mongoose.model('Task', noteSchema);
+module.exports = mongoose.model('UserNotifications', noteSchema);

@@ -2,13 +2,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const dayRoutineSchema = new Schema({
-    title: {
+    excercise: {
         type: String,
         required: true
     },
-    date: {
-        type: Date,
-        default: Date.now
+    repitition: {
+        type: Number,
+        required: true
     },
     description: {  
         type: String,
@@ -29,4 +29,4 @@ const userRoutineSchema = new Schema({
     sunday: [dayRoutineSchema],
 });
 
-module.exports = mongoose.model('userRoutine', userRoutineSchema);
+module.exports = mongoose.model('UserRoutine', userRoutineSchema);

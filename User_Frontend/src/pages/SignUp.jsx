@@ -1,4 +1,5 @@
 import React, { useState, useEffect} from 'react';
+import { useNavigate, Navigate, NavLink } from "react-router-dom";
 
 function SignUp(){
     const [firstname, setFirstname] = useState('');
@@ -15,6 +16,11 @@ function SignUp(){
     const [spanPwd, setSpanPwd] = useState('');
     const [spanCPwdm, setSpanCPwd] = useState('');
     const [spanEmail, setSpanEmail] = useState('');
+
+    const token = localStorage.getItem("token");   
+    if (token) {
+        return <Navigate to="/dashboard" replace />;
+    }
 
 
 
@@ -133,30 +139,28 @@ function SignUp(){
     }, [firstname, lastname, password, confirmPassword, email]);
 
     return(
-        <div className='signUpPage'>
+        <div className="loginPage">
             <h1>Sign Up</h1>
-            <form onSubmit={register} className='signUpForm'>
+            <form onSubmit={register} className='loginCard'>
                 <span>{spanFn}</span>
-                <input type='text' value={firstname} onChange={(e) => setFirstname(e.target.value)} placeholder="First Name"></input>
+                <input type='text' value={firstname} className="loginInput" onChange={(e) => setFirstname(e.target.value)} placeholder="First Name"></input>
                 <span>{spanLn}</span>
-                <input type='text' value={lastname} onChange={(e) => setLastname(e.target.value)} placeholder="Last Name"></input>
+                <input type='text' value={lastname} className="loginInput" onChange={(e) => setLastname(e.target.value)} placeholder="Last Name"></input>
                 <span></span>
-                <input type='text' value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username"></input>
+                <input type='text' value={username} className="loginInput" onChange={(e) => setUsername(e.target.value)} placeholder="Username"></input>
                 <span>{spanPwd}</span>
-                <input type='password' value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password"></input>
+                <input type='password' value={password} className="loginInput" onChange={(e) => setPassword(e.target.value)} placeholder="Password"></input>
                 <span>{spanCPwdm}</span>
-                <input type='password' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Confirm Password"></input>
+                <input type='password' value={confirmPassword} className="loginInput" onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Confirm Password"></input>
                 <span>{spanEmail}</span>
-                <input type='text' value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email"></input>
+                <input type='text' value={email} className="loginInput" onChange={(e) => setEmail(e.target.value)} placeholder="Email"></input>
                 <span></span>
-                <input type='text' value={contactNum} onChange={(e) => setContacNum(e.target.value)} placeholder="Contact Number"></input>
+                <input type='text' value={contactNum} className="loginInput"  onChange={(e) => setContacNum(e.target.value)} placeholder="Contact Number"></input>
                 <span></span>
-                <input type='text' value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Address"></input>
+                <input type='text' value={address} className="loginInput" onChange={(e) => setAddress(e.target.value)} placeholder="Address"></input>
                 <button> Sign Up</button>
+                <p> Already have an account? <NavLink to={"/login"}> Log In</NavLink></p>
             </form>
-
-            <p> Already have an account? <a href=''>Log in</a></p>
-
         </div>
     )
 }

@@ -3,6 +3,7 @@ import "./App.css";
 import "./MobileApp.css";
 
 import LogIn from "./pages/LogIn";
+import SignUp from "./pages/SignUp";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import Layout from "./layout/Layout";
 import Dashboard from "./pages/Dashboard";
@@ -11,6 +12,7 @@ import About from "./pages/About";
 import Announcements from "./pages/Announcements";
 import Achievement from "./pages/Achievement";
 import Friends from "./pages/Friends";
+import GymLoginHistory from "./pages/GymLoginHistory";
 import StartWorkout from "./pages/StartWorkout";
 import NotesGym from "./pages/NotesGym";
 import PageNotFound from "./pages/PageNotFound";
@@ -24,6 +26,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<LogIn />} />
+        <Route path="/signup" element={<SignUp />} />
 
         <Route path="/" element={
            <ProtectedRoute> 
@@ -38,6 +41,7 @@ function App() {
           <Route path="progress" element={<Progress />} />
           <Route path="friends" element={<Friends />} />
           <Route path="achievements" element={<Achievement />} />
+          <Route path="gymloginhistory" element={<GymLoginHistory/>} />
           <Route path="announcements" element={<Announcements />} />
           <Route path="profile" element={<Profile />} />
           <Route path="about" element={<About />} />

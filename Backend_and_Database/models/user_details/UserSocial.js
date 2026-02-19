@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const noteSubSchema = new Schema({
-    title: {
+    Name: {
         type: String,
         required: true
     },
-    date: {
+    email: {
         type: Date,
         default: Date.now
     },
@@ -15,7 +15,7 @@ const noteSubSchema = new Schema({
     }
 });
 
-const noteSchema = new Schema({
+const userSocialSchema = new Schema({
     email:{
         type: String,
         required: true
@@ -23,4 +23,4 @@ const noteSchema = new Schema({
     friends: [noteSubSchema]
 });
 
-module.exports = mongoose.model('Task', noteSchema);
+module.exports = mongoose.model('UserSocial', userSocialSchema);

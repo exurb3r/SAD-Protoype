@@ -1,5 +1,7 @@
 body {
     margin: 0px;
+    height: 100vh;
+        overflow: hidden;
 }
 
 .sidebar {
@@ -161,4 +163,36 @@ body {
     .hamburger-btn {
         display: none;
     }
+}
+
+.box{
+    border: black solid 2px;
+    border-radius: 15px;
+    height: 125px;
+    width: 20%;
+    margin: 10px;
+
+}
+
+.container-box {
+    border:  black solid 2px;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+    justify-content: center;
+}
+
+.big-box {
+    border: black solid 2px;
+    border-radius: 15px;
+    width: 1000px;
+    height: 300px;
+}
+
+.page {
+    height: 100vh;
+    overflow: hidden;
+    overflow-y: auto;
+    padding-right: 15px;
 }

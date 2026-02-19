@@ -1,12 +1,8 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import '../assets/Notes.css';
 
 function NotesGym(){
-    const email = "helloThere@gmail.com";;
-    const sendPassword =  "@S1syphus";
 
-    console.log(email);
-    console.log(sendPassword)
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [noteList, setNoteList] = useState([]);
@@ -16,23 +12,25 @@ function NotesGym(){
     const [editTitle, setEditTitle] = useState("");
     const [editDescription, setEditDescription] = useState("");
 
+    const token = localStorage.getItem("token");
+
+    const authHeader = {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+    };
+
     async function getNote(){
         try{
             setLoading(true);
-            const token = localStorage.getItem("token");
 
-            const response = await fetch(`http://localhost:3500/taskHandler/get?email=${email}&password=${sendPassword}`, {
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
+            const response = await fetch(`http://localhost:3500/user/get`, {
+                headers: authHeader
             });
 
-            if(!response.ok){
-                throw new Error('Failed to fetch notes');
-            }
+            if(!response.ok) throw new Error('Failed to fetch notes');
 
             const data = await response.json();
-            setNoteList(data.notes || []) ;
+            setNoteList(data.notes || []);
 
         } catch (err){
             console.error(err);
@@ -40,78 +38,45 @@ function NotesGym(){
         } finally {
             setLoading(false);
         }
-    
     }
 
     useEffect(() => {
         getNote();
     }, []);
 
-
-
-    function handleTitleChange(event){
-        setTitle(c => c = event.target.value);
-    }
-
-    function handleDescriptionChange(event){
-        setDescription(c => c = event.target.value);
-    }
-
-    function addNotes(event){
+    async function addNotes(event){
         event.preventDefault();
 
-        if(title === '' || description === ''){
-            return console.log('Needs title and description');
-        }
+        if(!title || !description) return;
 
-        const notes = {
-            email,
-            title,
-            description
-        };
-        console.log(notes)
-
-       async function sendNotes(){
-            try{
-                const response = await fetch('http://localhost:3500/taskHandler/post',{
-                    method: 'POST',
-                    headers: {
-                        'Content-type': 'application/json'
-                    },
-                    body: JSON.stringify(notes)
-                });
-
-                if(!response.ok){
-                    throw new Error('Failed to add note');
-                }
-
-                const updates = await response.json();
-                setTitle('');
-                setDescription('');
-
-                setNoteList(updates.notes);
-
-            } catch (err){
-                console.error(err);
-            }
-        }
-        sendNotes();
-    }
-
-    async function deleteNote(email, noteId) {
-        const toDelete = {email, noteId}
         try{
-            const response = await fetch('http://localhost:3500/taskHandler/delete',{
-                method: 'DELETE',
-                headers: {
-                    'Content-type': 'application/json'
-                },
-                body: JSON.stringify(toDelete)
+            const response = await fetch(`http://localhost:3500/user/add`, {
+                method: 'POST',
+                headers: authHeader,
+                body: JSON.stringify({ title, description })
             });
 
-            if(!response.ok){
-                throw new Error('Failed to delete note');
-            }
+            if(!response.ok) throw new Error('Failed to add note');
+
+            const updates = await response.json();
+            setTitle('');
+            setDescription('');
+            setNoteList(updates.notes);
+
+        } catch (err){
+            console.error(err);
+        }
+    }
+
+    async function deleteNote(noteId){
+        try{
+            const response = await fetch(`http://localhost:3500/user/delete`,{
+                method: 'POST',
+                headers: authHeader,
+                body: JSON.stringify({ noteId })
+            });
+
+            if(!response.ok) throw new Error('Failed to delete note');
 
             const updates = await response.json();
             setNoteList(updates.notes);
@@ -119,86 +84,114 @@ function NotesGym(){
         } catch (err){
             console.error(err);
         }
-    
     }
 
-    async function updateNote(noteId) {
-        const toBeUpdated = { email, noteId, title: editTitle, description: editDescription}
+    async function updateNote(noteId){
         try{
-            const response = await fetch('http://localhost:3500/taskHandler/put', {
-                method: 'PUT',
-                headers: {
-                    'Content-type': 'application/json'
-                },
-                body: JSON.stringify(toBeUpdated)
-                
+            const response = await fetch(`http://localhost:3500/user/edit`, {
+                method: 'POST',
+                headers: authHeader,
+                body: JSON.stringify({
+                    noteId,
+                    title: editTitle,
+                    description: editDescription
                 })
+            });
 
-            if(!response.ok){
-                throw new Error('Failed to delete note');
-            }
+            if(!response.ok) throw new Error('Failed to update note');
 
             const updates = await response.json();
             setNoteList(updates.notes);
             setEditingId(null);
-        } catch (err){
-            console.error(err.message)
-        } finally {
 
+        } catch (err){
+            console.error(err);
         }
-        
     }
 
     return(
         <div className='noteAPP'>
-            <h1 className='noteApp-title'> Task Handler</h1>            
-            <div className='note-section'>
-                
-                {loading ? (<p> Loading notes...</p>): 
-                (<ol>
-                    <li className='note-container' id='add-section'>
-                        <div className="edit-notes">
-                            <form onSubmit={addNotes} >
-                                <h2><input type='text' placeholder='Your Title' value={title} onChange={(e) => handleTitleChange(e)}></input></h2>
-                                <textarea placeholder='Description' value={description} onChange={(e) => handleDescriptionChange(e)}></textarea>
+            <h1 className='noteApp-title'>Task Handler</h1>            
 
-                                <button type='submit'> Add Notes</button>
-                            </form>
-                        </div>
+            <div className='note-section'>
+
+                {loading ? (<p>Loading notes...</p>) : (
+                <ol>
+
+                    {/* ADD FORM */}
+                    <li className='note-container' id='add-section'>
+                        <form onSubmit={addNotes}>
+                            <h2>
+                                <input
+                                    type='text'
+                                    placeholder='Your Title'
+                                    value={title}
+                                    onChange={(e)=>setTitle(e.target.value)}
+                                />
+                            </h2>
+
+                            <textarea
+                                placeholder='Description'
+                                value={description}
+                                onChange={(e)=>setDescription(e.target.value)}
+                            />
+
+                            <button type='submit'>Add Notes</button>
+                        </form>
                     </li>
+
+                    {/* NOTES LIST */}
                     {noteList.map(note => (
                         <li key={note._id} className='note-container'>
+
                         {editingId === note._id ? (
                             <div className="edit-notes">
-                               <h2><input value={editTitle} onChange={(e) => setEditTitle(e.target.value)}/></h2>
-                                <textarea value={editDescription} onChange={(e) => setEditDescription(e.target.value)}/>
+                                <h2>
+                                    <input
+                                        value={editTitle}
+                                        onChange={(e)=>setEditTitle(e.target.value)}
+                                    />
+                                </h2>
 
-                                <button onClick={() => setEditingId(null)}>Cancel</button>
-                                <button onClick={() => updateNote(note._id)}>Confirm</button>
+                                <textarea
+                                    value={editDescription}
+                                    onChange={(e)=>setEditDescription(e.target.value)}
+                                />
+
+                                <button onClick={()=>setEditingId(null)}>Cancel</button>
+                                <button onClick={()=>updateNote(note._id)}>Confirm</button>
                             </div>
+
                         ) : (
                             <div className="show-notes">
-                                <p className='date-tag'>{new Date(note.date).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true })}</p>
+                                <p className='date-tag'>
+                                    {new Date(note.date).toLocaleString()}
+                                </p>
+
                                 <h2>{note.title}</h2>
                                 <p className='note-description'>{note.description}</p>
 
-                                <button onClick={() => {
+                                <button onClick={()=>{
                                     setEditingId(note._id);
                                     setEditTitle(note.title);
                                     setEditDescription(note.description);
-                                    }}>
+                                }}>
                                     Edit
                                 </button>
-                                <button onClick={() => deleteNote(username, note._id) }> Delete</button>
+
+                                <button onClick={()=>deleteNote(note._id)}>
+                                    Delete
+                                </button>
                             </div>
                         )}
                         </li>
                     ))}
 
-                </ol>)
-                }
+                </ol>
+                )}
             </div>       
         </div>
     );
 }
+
 export default NotesGym;

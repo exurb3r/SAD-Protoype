@@ -13,7 +13,7 @@ connectDB();
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/admin', require('./routes/user_routes/taskRouter'));
-app.use('/user', require('./routes/user_routes/userRouter'));
+app.use('/user', require('./routes/user_routes/taskRouter'));
 app.use('/auth', require('./routes/auth_routes/authRouter'));
 
 app.get('/home', (req, res) =>{

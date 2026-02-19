@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from "axios";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate, Navigate, NavLink } from "react-router-dom";
 import "../assets/Login.css";
 
 function LogIn(){
@@ -53,6 +53,7 @@ function LogIn(){
                 />
 
                 <button className="loginButton">Sign In</button>
+                <p> Don't have an account? <NavLink to={"/signup"}> Sign Up</NavLink></p>
             </form>
         </div>
     );

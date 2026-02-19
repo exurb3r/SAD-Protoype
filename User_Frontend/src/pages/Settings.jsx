@@ -2,9 +2,25 @@ import React, { useState, useEffect} from 'react';
 
 function Settings(){
     return(
-       <div>
-        <h1> Settings </h1>
-       </div>
+        <div className='page'>
+                <h1> Settings </h1>
+                <div className='container-box'>
+                    <div className='box'></div>
+                    <div className='box'></div>
+                    <div className='box'></div>
+                    <div className='box'></div>
+                </div>
+                <div className='container-box'>
+                    <div className='big-box'></div>
+                </div>
+                <div className='container-box'>
+                    <div className='big-box'></div>
+                </div>
+                <div className='container-box'>
+                    <div className='big-box'></div>
+
+                </div>
+        </div>
     )
 }
 

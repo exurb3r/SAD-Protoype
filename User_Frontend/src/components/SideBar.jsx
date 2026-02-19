@@ -12,7 +12,7 @@ export default function Sidebar({ isOpen, onClose }) {
         { path: "progress", label: "Progress" },
         { path: "friends", label: "Friends" },
         { path: "achievements", label: "Achievements" },
-        { path: "gymhistory", label: "Gym Login History" },
+        { path: "gymloginhistory", label: "Gym Login History" },
         { path: "announcements", label: "Notifications & Announcements" },
         { path: "profile", label: "Profile" },
         { path: "about", label: "About" },

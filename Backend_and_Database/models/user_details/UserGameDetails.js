@@ -15,7 +15,7 @@ const noteSubSchema = new Schema({
     }
 });
 
-const noteSchema = new Schema({
+const UserGameDetailsSchema = new Schema({
     email:{
         type: String,
         required: true
@@ -23,4 +23,4 @@ const noteSchema = new Schema({
     notes: [noteSubSchema]
 });
 
-module.exports = mongoose.model('Task', noteSchema);
+module.exports = mongoose.model('UserGameDetails', UserGameDetailsSchema);
