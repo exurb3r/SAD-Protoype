@@ -17,7 +17,6 @@ function Layout() {
                 <span></span>
             </button>
 
-
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
             {sidebarOpen && <div className="overlay" onClick={() => setSidebarOpen(false)} />}
