@@ -11,7 +11,7 @@ export default function Sidebar({ isOpen, onClose }) {
         { path: "notes", label: "Notes" },
         { path: "progress", label: "Progress" },
         { path: "friends", label: "Friends" },
-        { path: "achievements", label: "Achievements" },
+        { path: "leaderboard", label: "Leaderboards" },
         { path: "gymloginhistory", label: "Gym Login History" },
         { path: "announcements", label: "Notifications & Announcements" },
         { path: "profile", label: "Profile" },

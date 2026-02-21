@@ -10,7 +10,6 @@ import Dashboard from "./pages/Dashboard";
 
 import About from "./pages/About";
 import Announcements from "./pages/Announcements";
-import Achievement from "./pages/Achievement";
 import Friends from "./pages/Friends";
 import GymLoginHistory from "./pages/GymLoginHistory";
 import StartWorkout from "./pages/StartWorkout";
@@ -20,6 +19,7 @@ import Profile from "./pages/Profile";
 import Routine from "./pages/Routine";
 import Progress from "./pages/Progress";
 import Settings from "./pages/Settings";
+import Leaderboard from "./pages/Leaderboard";
 
 function App() {
   return (
@@ -40,7 +40,7 @@ function App() {
           <Route path="notes" element={<NotesGym />} />
           <Route path="progress" element={<Progress />} />
           <Route path="friends" element={<Friends />} />
-          <Route path="achievements" element={<Achievement />} />
+          <Route path="leaderboard" element={<Leaderboard/>} />
           <Route path="gymloginhistory" element={<GymLoginHistory/>} />
           <Route path="announcements" element={<Announcements />} />
           <Route path="profile" element={<Profile />} />

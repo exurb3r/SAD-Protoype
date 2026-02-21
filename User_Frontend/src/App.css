@@ -171,6 +171,9 @@ body {
     height: 125px;
     width: 20%;
     margin: 10px;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
 
 }
 
@@ -195,4 +198,12 @@ body {
     overflow: hidden;
     overflow-y: auto;
     padding-right: 15px;
+}
+
+.big-box-progress {
+    border: black solid 2px;
+    border-radius: 15px;
+    width: 500px;
+    margin: 20px;
+    height: 300px;
 }

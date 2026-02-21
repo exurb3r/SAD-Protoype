@@ -1,9 +1,9 @@
 import React, { useState, useEffect} from 'react';
 
-function Achievement(){
+function Leaderboard(){
     return(
         <div className='page'>
-                <h1> Achievements </h1>
+                <h1> Leaderboards </h1>
                 <div className='container-box'>
                     <div className='box'></div>
                     <div className='box'></div>
@@ -24,4 +24,4 @@ function Achievement(){
     )
 }
 
-export default Achievement;
+export default Leaderboard;
