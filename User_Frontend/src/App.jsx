@@ -10,7 +10,7 @@ import Dashboard from "./pages/Dashboard";
 
 import About from "./pages/About";
 import Announcements from "./pages/Announcements";
-import Friends from "./pages/Friends";
+import Community from "./pages/Community";
 import GymLoginHistory from "./pages/GymLoginHistory";
 import StartWorkout from "./pages/StartWorkout";
 import NotesGym from "./pages/NotesGym";
@@ -39,7 +39,7 @@ function App() {
           <Route path="routine" element={<Routine />} />
           <Route path="notes" element={<NotesGym />} />
           <Route path="progress" element={<Progress />} />
-          <Route path="friends" element={<Friends />} />
+          <Route path="community" element={<Community/>} />
           <Route path="leaderboard" element={<Leaderboard/>} />
           <Route path="gymloginhistory" element={<GymLoginHistory/>} />
           <Route path="announcements" element={<Announcements />} />

@@ -6,6 +6,8 @@ function Profile(){
         <div className='page'>
                 <h1> Profile </h1>
                 <p1> User Name</p1>
+                <br></br>
+                <p1> Motto </p1>
                 <div className='container-box'>
                     <div className='box'></div>
                     <div className='box'></div>
@@ -16,6 +18,7 @@ function Profile(){
                 <div className='container-box'>
                     <div className='big-box'></div>
                 </div>
+                <p> Friends</p>
                 <div className='container-box'>
                     <div className='big-box'></div>
                 </div>

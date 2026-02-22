@@ -18,7 +18,7 @@ function Dashboard(){
                 <div className='big-box-progress'></div>
                 <div className='big-box-progress'></div>
             </div>
-             <p> Latest Achievements </p>
+             <p>  </p>
             <div className='container-box'>
                 <div className='big-box-progress'></div>
                 <div className='big-box-progress'></div>
