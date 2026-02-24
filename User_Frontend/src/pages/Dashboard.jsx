@@ -2,6 +2,8 @@ import React, { useState, useEffect} from 'react';
 import '../assets/Dashboard.css'
 import { Bar, Doughnut, Line } from 'react-chartjs-2';
 import { ArcElement } from "chart.js";
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -16,25 +18,30 @@ import {
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 
 function Dashboard(){
+
+    const percentage = 60
     return(
        <div className='dashboard-page'>
             <h1> Dashboard </h1>
             <p> Welcome Back <span> Username</span></p>
             <p> Overview </p>
             <div className='dashboard-container-box'>
-                <div className='dashboard-box'> 
+                <div className='dashboard-upper-box-firstbox'> 
                     <div>
-                        <p> Level 7</p>
+                        <div className='lvl-holder'>
+                            <CircularProgressbar value={70} text={`Lvl 7`} />
+                        </div>
                         <p> TOTAL EXP : 360 EXP</p>
                     </div>
                 </div>
-                <div className='dashboard-box'>
-                    <div> <p> Current Streak </p></div>
-                    <div> <p> Membership: </p><p> Basic Membership</p> <p> 30 days</p></div>
-                    <div> <p> Recent Achievements</p> <p> Achivement Title </p></div>
-
+                <div className='dashboard-upper-box-middlebox'>
+                    <div className='upper-section' >
+                        <div className='dashboard-inner-first-box-streak'> <p> Current Streak </p></div>
+                        <div className='dashboard-inner-first-box-membership'> <p> Membership: </p><p> Basic Membership</p> <p> 30 days</p></div>
+                    </div>
+                    <div className='dashboard-inner-first-box-achievements'> <p> Recent Achievements</p> <p> Achivement Title </p> <p> Achievement Title</p> <p> Achievement Title</p></div>
                 </div>
-                <div className='dashboard-box'> <p> Recent notifications </p> <ul> <li> Someone added</li> <li> You are registered</li></ul> </div>
+                <div className='dashboard-upper-box-lastbox'> <p> Recent notifications </p> <ul> <li> Someone added</li> <li> You are registered</li></ul> </div>
             </div>
 
 
@@ -45,12 +52,12 @@ function Dashboard(){
                 <div className='dashboard-big-box-progress'>
                     <Bar
                         data={{
-                            labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], // Sunday first
+                            labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
                             datasets: [
                             {
                                 label: "No. of Workouts",
                                 data: [150, 200, 300, 400, 250, 350, 400, ], 
-                                backgroundColor: ["gray", "red", "blue", "green", "orange", "purple"], // one color per day
+                                backgroundColor: ["#4d4dff", "#4d4dff", "#4d4dff", "#4d4dff", "#4d4dff", "#4d4dff"],
                                 borderRadius: 5, 
                                 borderWidth: 0,
                             },
@@ -84,30 +91,22 @@ function Dashboard(){
                                 backgroundColor: ["red", "blue", "green", "orange", "purple", "cyan"],
                                 borderRadius: 5,
                                 borderWidth: 0,
+                                barThickness: 50,
+
                             }],
                         }}
                         options={{
                             responsive: true,
-                            maintainAspectRatio: false, // this allows the chart to fit the container
+                            maintainAspectRatio: false, 
                         }}
                         />
 
                 </div>
                 </div>
             </div>
-             <p>  </p>
-            <div className='dashboard-container-box'>
-                <div className='dashboard-big-box-progress'></div>
-                <div className='dashboard-big-box-progress'></div>
-            </div>
-            <p> Trainers  Recommender For You</p>
+            <p> Previous Workout</p>
             <div className='dashboard-container-box'>
                 <div className='dashboard-big-box'></div>
-            </div>
-            <p> Recommended Food For You</p>
-            <div className='dashboard-container-box'>
-                <div className='dashboard-big-box'></div>
-
             </div>
        </div>
     )

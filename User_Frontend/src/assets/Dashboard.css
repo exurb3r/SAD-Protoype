@@ -1,7 +1,7 @@
 .dashboard-page {
     height: 100vh;
     overflow-y: auto;
-    padding: 25px 30px;
+    padding: 10px 30px;
     background: #f8f9fb;
     color: #111;
     font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
@@ -74,7 +74,7 @@
     background: #fff;
 
     flex: 1;
-    min-width: 420px;
+    width: 720px;
     height: 360px;
 
     padding: 15px;
@@ -109,15 +109,78 @@
     margin-bottom: 3px;
 }
 
-@media (max-width: 1100px){
-    .big-box-progress,
-    .big-box-progress-pie {
-        min-width: 100%;
-    }
+.dashboard-inner-first-box-streak {
+    border: 1px solid black;
+    margin: 2px;
+    padding: 5px;
+    border-radius: 5px;
+    width: 50%;
+    margin: 5px;
+
 }
 
-@media (max-width: 700px){
-    .dashboard-container-box {
-        flex-direction: column;
-    }
+.dashboard-inner-first-box-membership {
+    border: 1px solid black;
+    margin: 2px;
+    padding: 5px;
+    border-radius: 5px;
+    width: 50%;
+    margin: 5px;
+}
+
+.dashboard-inner-first-box-achievements {
+    border: 1px solid black;
+    margin: 2px;
+    padding: 5px;
+    border-radius: 5px;
+
+}
+
+.dashboard-upper-box-middlebox{
+    border: 2px solid #000;
+    border-radius: 12px;
+    width: 200px;
+    flex: 1;
+    padding: 10px;
+    transition: 0.2s ease;
+    text-align: center;
+
+}
+
+.dashboard-upper-box-middlebox .upper-section{
+    display: flex;
+    flex-direction: row;
+}
+
+.dashboard-upper-box-firstbox{
+    border: 2px solid #000;
+    border-radius: 12px;
+    min-width: 200px;
+    flex: 1;
+    padding: 10px;
+    transition: 0.2s ease;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.lvl-holder{
+    height: 200px;
+    width: 200px;
+    padding: 10px;
+}
+
+.dashboard-upper-box-lastbox{
+    border: 2px solid #000;
+    border-radius: 12px;
+    width: 140px;
+    flex: 1;
+    padding: 10px;
+    transition: 0.2s ease;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
