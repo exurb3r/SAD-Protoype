@@ -1,37 +1,44 @@
-
-
 <template>
   <div class="layout">
     <SideBar />
-    <div class="main-content">
-      <router-view />
+    <div class="main">
+      <TopBar />
+      <div class="page-content">
+        <router-view />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import SideBar from './components/SideBar.vue'
+import TopBar from './components/TopBar.vue'
 
 export default {
-  components: { SideBar }
+  components: { SideBar, TopBar }
 }
 </script>
 
 <style>
 body {
   margin: 0;
+  font-family: Arial, sans-serif;
 }
 
 .layout {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
+   background: #0C0C0C;
 }
 
-.main-content {
+.main {
   flex: 1;
-  background-color: #111;
-  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-content {
   padding: 30px;
-  overflow-y: auto;
+  flex: 1;
 }
 </style>
