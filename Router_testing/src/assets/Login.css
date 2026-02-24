@@ -1,0 +1,79 @@
+/* Page background */
+.loginPage{
+    height: 100vh;
+    background: radial-gradient(circle at top, #1a0000, #000);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* Card container */
+.loginCard{
+    background: #0b0b0b;
+    padding: 45px 40px;
+    border-radius: 14px;
+    width: 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+
+    border: 1px solid rgba(255,0,0,0.35);
+    box-shadow:
+        0 0 25px rgba(255,0,0,0.15),
+        inset 0 0 15px rgba(255,255,255,0.03);
+}
+
+/* Title */
+.loginTitle{
+    color: white;
+    text-align: center;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+/* Inputs */
+.loginInput{
+    background: #050505;
+    border: 1px solid #2a2a2a;
+    padding: 12px 14px;
+    border-radius: 8px;
+    color: white;
+    outline: none;
+    transition: 0.25s ease;
+}
+
+/* Placeholder */
+.loginInput::placeholder{
+    color: #888;
+}
+
+/* Focus effect */
+.loginInput:focus{
+    border-color: #ff1e1e;
+    box-shadow: 0 0 8px rgba(255,0,0,0.4);
+}
+
+/* Button */
+.loginButton{
+    margin-top: 10px;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    background: linear-gradient(180deg, #ff2b2b, #b30000);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+/* Hover */
+.loginButton:hover{
+    background: linear-gradient(180deg, #ff4444, #d00000);
+    box-shadow: 0 0 12px rgba(255,0,0,0.6);
+}
+
+/* Click effect */
+.loginButton:active{
+    transform: scale(0.98);
+}

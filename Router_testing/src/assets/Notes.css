@@ -1,0 +1,111 @@
+.signUpForm{
+    display: flex;
+    flex-direction: column;
+    max-width: 500px; 
+}
+
+.signUpForm input{
+    margin-bottom: 10px;
+    padding-top: 10px;
+    padding-left: 25px;
+    padding-right: 5px;
+    padding-bottom: 10px;
+    border-radius: 20px;
+}
+
+.signUpForm button{
+    max-width: 150px;
+    margin-left: 100px;
+    padding-top: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 10px;
+    border-radius: 20px;
+    background-color: black;
+    color: white;
+    font-weight: bold;
+}
+.signUpPage{
+    border: 2px solid black;
+    border-radius: 25px;
+    padding: 40px;
+    margin: 10px;
+    max-width: 500px;
+}
+.noteApp-title{
+    text-align: center;
+}
+
+
+.addNotes{
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+ 
+}
+
+.note-section ol {
+    border: 2px solid black;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 10px;
+    margin: 40px;
+    border-radius: 15px;
+
+}
+
+.note-container{
+    list-style: none;
+
+}
+.note-container div{
+    border: 2px solid black;
+    padding: 10px;
+    border-radius: 10px;
+    font-family: 'Courier New', Courier, monospace;
+    width: 400px;
+    margin: 10px;
+}
+.note-container h2{
+    font-size: 1.5rem;
+    border-bottom: 2px solid black;
+    margin-left: 10px;
+    width: 75%;
+}
+
+.note-container input{
+    font-weight: bold;
+    font-size: 1.5rem;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 0px;
+}
+
+.note-container textarea{
+    width: 100%;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 15px;
+    border: none;
+    resize: vertical;
+
+}
+
+.note-container .date-tag{
+    float: right;
+    font-size: 12px;
+}
+.note-container button{
+    margin: 10px;
+    height: 30px;
+    width: 100px;
+}
+
+#add-section{
+    min-height: 70%;
+}
+
+.note-container .note-description{
+    padding: 10px;
+    font-size: 15px ;
+
+}

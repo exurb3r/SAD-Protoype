@@ -12,6 +12,9 @@ const dayRoutineSchema = new Schema({
     },
     description: {  
         type: String,
+    },
+    exp_gained: {
+        type: Number,
     }
 });
 
