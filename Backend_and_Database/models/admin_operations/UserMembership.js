@@ -29,8 +29,7 @@ const userMembershipSchema = new Schema({
         required: true
     },
     membershipTime : {
-        type: String,
-        required: true
+        type: Number,
     },
     branch: {
         type: String,

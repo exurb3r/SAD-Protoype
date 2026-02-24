@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const dayRoutineSchema = new Schema({
-    excercise: {
+    exercise: {
         type: String,
         required: true
     },

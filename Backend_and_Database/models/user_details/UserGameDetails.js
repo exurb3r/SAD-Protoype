@@ -1,17 +1,16 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const noteSubSchema = new Schema({
+const achievementsSchema = new Schema({
     title: {
         type: String,
         required: true
     },
-    date: {
-        type: Date,
-        default: Date.now
-    },
     description: {  
         type: String,
+    },
+    exp_gained: {
+        type: Number
     }
 });
 
@@ -20,7 +19,19 @@ const UserGameDetailsSchema = new Schema({
         type: String,
         required: true
     }, 
-    notes: [noteSubSchema]
+    achievements: [achievementsSchema],
+    level: {
+        type: Number
+    },
+    exp_points: {
+        type: Number
+    },
+    highestGymStreak: {
+        type: Number
+    },
+    currentGymStreak: {
+        type: Number
+    }
 });
 
 module.exports = mongoose.model('UserGameDetails', UserGameDetailsSchema);

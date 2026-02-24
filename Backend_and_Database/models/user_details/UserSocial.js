@@ -10,9 +10,6 @@ const noteSubSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    description: {  
-        type: String,
-    }
 });
 
 const userSocialSchema = new Schema({

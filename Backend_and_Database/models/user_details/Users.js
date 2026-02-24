@@ -35,6 +35,9 @@ const userSchema = new Schema({
     membershipStatus: {
         type: String,
     },
+    membershipTime : {
+        type: Number,
+    },
     branch: {
         type: String,
         default: "Branch 1"

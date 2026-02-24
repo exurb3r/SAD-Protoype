@@ -13,14 +13,14 @@ const noteSubSchema = new Schema({
     description: {  
         type: String,
     }
-});
+})
 
-const UserNotificationsSchema = new Schema({
+const userProgressSchema = new Schema({
     email:{
         type: String,
         required: true
     }, 
-    notifications: [noteSubSchema]
+    notes: [noteSubSchema]
 });
 
-module.exports = mongoose.model('UserNotifications', UserNotificationsSchema);
+module.exports = mongoose.model('UserProgress', userProgressSchema);
