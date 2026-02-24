@@ -20,7 +20,7 @@ const noteSchema = new Schema({
         type: String,
         required: true
     }, 
-    notes: [noteSubSchema]
+    notifications: [noteSubSchema]
 });
 
 module.exports = mongoose.model('UserNotifications', noteSchema);

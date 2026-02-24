@@ -17,7 +17,7 @@ function LogIn(){
     async function getUser(event){
         event.preventDefault();
         try{
-            const response = await axios.post("http://localhost:3500/auth/login", {
+            const response = await axios.post("http://localhost:3500/users/auth/login", {
                 email: inputEmail,
                 password: inputPassword
             });

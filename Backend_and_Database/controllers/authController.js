@@ -54,6 +54,7 @@ const userSignup = async(req, res) => {
             contactNum: contactNum,
             address: address,
             membershipStatus: "basic",
+            branch: "Branch 1",
             role: 452
         })
 

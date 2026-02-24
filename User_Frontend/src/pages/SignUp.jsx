@@ -105,7 +105,7 @@ function SignUp(){
         }
 
         try{
-            const response = await fetch('http://localhost:3500/userRegister/addUser',{
+            const response = await fetch('http://localhost:3500/users/auth/signup',{
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json'

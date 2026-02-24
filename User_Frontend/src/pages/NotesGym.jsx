@@ -23,7 +23,7 @@ function NotesGym(){
         try{
             setLoading(true);
 
-            const response = await fetch(`http://localhost:3500/user/get`, {
+            const response = await fetch(`http://localhost:3500/users/notes/get`, {
                 headers: authHeader
             });
 

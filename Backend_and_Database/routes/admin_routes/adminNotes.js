@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const taskHandler = require('../controllers/taskHandler');
+const taskHandler = require('../../controllers/taskHandler');
 
 router.get('/get', taskHandler.taskFetcher);
 router.post('/post', taskHandler.taskAdder);

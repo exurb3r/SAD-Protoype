@@ -28,14 +28,14 @@ const userMembershipSchema = new Schema({
         type: String,
         required: true
     },
+    membershipTime : {
+        type: String,
+        required: true
+    },
     branch: {
         type: String,
         required: true
     },
-    role: {
-        type: Number,
-        required: true
-    }
 });
 
 module.exports = mongoose.model('UserMembership', userMembershipSchema);

@@ -37,6 +37,7 @@ const userSchema = new Schema({
     },
     branch: {
         type: String,
+        default: "Branch 1"
     },
     role: {
         type: Number,
