@@ -15,13 +15,6 @@ function GymLoginHistory(){
             <div className='container-box'>
                 <div className='big-box'></div>
             </div>
-            <div className='container-box'>
-                <div className='big-box'></div>
-            </div>
-            <div className='container-box'>
-                <div className='big-box'></div>
-
-            </div>
        </div>
     )
 }

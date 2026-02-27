@@ -1,0 +1,126 @@
+.startworkout-container-box {
+    display: flex;
+    gap: 20px;
+    height: 85vh;
+    width: 95%;
+    margin: auto;
+}
+
+/* PANELS */
+.first-box,
+.middle-box,
+.last-box {
+    background: #fff;
+    border: 1px solid #000;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Width control */
+.first-box { flex: 1.2; }
+.middle-box { flex: 1; }
+.last-box { flex: 1; }
+
+/* Typography */
+
+.h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+}
+
+.section-label {
+    margin-top: 20px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.workout-description {
+    color: #444;
+    font-size: 0.95rem;
+}
+
+/* LISTS */
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.routine-list,
+.exercise-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.routine-item,
+.exercise-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    border: 1px solid #000;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    transition: 0.2s ease;
+}
+
+.routine-item:hover,
+.exercise-item:hover {
+    background: #f5f5f5;
+}
+
+/* BUTTONS */
+button {
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 8px 14px;
+    border-radius: 8px;
+    transition: 0.2s ease;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid #000;
+}
+
+.btn-outline:hover {
+    background: #000;
+    color: #fff;
+}
+
+.btn-primary {
+    background: #000;
+    color: #fff;
+    border: none;
+    margin-top: 15px;
+}
+
+.btn-primary:hover {
+    opacity: 0.85;
+}
+
+.full-width {
+    width: 100%;
+}
+
+
+.chart-container {
+    height: 250px;
+    margin: 10px 0 20px 0;
+}
+
+
+.workout-stats {
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}

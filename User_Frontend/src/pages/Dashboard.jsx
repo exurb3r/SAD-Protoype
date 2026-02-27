@@ -37,11 +37,24 @@ function Dashboard(){
                 <div className='dashboard-upper-box-middlebox'>
                     <div className='upper-section' >
                         <div className='dashboard-inner-first-box-streak'> <p> Current Streak </p></div>
-                        <div className='dashboard-inner-first-box-membership'> <p> Membership: </p><p> Basic Membership</p> <p> 30 days</p></div>
+                        <div className='dashboard-inner-first-box-membership'>  <p> Membership: </p>
+                                                                                <p> Basic Membership</p> 
+                                                                                <p> 30 days</p></div>
                     </div>
-                    <div className='dashboard-inner-first-box-achievements'> <p> Recent Achievements</p> <p> Achivement Title </p> <p> Achievement Title</p> <p> Achievement Title</p></div>
+                    <div className='dashboard-inner-first-box-achievements'><p> Recent Achievements</p>
+                                                                            <p> Achivement Title </p>
+                                                                            <p> Achievement Title</p> 
+                                                                            <p> Achievement Title</p>
+                    </div>
                 </div>
-                <div className='dashboard-upper-box-lastbox'> <p> Recent notifications </p> <ul> <li> Someone added</li> <li> You are registered</li></ul> </div>
+                <div className='dashboard-upper-box-lastbox'> <p>Previous Workout Preview </p> 
+                                                        <ul> 
+                                                            <li> No. of Workouts</li> 
+                                                            <li> Duration</li>
+                                                            <li> Focus : Arms, Legs</li>
+                                                            <li> Exp Gained</li>
+                                                        </ul>
+                </div>
             </div>
 
 
@@ -73,7 +86,7 @@ function Dashboard(){
                             scales: {
                             y: {
                                 beginAtZero: true,
-                                max: 500, // optional: set max for y-axis
+                                max: 500,
                             },
                             },
                         }}
@@ -104,9 +117,11 @@ function Dashboard(){
                 </div>
                 </div>
             </div>
-            <p> Previous Workout</p>
-            <div className='dashboard-container-box'>
-                <div className='dashboard-big-box'></div>
+            <p> Recent Notifications </p>
+            <div className='dashboard-notif-box'>
+                <div className='notif-div'></div>
+                <div className='notif-div'></div>
+                <div className='notif-div'></div>
             </div>
        </div>
     )

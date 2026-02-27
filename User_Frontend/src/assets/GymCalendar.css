@@ -1,0 +1,113 @@
+.gym-calendar-container-box {
+    display: flex;
+    gap: 20px;
+    width: 95%;
+    margin: auto;
+    height: 85vh;
+}
+
+/* LEFT CALENDAR */
+.calendar-container {
+    flex: 2;
+    background: #fff;
+    border: 1px solid #000;
+    border-radius: 16px;
+    padding: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+/* RIGHT SIDE */
+.calendar-events-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+.calendar-card {
+    background: #fff;
+    border: 1px solid #000;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 50%;
+}
+
+
+.gym-calendar-container-box h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.gym-calendar-container-box h2 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}
+
+.gym-calendar-container-box ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.calendar-event-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.calendar-event-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    border: 1px solid #000;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    transition: 0.2s ease;
+}
+
+.calendar-event-item:hover {
+    background: #f5f5f5;
+}
+
+.calendar-event-item.simple {
+    justify-content: flex-start;
+}
+
+
+.calendar-button {
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 8px 14px;
+    border-radius: 8px;
+    transition: 0.2s ease;
+}
+
+.calendar-btn-outline {
+    background: transparent;
+    border: 1px solid #000;
+}
+
+.calendar-btn-outline:hover {
+    background: #000;
+    color: #fff;
+}
+
+.calendar-btn-primary {
+    background: #000;
+    color: #fff;
+    border: none;
+    margin-top: 10px;
+}
+
+.calendar-btn-primary:hover {
+    opacity: 0.85;
+}
+
+.calendar-full-width {
+    width: 100%;
+}
