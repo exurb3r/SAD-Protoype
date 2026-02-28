@@ -9,8 +9,31 @@ const achievementsSchema = new Schema({
     description: {  
         type: String,
     },
+    dateAchieved: {
+        type: Date,
+        default: Date.now
+    },
     exp_gained: {
         type: Number
+    }
+});
+
+const acceptedInvitesSchema = new Schema({
+    username: {
+        type: String,
+    },
+    email: {
+        type: String,
+    },
+    friendMessage: {
+        type: String,
+    },
+    date: {
+        type: Date,
+        default: Date.now
+    },
+    time: {
+        type: String,
     }
 });
 
@@ -26,12 +49,13 @@ const UserGameDetailsSchema = new Schema({
     exp_points: {
         type: Number
     },
-    highestGymStreak: {
+    highestStreak: {
         type: Number
     },
-    currentGymStreak: {
+    currentStreak: {
         type: Number
-    }
+    },
+    acceptedInvites: [ acceptedInvitesSchema ]
 });
 
 module.exports = mongoose.model('UserGameDetails', UserGameDetailsSchema);

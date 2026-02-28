@@ -1,6 +1,26 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const membershipStatusSchema = new Schema({
+    category: {
+        type: String,
+        required: true
+    },
+    branch: {
+        type: String,
+        required: true
+    },
+    startDate: {
+        type: Date
+    },
+    expiryDate: {
+        type: Date
+    },
+    remainingDays: {
+        type: Number
+    }
+});
+
 const userSchema = new Schema({
     firstname: {
         type: String,
@@ -9,11 +29,6 @@ const userSchema = new Schema({
     lastname: {
         type: String,
         required: true
-    },
-    username: {
-        type: String,
-        required: true,
-        unique: true
     },
     email: {
         type: String,
@@ -32,20 +47,19 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    membershipStatus: {
+    membershipStatus: [ membershipStatusSchema ],
+    assignedTrainer: {
         type: String,
     },
-    membershipTime : {
-        type: Number,
-    },
-    branch: {
+    gymId: {    
         type: String,
-        default: "Branch 1"
+        required: true,
+        unique: true
     },
-    role: {
-        type: Number,
-        required: true
-    }
+    rfid: {
+        type: String,
+        unique: true
+    } //for those who have RFID cards, optional field, for RFID login
 })
 
 module.exports = mongoose.model('Users', userSchema);
