@@ -1,0 +1,171 @@
+.community-coaches-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin: 10px;
+}
+.coach-picture-holder {
+    width: 100px;
+    height: 100px;
+    background-color: #eee;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.coach-name-holder {
+    text-align: center;
+}
+
+.community-coaches-container {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+.community-coaches {
+    margin-top: 20px;
+}
+
+.community-coaches-title {
+    text-align: center;
+    margin-bottom: 20px
+}
+
+.community-friends {
+    margin-top: 40px;
+}
+
+.community-friends-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.community-friends-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.community-friends-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 150px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+.friend-picture-holder {
+    width: 80px;
+    height: 80px;
+    background-color: #eee;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.friend-name-holder {
+    text-align: center;
+}
+
+.friend-name-holder p {
+    margin: 5px 0;
+}
+.friend-level {
+    font-size: 12px;
+    color: #666;
+}
+.friend-add-button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.friend-search-input {
+    width: 200px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.friend-search-button {
+    padding: 8px 15px;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.community-friend-search {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.community-announcements {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.community-announcements-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.community-announcements-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.community-announcement-card{
+    width: 80%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin: 10px 0;
+}
+
+.announcer-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.announcer-name {
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+.announcement-date {
+    margin-left: 10px;
+    font-size: 12px;
+    color: #666;
+}
+
+.announcer-picture {
+    width: 50px;
+    height: 50px;
+    background-color: #eee;
+    border-radius: 50%;
+}   
+.announcement-content {
+    font-size: 14px;
+    color: #333;
+}
+
+.community-page {
+    padding: 30px 40px;
+    background: #f6f8fc;
+    height: 100vh;  
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}

@@ -117,8 +117,6 @@ function NotesGym(){
 
                 {loading ? (<p>Loading notes...</p>) : (
                 <ol>
-
-                    {/* ADD FORM */}
                     <li className='note-container' id='add-section'>
                         <form onSubmit={addNotes}>
                             <h2>
@@ -139,8 +137,6 @@ function NotesGym(){
                             <button type='submit'>Add Notes</button>
                         </form>
                     </li>
-
-                    {/* NOTES LIST */}
                     {noteList.map(note => (
                         <li key={note._id} className='note-container'>
 

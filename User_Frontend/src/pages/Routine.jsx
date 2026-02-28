@@ -9,7 +9,6 @@ function Routine(){
             <h1>Gym Calendar</h1>
 
             <div className="gym-calendar-container-box">
-                {/* LEFT SIDE – CALENDAR */}
                 <div className="calendar-container">
                 <FullCalendar
                     plugins={[dayGridPlugin]}
@@ -22,8 +21,6 @@ function Routine(){
                     ]}
                 />
                 </div>
-
-                {/* RIGHT SIDE – EVENTS */}
                 <div className="calendar-events-container">
 
                 <div className="calendar-user-events card">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from 'react';
 import Achievement from './Leaderboard';
 import '../assets/Profile.css';
-function Profile(){
+function FriendView(){
     return(
         <div className='profile-page'>
             <div className='profile-personal-card'>
@@ -44,4 +44,4 @@ function Profile(){
     )
 }
 
-export default Profile;
+export default FriendView;

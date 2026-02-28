@@ -6,7 +6,6 @@
     margin: auto;
 }
 
-/* PANELS */
 .first-box,
 .middle-box,
 .last-box {
@@ -18,12 +17,10 @@
     flex-direction: column;
 }
 
-/* Width control */
 .first-box { flex: 1.2; }
 .middle-box { flex: 1; }
 .last-box { flex: 1; }
 
-/* Typography */
 
 .h1 {
     font-size: 2rem;
@@ -46,7 +43,6 @@ h2 {
     font-size: 0.95rem;
 }
 
-/* LISTS */
 ul {
     list-style: none;
     padding: 0;
@@ -77,7 +73,6 @@ ul {
     background: #f5f5f5;
 }
 
-/* BUTTONS */
 button {
     cursor: pointer;
     font-size: 0.85rem;

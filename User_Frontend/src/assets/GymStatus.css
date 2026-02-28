@@ -1,0 +1,110 @@
+.gym-history-page{
+    padding: 30px 40px;
+    background: #f6f8fc;
+    height: 100vh;  
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+.gym-history-calendar-container-box {
+    display: flex;
+    gap: 20px;
+    width: 95%;
+    height: 95vh;
+    margin-bottom: 60px;
+
+}
+.gym-history-calendar-container {
+    flex: 2;
+    background: #fff;
+    border: 1px solid #000;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+
+.calendar-events-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.calendar-card {
+    background: #fff;
+    border: 1px solid #000;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+
+.login-history-table-wrapper {
+    margin-top: 15px;
+    overflow-y: auto;
+}
+
+.login-history-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.login-history-table th,
+.login-history-table td {
+    border: 1px solid #000;
+    padding: 10px;
+    text-align: center;
+}
+
+.login-history-table th {
+    background: #f5f5f5;
+}
+
+.login-history-table tr:hover {
+    background: #f9f9f9;
+}
+
+.gym-status-container-box {
+    display: flex;
+    gap: 20px;
+    width: 95%;
+    margin-bottom: 40px;
+}
+
+.gym-status-card {
+    background: #fff;
+    border: 1px solid #000;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    flex: 1;
+}
+.gym-status-card .gym-badge-holder {
+    width: 20px;
+    height: 20px;
+    background-color: #eee;
+    border-radius: 50%;
+    float: left;
+}
+.gym-status-card .branch-location,
+.gym-status-card .day-started, .gym-status-card .membership-expiry, .gym-status-card .remaining-days {
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.membership-rank {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    float: left;
+}

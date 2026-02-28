@@ -6,7 +6,6 @@
     height: 85vh;
 }
 
-/* LEFT CALENDAR */
 .calendar-container {
     flex: 2;
     background: #fff;
@@ -16,7 +15,6 @@
     box-shadow: 0 5px 20px rgba(0,0,0,0.05);
 }
 
-/* RIGHT SIDE */
 .calendar-events-container {
     flex: 1;
     display: flex;
