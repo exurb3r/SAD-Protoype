@@ -19,9 +19,14 @@ const membershipStatusSchema = new Schema({
     remainingDays: {
         type: Number
     }
-});
+},  { _id: false });
 
 const appUserSchema = new Schema({
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Users',
+        required: true
+    },
     username: {
         type: String,
         required: true,

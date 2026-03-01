@@ -16,8 +16,9 @@ const notificationSchema = new Schema({
 });
 
 const UserPrefAndMiscSchema = new Schema({
-    email:{
-        type: String,
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Users',
         required: true
     }, 
     pfp:{

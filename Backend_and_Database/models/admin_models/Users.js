@@ -19,7 +19,7 @@ const membershipStatusSchema = new Schema({
     remainingDays: {
         type: Number
     }
-});
+},{ _id: false });
 
 const userSchema = new Schema({
     firstname: {

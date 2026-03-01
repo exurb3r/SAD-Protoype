@@ -19,11 +19,10 @@ const achievementsSchema = new Schema({
 });
 
 const acceptedInvitesSchema = new Schema({
-    username: {
-        type: String,
-    },
-    email: {
-        type: String,
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Users',
+      required: true
     },
     friendMessage: {
         type: String,
@@ -38,10 +37,11 @@ const acceptedInvitesSchema = new Schema({
 });
 
 const UserGameDetailsSchema = new Schema({
-    email:{
-        type: String,
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Users',
         required: true
-    }, 
+    },
     achievements: [achievementsSchema],
     level: {
         type: Number

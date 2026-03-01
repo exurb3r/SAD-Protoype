@@ -12,7 +12,7 @@ const distributionSchema = new Schema({
     timeSpent: {
         type: Number  //in hours and this is specifically for Jogging and Threadmills
     }
-});
+},  { _id: false });
 
 const progressSchema = new Schema({
     date: {
@@ -29,13 +29,14 @@ const progressSchema = new Schema({
         type: Number
     },
     distribution: [ distributionSchema ]
-})
+},  { _id: false })
 
 const userProgressSchema = new Schema({
-    email:{
-        type: String,
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Users',
         required: true
-    }, 
+    },
     progress: [progressSchema]
 });
 

@@ -19,12 +19,12 @@ const exerciseSchema = new Schema({
     timeAssigned: {
         type: String    // example: Morning, Afternoon, Evening this is optional since some users might want to assign exercises without a specific time in mind
     } 
-
 });
+
 const routineSchema = new Schema({
     routineName: {
         type: String,
-        required: true
+        required: true,
     },
     exercises: [ exerciseSchema]
 });
@@ -32,7 +32,7 @@ const routineSchema = new Schema({
 const routineHistorySchema = new Schema({
     routineName: {
         type: String,
-        required: true
+        required: true,
     },
     exercises: [ exerciseSchema],
     dateCompleted: {
@@ -45,11 +45,12 @@ const routineHistorySchema = new Schema({
     expGained: {
         type: Number
     } // this may only contain atmost 10 entries
-});
+},  { _id: false });
 
 const userRoutineSchema = new Schema({
-    email:{
-        type: String,
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Users',
         required: true
     },
     routines: [ routineSchema],

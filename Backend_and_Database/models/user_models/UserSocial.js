@@ -2,17 +2,27 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const friendSubSchema = new Schema({
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Users',
+      required: true
+    },
     username: {
         type: String,
         required: true
     },
     email: {
-        type: Date,
-        default: Date.now
+        type: String,
+        required: true
     },
 });
 
 const invitationSchema = new Schema({
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Users',
+      required: true
+    },
     username: {
         type: String,
     },
@@ -32,8 +42,9 @@ const invitationSchema = new Schema({
 });
 
 const userSocialSchema = new Schema({
-    email:{
-        type: String,
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Users',
         required: true
     }, 
     friends: [friendSubSchema],

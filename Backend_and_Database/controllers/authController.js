@@ -1,5 +1,5 @@
-const User = require('../models/user_details/Users');
-const Admin = require('../models/admin_operations/Admins');
+const User = require('../models/admin_models/Users');
+const Admin = require('../models/admin_models/Admins');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 
