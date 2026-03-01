@@ -1,20 +1,14 @@
-import React, { useState, useEffect} from 'react';
-import { useNavigate, Navigate, NavLink } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { Navigate, NavLink } from "react-router-dom";
 
-function SignUp(){
-    const [firstname, setFirstname] = useState('');
-    const [lastname, setLastname] = useState('');
+function SignUp() {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [contactNum, setContacNum] = useState('');
-    const [address, setAddress] = useState('');
 
-    const [spanFn, setSpanFn] = useState('');
-    const [spanLn, setSpanLn] = useState('');
     const [spanPwd, setSpanPwd] = useState('');
-    const [spanCPwdm, setSpanCPwd] = useState('');
+    const [spanCPwd, setSpanCPwd] = useState('');
     const [spanEmail, setSpanEmail] = useState('');
 
     const token = localStorage.getItem("token");   
@@ -22,147 +16,111 @@ function SignUp(){
         return <Navigate to="/dashboard" replace />;
     }
 
-
-
-    function checker(){
-        const namePattern = /^[A-Za-z\s]+$/;
-        const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()-.+])[a-zA-Z\d!@#$%^&*()-.+]{8,}$/;
+    // Real-time validation
+    useEffect(() => {
+        const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-.\+])[a-zA-Z\d!@#$%^&*()\-.\+]{8,}$/;
         const emailPattern = /^[^\s@]+@gmail\.com$/;
 
-        if(firstname === ''){
-            setSpanFn('');
-        }
-        else if(!namePattern.test(firstname)){
-            setSpanFn('Invalid');
-        } else{
-            setSpanFn('');
-        }
+        // Password validation
+        if(password === '') setSpanPwd('');
+        else if(!passwordRegex.test(password)) setSpanPwd('Password must contain 1 uppercase, 1 lowercase, 1 number, 1 special char, min 8 chars');
+        else setSpanPwd('');
 
-        if(lastname === ''){
-            setSpanLn('');
-        }
-        else if(!namePattern.test(lastname)){
-            setSpanLn('Invalid');
-        } else {
-            setSpanLn('');
-        }
+        // Confirm password
+        if(confirmPassword === '') setSpanCPwd('');
+        else if(confirmPassword !== password) setSpanCPwd('Passwords do not match');
+        else setSpanCPwd('');
 
+        // Email
+        if(email === '') setSpanEmail('');
+        else if(!emailPattern.test(email)) setSpanEmail('Invalid Gmail address');
+        else setSpanEmail('');
+    }, [username, password, confirmPassword, email]);
 
-        if(password === ''){
-            setSpanPwd('');
-        }
-        else if(!regex.test(password)){
-            setSpanPwd('Invalid');
-        } else {
-            setSpanPwd('');
-        }
-
-
-        if(confirmPassword === ''){
-            setSpanCPwd('');
-        }
-        else if(confirmPassword !== password){
-            setSpanCPwd('Passwords do not match');
-        } else {
-            setSpanCPwd('');
-        }
-
-
-        if(email === ''){
-            setSpanEmail('');
-        }
-        else if(!emailPattern.test(email)){
-            setSpanEmail('Invalid email');
-        } else {
-            setSpanEmail('');
-
-        }
-    }
-
-    async function register(event){
+    const register = async (event) => {
         event.preventDefault();
-        const emailPattern = /^[^\s@]+@gmail\.com$/;
-        const namePattern = /^[A-Za-z\s]+$/;
-        const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()-.+])[a-zA-Z\d!@#$%^&*()-.+]{8,}$/;
 
-        if(firstname === '' || lastname === '' || username === '' || email === '' || password=== '' || contactNum === '' || address === ''){
-            return console.log('Needs All Credentials to be filled');
+        if(username === '' || email === '' || password === '' || confirmPassword === ''){
+            return console.log('All fields must be filled');
         }
-     
-        if(!namePattern.test(firstname) || !namePattern.test(lastname) || confirmPassword !== password || !emailPattern.test(email)){
-            return console.log("Invalid Credentials");
-
+        if(confirmPassword !== password || spanPwd || spanCPwd || spanEmail){
+            return console.log("Invalid credentials");
         }
 
-        const userInfo ={
-            firstname,
-            lastname,
+        const userInfo = {
             username,
             email,
-            password,
-            contactNum,
-            address
+            password
         }
 
-        try{
+        try {
             const response = await fetch('http://localhost:3500/users/auth/signup',{
                 method: 'POST',
-                headers: {
-                    'Content-type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(userInfo)
             });
 
             if(!response.ok){
-                throw new Error('Failed Add User');
+                throw new Error('Failed to register user');
             }
 
-            const updates = await response.json();
-            console.log(updates)
+            const result = await response.json();
+            console.log(result);
 
-            setFirstname('');
-            setLastname('');
-            setEmail('');
+            // Reset fields
             setUsername('');
+            setEmail('');
             setPassword('');
             setConfirmPassword('');
-            setAddress('');
-            setContacNum('');
-            
-        } catch (err){
-            console.error(err);
+
+        } catch (err) {
+            console.error("Fetch Error:", err.message);
         }
     }
 
-    useEffect(() => {
-    checker();
-    }, [firstname, lastname, password, confirmPassword, email]);
-
-    return(
+    return (
         <div className="loginPage">
             <h1>Sign Up</h1>
             <form onSubmit={register} className='loginCard'>
-                <span>{spanFn}</span>
-                <input type='text' value={firstname} className="loginInput" onChange={(e) => setFirstname(e.target.value)} placeholder="First Name"></input>
-                <span>{spanLn}</span>
-                <input type='text' value={lastname} className="loginInput" onChange={(e) => setLastname(e.target.value)} placeholder="Last Name"></input>
-                <span></span>
-                <input type='text' value={username} className="loginInput" onChange={(e) => setUsername(e.target.value)} placeholder="Username"></input>
+                <input
+                    type='text'
+                    value={username}
+                    className="loginInput"
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="Username"
+                />
+                <input
+                    type='password'
+                    value={password}
+                    className="loginInput"
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Password"
+                />
                 <span>{spanPwd}</span>
-                <input type='password' value={password} className="loginInput" onChange={(e) => setPassword(e.target.value)} placeholder="Password"></input>
-                <span>{spanCPwdm}</span>
-                <input type='password' value={confirmPassword} className="loginInput" onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Confirm Password"></input>
+
+                <input
+                    type='password'
+                    value={confirmPassword}
+                    className="loginInput"
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Confirm Password"
+                />
+                <span>{spanCPwd}</span>
+
+                <input
+                    type='text'
+                    value={email}
+                    className="loginInput"
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Email (Gmail only)"
+                />
                 <span>{spanEmail}</span>
-                <input type='text' value={email} className="loginInput" onChange={(e) => setEmail(e.target.value)} placeholder="Email"></input>
-                <span></span>
-                <input type='text' value={contactNum} className="loginInput"  onChange={(e) => setContacNum(e.target.value)} placeholder="Contact Number"></input>
-                <span></span>
-                <input type='text' value={address} className="loginInput" onChange={(e) => setAddress(e.target.value)} placeholder="Address"></input>
-                <button> Sign Up</button>
-                <p> Already have an account? <NavLink to={"/login"}> Log In</NavLink></p>
+
+                <button type="submit">Sign Up</button>
+                <p>Already have an account? <NavLink to="/login">Log In</NavLink></p>
             </form>
         </div>
-    )
+    );
 }
 
 export default SignUp;

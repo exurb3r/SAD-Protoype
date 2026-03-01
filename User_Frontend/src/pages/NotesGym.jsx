@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import '../assets/Notes.css';
 
 function NotesGym(){
-
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [noteList, setNoteList] = useState([]);

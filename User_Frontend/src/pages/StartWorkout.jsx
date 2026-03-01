@@ -1,5 +1,6 @@
 import React, { useState, useEffect} from 'react';
 import '../assets/StartWorkout.css';
+import { Link } from 'react-router-dom';
 
 import { Bar, Doughnut, Line } from 'react-chartjs-2';
 import { ArcElement } from "chart.js";
@@ -15,6 +16,8 @@ import {
 
 
 function StartWorkout(){
+
+    const [routines, setRoutines] = useState(["Full Body Blast", "Upper Body Strength", "Leg Day Power"]);
     return(
             <div className='page'>
                 <h1> Start Workout </h1>
@@ -24,18 +27,21 @@ function StartWorkout(){
                             <h2>Your Routines</h2>
 
                             <ul className="routine-list">
-                            <li className="routine-item">
-                                <span>Routine Title</span>
-                                <div className="routine-actions">
-                                <button className="btn-outline">Edit</button>
-                                <button className="btn-outline">Delete</button>
-                                </div>
-                            </li>
+                                {routines.map((routine, index) => (
+                                    <li key={index} className="routine-item">
+                                        <span>{routine}</span>
+                                        <div className="routine-actions">
+                                            <Link to={`/startworkout/edit`}><button className="btn-outline">Edit</button></Link>
+                                            <button className="btn-outline">Delete</button>
+                                        </div>
+                                    </li>
+                                ))}
                             </ul>
 
-                            <button className="btn-primary full-width">
-                            Add New Routine
-                            </button>
+                            <Link to={"/startworkout/add"}><button className="btn-primary full-width">
+                             Add New Routine
+                            </button></Link>
+
                         </div>
 
                         <div className="middle-box">
@@ -81,9 +87,9 @@ function StartWorkout(){
                             <p><strong>Last Time Used:</strong> Yesterday</p>
                             </div>
 
-                            <button className="btn-primary full-width">
+                            <Link to={"/startworkout/start"}><button className="btn-primary full-width">
                             Start Workout
-                            </button>
+                            </button></Link>
                         </div>
 
                         </div>

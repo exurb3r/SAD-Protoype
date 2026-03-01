@@ -21,6 +21,10 @@ import Progress from "./pages/Progress";
 import Settings from "./pages/Settings";
 import Leaderboard from "./pages/Leaderboard";
 
+import Add from "./pages/startworkout_subpages/Add";
+import Edit from "./pages/startworkout_subpages/Edit";
+import Start from "./pages/startworkout_subpages/Start";
+
 function App() {
   return (
     <BrowserRouter>
@@ -46,6 +50,10 @@ function App() {
           <Route path="profile" element={<Profile />} />
           <Route path="about" element={<About />} />
           <Route path="settings" element={<Settings />} />
+
+          <Route path="startworkout/add" element={<Add />} />
+          <Route path="startworkout/edit" element={<Edit />} />
+          <Route path="startworkout/start" element={<Start />} />
 
           <Route path="*" element={<PageNotFound />} />
 

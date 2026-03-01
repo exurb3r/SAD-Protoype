@@ -68,6 +68,7 @@ const signup = async(req, res) => {
             joinDate: new Date()
         });
 
+        
 
         const [progress, gameDetails, preferences, social, task] = await Promise.all([
             UserProgress.create({ userId: registeredUser._id, progress: [] }),

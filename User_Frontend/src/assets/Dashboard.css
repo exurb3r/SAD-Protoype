@@ -202,3 +202,16 @@
     width: 95%;
     margin: 10px;
 }
+
+.welcome-back-section{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.welcome-back-section span{
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-left: 5px;
+}

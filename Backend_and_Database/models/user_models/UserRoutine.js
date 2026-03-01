@@ -8,16 +8,16 @@ const exerciseSchema = new Schema({
     },
     category: {
         type: String,
-        required: true   // if arms, core, shoulders, legs, stamina etc.
+        required: true   
     },
     reps: {
         type: Number
     },
     dayAssigned: {  
-        type: String    // example: Monday, Tuesday etc. this is optional since some users might want to assign exercises without a specific day in mind
+        type: String    
      },
     timeAssigned: {
-        type: String    // example: Morning, Afternoon, Evening this is optional since some users might want to assign exercises without a specific time in mind
+        type: String   
     } 
 });
 
