@@ -13,7 +13,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/admins', require('./routes/admins'));
 app.use('/users', require('./routes/users'));
-app.use('/system', require('./routes/system'));
+//app.use('/system', require('./routes/system')); will use this later
 
 mongoose.connection.once('open', () => {
     console.log('Connected to Database');
