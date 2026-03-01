@@ -38,7 +38,7 @@
             <td class="actions">
               <button class="btn view" @click="viewMember(member)">View</button>
               <button class="btn edit" @click="editMember(member)">Edit</button>
-              <button class="btn delete" @click="deleteMember(member.id)">Delete</button>
+              <button class="btn delete" @click="deletingMember = member">Delete</button>
             </td>
           </tr>
           <tr v-if="filteredMembers.length === 0">
@@ -83,6 +83,18 @@
       </div>
     </div>
 
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay" v-if="deletingMember" @click.self="deletingMember = null">
+      <div class="modal">
+        <h3>Delete Member?</h3>
+        <p class="delete-msg">Are you sure you want to delete <span>{{ deletingMember.name }}</span>? This cannot be undone.</p>
+        <div class="modal-actions">
+          <button class="btn delete" @click="confirmDelete">Yes, Delete</button>
+          <button class="btn edit" @click="deletingMember = null">Cancel</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -93,12 +105,13 @@ export default {
       search: '',
       selectedMember: null,
       editingMember: null,
+      deletingMember: null,
       members: [
-        { id: 1, name: 'Juan Dela Cruz', type: 'Premium', expiry: '2025-06-30', contact: '09171234567' },
-        { id: 2, name: 'Maria Santos',   type: 'Basic',   expiry: '2025-03-15', contact: '09281234567' },
-        { id: 3, name: 'Carlo Reyes',    type: 'Standard',expiry: '2025-05-01', contact: '09391234567' },
-        { id: 4, name: 'Anna Lim',       type: 'Premium', expiry: '2025-07-20', contact: '09451234567' },
-        { id: 5, name: 'Jose Garcia',    type: 'Basic',   expiry: '2025-02-28', contact: '09561234567' },
+        { id: 1, name: 'Juan Dela Cruz', type: 'Premium',  expiry: '2025-06-30', contact: '09171234567' },
+        { id: 2, name: 'Maria Santos',   type: 'Basic',    expiry: '2025-03-15', contact: '09281234567' },
+        { id: 3, name: 'Carlo Reyes',    type: 'Standard', expiry: '2025-05-01', contact: '09391234567' },
+        { id: 4, name: 'Anna Lim',       type: 'Premium',  expiry: '2025-07-20', contact: '09451234567' },
+        { id: 5, name: 'Jose Garcia',    type: 'Basic',    expiry: '2025-02-28', contact: '09561234567' },
       ]
     }
   },
@@ -126,8 +139,9 @@ export default {
       if (index !== -1) this.members[index] = { ...this.editingMember }
       this.editingMember = null
     },
-    deleteMember(id) {
-      this.members = this.members.filter(m => m.id !== id)
+    confirmDelete() {
+      this.members = this.members.filter(m => m.id !== this.deletingMember.id)
+      this.deletingMember = null
     }
   }
 }
@@ -138,7 +152,6 @@ export default {
   width: 100%;
 }
 
-/* Header */
 .members-header {
   display: flex;
   align-items: center;
@@ -167,7 +180,6 @@ export default {
   border-color: #F2613F;
 }
 
-/* Table */
 .table-wrapper {
   background: #1a1a1a;
   border-radius: 16px;
@@ -209,7 +221,6 @@ tr:hover td {
   background-color: #1f1210;
 }
 
-/* Member name + avatar */
 .member-info {
   display: flex;
   align-items: center;
@@ -230,7 +241,6 @@ tr:hover td {
   flex-shrink: 0;
 }
 
-/* Badges */
 .badge {
   padding: 4px 12px;
   border-radius: 20px;
@@ -253,7 +263,6 @@ tr:hover td {
   color: #777;
 }
 
-/* Actions */
 .actions {
   display: flex;
   gap: 8px;
@@ -305,7 +314,7 @@ tr:hover td {
   padding: 40px;
 }
 
-/* Modal */
+/* Modals */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -356,6 +365,11 @@ tr:hover td {
 .modal p span {
   color: #F2613F;
   font-weight: bold;
+}
+
+.delete-msg {
+  text-align: center;
+  color: #aaa;
 }
 
 .modal label {
