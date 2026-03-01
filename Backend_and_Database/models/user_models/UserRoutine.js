@@ -12,13 +12,7 @@ const exerciseSchema = new Schema({
     },
     reps: {
         type: Number
-    },
-    dayAssigned: {  
-        type: String    
-     },
-    timeAssigned: {
-        type: String   
-    } 
+    }
 });
 
 const routineSchema = new Schema({
@@ -26,7 +20,13 @@ const routineSchema = new Schema({
         type: String,
         required: true,
     },
-    exercises: [ exerciseSchema]
+    exercises: [ exerciseSchema],
+    dayAssigned: {  
+        type: String    
+    },
+    timeAssigned: {
+        type: String   
+    } 
 });
 
 const routineHistorySchema = new Schema({
@@ -44,7 +44,7 @@ const routineHistorySchema = new Schema({
     },
     expGained: {
         type: Number
-    } // this may only contain atmost 10 entries
+    } 
 },  { _id: false });
 
 const userRoutineSchema = new Schema({

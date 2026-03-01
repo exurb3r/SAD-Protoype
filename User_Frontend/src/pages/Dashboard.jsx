@@ -32,8 +32,7 @@ function Dashboard(){
     const [barData2, setBarData2] = useState([]);
     const [doughnutData, setDoughnutData] = useState([]);
     const [maxBarValue, setMaxBarValue] = useState('');
-
-    //previous workout section
+    
     const [numberOfWorkouts, setNumberOfWorkouts] = useState();
     const [duration, setDuration] = useState();
     const [focus, setFocus] = useState([]);

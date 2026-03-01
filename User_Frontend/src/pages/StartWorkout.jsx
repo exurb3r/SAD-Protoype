@@ -17,6 +17,54 @@ import {
 
 function StartWorkout(){
 
+    const [routineList, setRoutineList] = useState([]);
+    const [selectedRoutine, setSelectedRoutine] = useState(null);
+
+    function handleSelectRoutine(routine) {
+        setSelectedRoutine(routine);
+    }
+
+
+    async function handleSaveRoutine() {
+        try {
+            const response = await fetch("http://localhost:3500/users/startworkout/", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+            });
+
+            const data = await response.json();
+            console.log(data.routines);
+            setRoutineList(data.routines);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    async function deleteSelectedRoutine(routineId) {
+        try {
+            const response = await fetch(`http://localhost:3500/users/startworkout/`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+            },
+            body: JSON.stringify({ routineId })
+            });
+
+            const data = await response.json();
+            console.log(data.routines);
+            setRoutineList(data.routines);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+    useEffect(() => {
+        handleSaveRoutine();
+    }, []);
+
     const [routines, setRoutines] = useState(["Full Body Blast", "Upper Body Strength", "Leg Day Power"]);
     return(
             <div className='page'>
@@ -27,37 +75,43 @@ function StartWorkout(){
                             <h2>Your Routines</h2>
 
                             <ul className="routine-list">
-                                {routines.map((routine, index) => (
-                                    <li key={index} className="routine-item">
-                                        <span>{routine}</span>
+                                {routineList.map((routine) => (
+                                    <li key={routine._id} className="routine-item" >
+                                        <span key={routine._id}  onClick={() => handleSelectRoutine(routine)}>{routine.routineName}</span>
                                         <div className="routine-actions">
-                                            <Link to={`/startworkout/edit`}><button className="btn-outline">Edit</button></Link>
-                                            <button className="btn-outline">Delete</button>
+                                            <Link to={`/startworkout/edit/${routine._id}`} ><button className="btn-outline">Edit</button></Link>
+                                            <button className="btn-outline" onClick={() => deleteSelectedRoutine(routine._id)} >Delete</button>
                                         </div>
                                     </li>
                                 ))}
                             </ul>
 
                             <Link to={"/startworkout/add"}><button className="btn-primary full-width">
-                             Add New Routine
+                                Add New Routine
                             </button></Link>
 
                         </div>
-
                         <div className="middle-box">
-                            <h2>Title of Workout</h2>
+                            <h2>{selectedRoutine ? selectedRoutine.routineName : "Select a Routine"}</h2>
                             <p className="workout-description">
-                            Description Placeholder
+                                {selectedRoutine ? `This workout has ${selectedRoutine.exercises.length} exercises.` : "No routine selected."}
                             </p>
 
                             <h3 className="section-label">Exercises</h3>
-
                             <ul className="exercise-list">
-                            <li className="exercise-item">
+                                <li className="exercise-item">
                                 <span>Name</span>
                                 <span>Category</span>
                                 <span>No.</span>
-                            </li>
+                                </li>
+
+                                {selectedRoutine && selectedRoutine.exercises.map((ex, index) => (
+                                <li key={index} className="exercise-item">
+                                    <span>{ex.nameOfexercise}</span>
+                                    <span>{ex.category}</span>
+                                    <span>{ex.reps}</span>
+                                </li>
+                                ))}
                             </ul>
                         </div>
 
@@ -65,30 +119,39 @@ function StartWorkout(){
                             <h2>Workout Overview</h2>
 
                             <div className="chart-container">
-                            <Doughnut
-                                data={{
-                                labels: ["Chest", "Back", "Shoulders", "Arms", "Core/Abs", "Legs"],
-                                datasets: [{
-                                    data: [5, 10, 3, 6, 8, 9],
-                                    backgroundColor: ["blue", "red", "yellow", "green", "violet", "orange"],
-                                    borderWidth: 0,
-                                }],
-                                }}
-                                options={{
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                }}
-                            />
-                            </div>
-
+                                <Doughnut
+                                    data={{
+                                    labels: ["Chest", "Back", "Shoulders", "Arms", "Core/Abs", "Legs"],
+                                    datasets: [{
+                                        data: selectedRoutine
+                                        ? [
+                                            selectedRoutine.exercises.filter(e => e.category === "Chest").length,
+                                            selectedRoutine.exercises.filter(e => e.category === "Back").length,
+                                            selectedRoutine.exercises.filter(e => e.category === "Shoulders").length,
+                                            selectedRoutine.exercises.filter(e => e.category === "Arms").length,
+                                            selectedRoutine.exercises.filter(e => e.category === "Core/Abs").length,
+                                            selectedRoutine.exercises.filter(e => e.category === "Legs").length,
+                                            ]
+                                        : [0,0,0,0,0,0],
+                                        backgroundColor: ["blue", "red", "yellow", "green", "violet", "orange"],
+                                        borderWidth: 0,
+                                    }],
+                                    }}
+                                    options={{ responsive: true, maintainAspectRatio: false }}
+                                />
+                                </div>
                             <div className="workout-stats">
-                            <p><strong>Target:</strong> Full Body</p>
-                            <p><strong>No. of workouts:</strong> 12</p>
-                            <p><strong>Last Time Used:</strong> Yesterday</p>
+                                {selectedRoutine && (
+                                    <>
+                                    <p><strong>No. of exercises:</strong> {selectedRoutine.exercises.length}</p>
+                                    <p><strong>Day Assigned:</strong> {selectedRoutine.dayAssigned || "N/A"}</p>
+                                    <p><strong>Time Assigned:</strong> {selectedRoutine.timeAssigned || "N/A"}</p>
+                                    </>
+                                )}
                             </div>
 
-                            <Link to={"/startworkout/start"}><button className="btn-primary full-width">
-                            Start Workout
+                            <Link to={`/startworkout/start/${selectedRoutine?._id}`}><button className="btn-primary full-width">
+                                Start Workout
                             </button></Link>
                         </div>
 

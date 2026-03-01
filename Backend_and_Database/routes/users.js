@@ -5,5 +5,6 @@ const verifyJWT = require('../middleware/verifyJWT');
 
 router.use("/auth", require("./user_routes/auth"));
 router.use("/dashboard",require("./user_routes/dashboard"));
+router.use("/startworkout",require("./user_routes/startworkout"));
 
 module.exports = router;

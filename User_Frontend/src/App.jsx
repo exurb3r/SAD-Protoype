@@ -52,8 +52,8 @@ function App() {
           <Route path="settings" element={<Settings />} />
 
           <Route path="startworkout/add" element={<Add />} />
-          <Route path="startworkout/edit" element={<Edit />} />
-          <Route path="startworkout/start" element={<Start />} />
+          <Route path="startworkout/edit/:id" element={<Edit />} />
+          <Route path="startworkout/start/:id" element={<Start />} />
 
           <Route path="*" element={<PageNotFound />} />
 
