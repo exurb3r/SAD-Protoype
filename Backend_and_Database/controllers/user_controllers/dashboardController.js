@@ -37,8 +37,14 @@ const dashboardData = async (req, res) => {
         const weeklyWorkouts = new Array(7).fill(0);
         const weeklyHours = new Array(7).fill(0);
 
-        const workoutDistributionMap = {};
-
+        const workoutDistributionMap = {
+            Chest: 0,
+            Back: 0,
+            Shoulders: 0,
+            Arms: 0,
+            "Core/Abs": 0,
+            Legs: 0
+        };
         if (progressDoc?.progress) {
             progressDoc.progress.forEach(entry => {
                 const date = new Date(entry.date);
@@ -46,19 +52,20 @@ const dashboardData = async (req, res) => {
 
                 weeklyWorkouts[day] += entry.totalWorkouts || 0;
                 weeklyHours[day] += entry.hoursSpent || 0;
-
-                entry.distribution.forEach(d => {
-                    if (!workoutDistributionMap[d.workoutType]) {
-                        workoutDistributionMap[d.workoutType] = 0;
+            });
+        }
+        if (routines?.routineHistory?.length > 0) {
+            routines.routineHistory.forEach(workout => {
+                workout.exercises.forEach(ex => {
+                    if (workoutDistributionMap.hasOwnProperty(ex.category)) {
+                        workoutDistributionMap[ex.category] += 1;
                     }
-                    workoutDistributionMap[d.workoutType] += d.numberofWorkouts || 0;
                 });
             });
         }
 
-
         const workoutTypes = ["Chest", "Back", "Shoulders", "Arms", "Core/Abs", "Legs"];
-
+        
         const workoutDistribution = workoutTypes.map(type =>
             workoutDistributionMap[type] || 0
         );

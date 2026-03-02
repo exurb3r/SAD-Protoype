@@ -56,6 +56,12 @@ function AddWorkout() {
         setExercises(updated);
         setEditingIndex(null);
     }
+    function returnToPreviousStage(){
+      const confirmation = confirm(" Go back to previous page ?");
+      if (confirmation){
+        navigate('/startworkout');
+      }
+    }
 
 
 
@@ -92,7 +98,7 @@ function AddWorkout() {
   return (
     <div className="add-routine-page">
         <div className="add-routine-baryeah">
-            <Link to={"/startworkout"}><button className="add-routine-back-btn">🔙</button></Link>
+            <button className="add-routine-back-btn" onClick={() => returnToPreviousStage()}>🔙</button>
             <h1 className="add-routine-title">Add Workout</h1>
         </div>
 
@@ -107,13 +113,16 @@ function AddWorkout() {
                     value={dayAssigned}
                     onChange={(e) => setDayAssigned(e.target.value)}
                 >
+                    <option value={null}>None</option>
                     <option value="Monday">Monday</option>
                     <option value="Tuesday">Tuesday</option>
                     <option value="Wednesday">Wednesday</option>
                     <option value="Thursday">Thursday</option>
                     <option value="Friday">Friday</option>
                     <option value="Saturday">Saturday</option>
-                    <option value="sun">Sunday</option>
+                    <option value="Sunday">Sunday</option>
+
+                    
                 </select>
                 <label className="add-routine-time-label">Select a time:</label>
                 <input type="time" value={timeAssigned} onChange={(e) => setTimeAssigned(e.target.value)}></input>

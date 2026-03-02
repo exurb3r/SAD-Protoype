@@ -32,6 +32,7 @@ function Dashboard(){
     const [barData2, setBarData2] = useState([]);
     const [doughnutData, setDoughnutData] = useState([]);
     const [maxBarValue, setMaxBarValue] = useState('');
+    console.log(doughnutData)
     
     const [numberOfWorkouts, setNumberOfWorkouts] = useState();
     const [duration, setDuration] = useState();
@@ -66,7 +67,7 @@ function Dashboard(){
                 setDoughnutData(data.workoutDistribution);
                 setMaxBarValue(Math.max(...data.weeklyWorkouts, ...data.weeklyHours) + 1);
                 setNumberOfWorkouts(data.numberOfWorkouts);
-                setDuration(data.duration);
+                setDuration(Math.ceil((data.duration / 60) * 100) / 100);
                 setFocus(data.focus);
                 setExpGained(data.expGained);
             }   else {              
@@ -107,7 +108,7 @@ function Dashboard(){
                 <div className='dashboard-upper-box-lastbox'> <p>Previous Workout Preview </p> 
                                                         <ul> 
                                                             <li> No. of Workouts <p>{numberOfWorkouts}</p></li> 
-                                                            <li> Duration <p>{duration} mins</p></li>
+                                                            <li> Duration <p>{duration} hours</p></li>
                                                             <li> Focus : {focus.join(', ')}</li>
                                                             <li> Exp Gained <p>{expGained}</p></li>
                                                         </ul>

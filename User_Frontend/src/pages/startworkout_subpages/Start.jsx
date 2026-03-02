@@ -50,12 +50,68 @@ function StartingWorkout() {
     setIsPaused(false);
   }
 
-  function handleDone() {
-    setIsRunning(false);
-    setIsPaused(false);
-    alert("Workout Complete!");
-    navigate("/startworkout");
+  async function handleDone() {
+    if (!isRunning) return;
+    if (completedExercises.length === 0) {
+      alert("You must complete at least one exercise.");
+      return;
+    }
+
+    const submitProgress = confirm("Are you done with your workout? ");
+    if(submitProgress){
+    try {
+      setIsRunning(false);
+      setIsPaused(false);
+
+      const response = await fetch(
+        "http://localhost:3500/users/startworkout/finishworkout",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            routineId: id,
+            timeSpent: seconds,
+            numberOfWorkout: exercises.length,
+            numberOfFinished: completedExercises.length,
+            workoutList: exercises,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.message || "Failed to record workout.");
+        return;
+      }
+
+
+      let message = `
+        Workout Complete!
+
+        EXP Gained: ${data.expGained}
+        Completion: ${data.completionRate}%
+        Multiplier: x${data.multiplier}
+        Current Level: ${data.newLevel}
+      `;
+
+      if (data.leveledUp) {
+        message += "\n LEVEL UP! ";
+      }
+
+      alert(message);
+
+      navigate("/startworkout");
+
+    } catch (err) {
+      console.error(err);
+      alert("Server error.");
+    }
   }
+}
 
   function toggleExercise(index) {
     if (!isRunning || isPaused) return;
@@ -67,6 +123,13 @@ function StartingWorkout() {
         return [...prev, index];
       }
     });
+  }
+
+  function returnToPreviousStage(){
+    const confirmation = confirm(" Go back to previous page ?");
+    if (confirmation){
+      navigate('/startworkout');
+    }
   }
 
   const progressPercent =
@@ -104,10 +167,7 @@ function StartingWorkout() {
   return (
     <div className="add-routine-page">
       <div className="add-routine-baryeah">
-        <Link to="/startworkout">
-          <button className="add-routine-back-btn">🔙</button>
-        </Link>
-
+        <button className="add-routine-back-btn" onClick={() => returnToPreviousStage()}>🔙</button>
         <h1 className="add-routine-title">
           {routineName || "Starting Workout"}
         </h1>
@@ -116,7 +176,14 @@ function StartingWorkout() {
       <div className="add-routine-container">
         <div className="add-routine-left-box">
           <h2>Your List</h2>
-
+          <div className="progress-bar">
+              <div
+                className="progress-fill"
+                style={{ width: `${progressPercent}%` }}
+              ></div>
+              
+          </div>
+          <p>{progressPercent}% Completed</p>
           <div className="add-routine-exercise-preview">
             <ul className="add-routine-exercise-list">
               {exercises.map((ex, index) => (

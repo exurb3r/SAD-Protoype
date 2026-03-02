@@ -60,6 +60,13 @@ function EditWorkout() {
         setEditingIndex(null);
     }
 
+    function returnToPreviousStage(){
+      const confirmation = confirm(" Go back to previous page ?");
+      if (confirmation){
+        navigate('/startworkout');
+      }
+    }
+
 
 
     async function updateRoutine() {
@@ -113,10 +120,12 @@ function EditWorkout() {
         
         fetchRoutine();
     }, [id]);
+
+
   return (
     <div className="add-routine-page">
         <div className="add-routine-baryeah">
-            <Link to={"/startworkout"}><button className="add-routine-back-btn">🔙</button></Link>
+            <button className="add-routine-back-btn" onClick={() => returnToPreviousStage()}> Return</button>
             <h1 className="add-routine-title">Edit Workout</h1>
         </div>
 
@@ -131,6 +140,7 @@ function EditWorkout() {
                     value={dayAssigned}
                     onChange={(e) => setDayAssigned(e.target.value)}
                 >
+                    <option value={null}>None</option>
                     <option value="Monday">Monday</option>
                     <option value="Tuesday">Tuesday</option>
                     <option value="Wednesday">Wednesday</option>

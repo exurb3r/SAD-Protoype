@@ -4,7 +4,7 @@ const UserProgress = require('../models/user_models/UserProgress');
 const UserPrefAndMisc = require('../models/user_models/UserPreferenceAndMisc');
 const UserRoutine = require('../models/user_models/UserRoutine');
 const UserSocial = require('../models/user_models/UserSocial');
-const Users = require('../models/admin_models/Users'); // path to Users model
+const Users = require('../models/admin_models/Users'); 
 
 mongoose.connect('mongodb://127.0.0.1:27017/armztrongGym')
 .then(() => console.log("MongoDB Connected"))

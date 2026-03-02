@@ -63,7 +63,6 @@ const getRoutine = async (req, res) => {
   }
 };
 
-
 const deleteRoutine = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -161,4 +160,122 @@ const updateIndividualRoutine = async (req, res) => {
   }
 };
 
-module.exports = { addRoutine, getRoutine, deleteRoutine, getIndividualRoutine, updateIndividualRoutine };
+const finishedWorkoutSession = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const {
+      routineId,
+      timeSpent,             
+      numberOfWorkout,        
+      numberOfFinished,       
+      workoutList             
+    } = req.body;
+
+
+    const userRoutine = await UserRoutine.findOne({ userId });
+    if (!userRoutine) {
+      return res.status(400).json({ message: "Routine not found" });
+    }
+
+    const userProgress = await UserProgress.findOne({ userId });
+    if (!userProgress) {
+      return res.status(400).json({ message: "User progress not found" });
+    }
+
+    const userGameDetails = await UserGameDetails.findOne({ userId });
+    if (!userGameDetails) {
+      return res.status(400).json({ message: "Game details not found" });
+    }
+
+    const routine = userRoutine.routines.id(routineId);
+    if (!routine) {
+      return res.status(400).json({ message: "Routine does not exist" });
+    }
+    const completionRate =
+      numberOfWorkout === 0
+        ? 0
+        : (numberOfFinished / numberOfWorkout) * 100;
+
+    let multiplier = 1;
+
+    if (completionRate === 100) {
+      multiplier = 1.5;
+    } else if (completionRate >= 80) {
+      multiplier = 1.35;
+    } else if (completionRate >= 70) {
+      multiplier = 1.2;
+    }
+
+    const baseExp = numberOfFinished * 10;
+    const expGained = Math.round(baseExp * multiplier);
+
+    userRoutine.routineHistory.push({
+      routineName: routine.routineName,
+      exercises: workoutList || routine.exercises,
+      duration: timeSpent,
+      expGained
+    });
+
+    await userRoutine.save();
+
+    const today = new Date();
+    const startOfToday = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate()
+    );
+
+    let todayProgress = userProgress.progress.find(p =>
+      p.date >= startOfToday
+    );
+
+    if (todayProgress) {
+      todayProgress.hoursSpent += timeSpent / 3600;
+      todayProgress.totalWorkouts += numberOfFinished;
+      todayProgress.totalExpGained += expGained;
+    } else {
+      userProgress.progress.push({
+        date: new Date(),
+        hoursSpent: timeSpent / 3600,
+        totalWorkouts: 1,
+        totalExpGained: expGained,
+        distribution: []
+      });
+    }
+
+    await userProgress.save();
+
+    userGameDetails.exp_points += expGained;
+
+    function getExpRequired(level) {
+      return Math.floor(100 * Math.pow(level, 1.5));
+    }
+    let leveledUp = false;
+
+    while (
+      userGameDetails.exp_points >=
+      getExpRequired(userGameDetails.level)
+    ) {
+      userGameDetails.exp_points -= getExpRequired(userGameDetails.level);
+      userGameDetails.level += 1;
+      leveledUp = true;
+    }
+    await userGameDetails.save();
+
+    res.status(200).json({
+      message: "Workout session recorded successfully",
+      expGained,
+      multiplier,
+      completionRate: Math.round(completionRate),
+      newLevel: userGameDetails.level,
+      remainingExp: userGameDetails.exp_points,
+      nextLevelRequirement: getExpRequired(userGameDetails.level),
+      leveledUp
+    });
+
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+module.exports = { addRoutine, getRoutine, deleteRoutine, getIndividualRoutine, updateIndividualRoutine, finishedWorkoutSession };

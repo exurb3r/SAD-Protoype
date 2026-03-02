@@ -3,23 +3,20 @@ import React, { useState, useEffect} from 'react';
 function Test(){
     return(
         <div className='page'>
-                <h1> Leaderboards </h1>
-                <div className='container-box'>
-                    <div className='box'></div>
-                    <div className='box'></div>
-                    <div className='box'></div>
-                    <div className='box'></div>
-                </div>
-                <div className='container-box'>
-                    <div className='big-box'></div>
-                </div>
-                <div className='container-box'>
-                    <div className='big-box'></div>
-                </div>
-                <div className='container-box'>
-                    <div className='big-box'></div>
+
+            <div className='gym-calendar-popup'>
+                <div className='gym-calendar-popup-top'>
+                    <form> 
+                        <input type='text' placeholder='title of the event'> </input>
+                        <input type='date' placeholder='date'></input>
+                        <input type='hours' placeholder='date'></input>
+                    </form>
 
                 </div>
+                <div className='gym-calendar-popup-down'>  <button> Cancel </button> <button> Add</button></div>
+            </div>
+
+                
         </div>
     )
 }

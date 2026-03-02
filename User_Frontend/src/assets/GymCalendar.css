@@ -109,3 +109,67 @@
 .calendar-full-width {
     width: 100%;
 }
+
+
+.fc {
+    font-size: 12px;
+    text-align: center;
+}
+
+.fc .fc-daygrid-day-number {
+    font-size: 0.8rem;
+}
+
+.fc .fc-col-header-cell-cushion {
+    font-size: 0.85rem;
+}
+
+
+.fc-daygrid-event {
+  white-space: normal !important;
+}
+
+.fc-daygrid-event .fc-event-title {
+  white-space: normal !important;
+}
+
+.fc-daygrid-event .fc-event-main {
+  white-space: normal !important;
+}
+.gym-calendar-popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.gym-calendar-popup {
+    background: #fff;
+    width: 400px;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.gym-calendar-popup-top form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.gym-calendar-popup input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #000;
+}
+
+.gym-calendar-popup-down {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}

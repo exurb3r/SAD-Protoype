@@ -9,7 +9,9 @@ router.get('/:routineId', verifyJWT, startworkoutHandler.getIndividualRoutine);
 
 
 router.post('/add', verifyJWT, startworkoutHandler.addRoutine);
+router.post('/finishworkout', verifyJWT, startworkoutHandler.finishedWorkoutSession);
 router.patch('/:routineId', verifyJWT, startworkoutHandler.updateIndividualRoutine);
+
 
 router.delete('/', verifyJWT, startworkoutHandler.deleteRoutine);
 

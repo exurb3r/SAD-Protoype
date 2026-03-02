@@ -5,5 +5,4 @@ const verifyJWT = require('../../middleware/verifyJWT');
 
 router.get('/', verifyJWT, dashboardHandler.dashboardData);
 
-
 module.exports = router;

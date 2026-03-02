@@ -1,6 +1,6 @@
 import React, { useState, useEffect} from 'react';
 import '../assets/StartWorkout.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { Bar, Doughnut, Line } from 'react-chartjs-2';
 import { ArcElement } from "chart.js";
@@ -15,13 +15,25 @@ import {
 } from "chart.js";
 
 
+
+
 function StartWorkout(){
+    const navigate = useNavigate();
 
     const [routineList, setRoutineList] = useState([]);
     const [selectedRoutine, setSelectedRoutine] = useState(null);
 
     function handleSelectRoutine(routine) {
         setSelectedRoutine(routine);
+    }
+
+    function start(){
+
+        if( selectedRoutine === null){
+            alert(" Select a workout first")
+        } else {
+            navigate(`/startworkout/start/${selectedRoutine?._id}`);
+        }
     }
 
 
@@ -44,21 +56,28 @@ function StartWorkout(){
     }
 
     async function deleteSelectedRoutine(routineId) {
-        try {
-            const response = await fetch(`http://localhost:3500/users/startworkout/`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-            },
-            body: JSON.stringify({ routineId })
-            });
+        const deleteRoutine = confirm(" Are you sure you want to delete this workout?");
 
-            const data = await response.json();
-            console.log(data.routines);
-            setRoutineList(data.routines);
-        } catch (err) {
-            console.error(err);
+        if(deleteRoutine){
+            try {
+
+                const response = await fetch(`http://localhost:3500/users/startworkout/`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                },
+                body: JSON.stringify({ routineId })
+                });
+
+                const data = await response.json();
+                console.log(data.routines);
+                setRoutineList(data.routines);
+            } catch (err) {
+                console.error(err);
+            }
+        } else {
+            console.log("Canceled");
         }
     }
     useEffect(() => {
@@ -150,9 +169,9 @@ function StartWorkout(){
                                 )}
                             </div>
 
-                            <Link to={`/startworkout/start/${selectedRoutine?._id}`}><button className="btn-primary full-width">
+                            <button className="btn-primary full-width" onClick={() => start()}>
                                 Start Workout
-                            </button></Link>
+                            </button> 
                         </div>
 
                         </div>

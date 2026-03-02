@@ -41,6 +41,20 @@ const invitationSchema = new Schema({
     }
 });
 
+
+const calendarSchema = new Schema({
+    title: {
+        type: String, 
+        required: true
+    },
+    date: {
+        type: Date,
+        default: Date.now
+    },
+    time: {
+        type: String,
+    }
+})
 const userSocialSchema = new Schema({
     userId: {
         type: Schema.Types.ObjectId,
@@ -52,7 +66,8 @@ const userSocialSchema = new Schema({
     trainerAssigned: {
         type: String
     },
-    invitationsSent: [invitationSchema]
+    invitationsSent: [invitationSchema],
+    calendar: [ calendarSchema]
 
 });
 
