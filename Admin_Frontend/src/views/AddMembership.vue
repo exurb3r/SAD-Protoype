@@ -21,20 +21,26 @@
       <div class="form-grid">
 
         <div class="form-group">
-          <label>Full Name</label>
-          <input v-model="form.name" class="form-input" placeholder="e.g. Juan Dela Cruz" />
-          <span class="error" v-if="errors.name">{{ errors.name }}</span>
-        </div>
+  <label>First Name</label>
+  <input v-model="form.firstName" class="form-input" placeholder="e.g. Abie" />
+  <span class="error" v-if="errors.firstName">{{ errors.firstName }}</span>
+</div>
+
+<div class="form-group">
+  <label>Last Name</label>
+  <input v-model="form.lastName" class="form-input" placeholder="e.g. Moyaen" />
+  <span class="error" v-if="errors.lastName">{{ errors.lastName }}</span>
+</div>
 
         <div class="form-group">
           <label>Contact Number</label>
-          <input v-model="form.contact" class="form-input" placeholder="e.g. 09171234567" />
+          <input v-model="form.contact" class="form-input" placeholder="e.g. 09123 asawa ni Marie" />
           <span class="error" v-if="errors.contact">{{ errors.contact }}</span>
         </div>
 
         <div class="form-group">
           <label>Email</label>
-          <input v-model="form.email" class="form-input" placeholder="e.g. juan@email.com" />
+          <input v-model="form.email" class="form-input" placeholder="e.g. abiejoshel@email.com" />
           <span class="error" v-if="errors.email">{{ errors.email }}</span>
         </div>
 
@@ -63,7 +69,7 @@
 
         <div class="form-group full-width">
           <label>Address</label>
-          <input v-model="form.address" class="form-input" placeholder="e.g. 123 Rizal St, Manila" />
+          <input v-model="form.address" class="form-input" placeholder="e.g. 123 Batumbakal Bukidnon basta malayo" />
           <span class="error" v-if="errors.address">{{ errors.address }}</span>
         </div>
 

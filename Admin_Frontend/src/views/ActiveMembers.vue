@@ -107,11 +107,11 @@ export default {
       editingMember: null,
       deletingMember: null,
       members: [
-        { id: 1, name: 'Juan Dela Cruz', type: 'Premium',  expiry: '2025-06-30', contact: '09171234567' },
-        { id: 2, name: 'Maria Santos',   type: 'Basic',    expiry: '2025-03-15', contact: '09281234567' },
-        { id: 3, name: 'Carlo Reyes',    type: 'Standard', expiry: '2025-05-01', contact: '09391234567' },
-        { id: 4, name: 'Anna Lim',       type: 'Premium',  expiry: '2025-07-20', contact: '09451234567' },
-        { id: 5, name: 'Jose Garcia',    type: 'Basic',    expiry: '2025-02-28', contact: '09561234567' },
+        { id: 1, name: 'Abegail Moyaen', type: 'Premium',  expiry: '2025-06-30', contact: '09123123123' },
+        { id: 2, name: 'Jochelle Maltu',   type: 'Basic',    expiry: '2025-03-15', contact: '091231234' },
+        { id: 3, name: 'Janina Somera',    type: 'Standard', expiry: '2025-05-01', contact: '09123456789' },
+        { id: 4, name: 'Andy Lim',       type: 'Premium',  expiry: '2025-07-20', contact: '0936912151' },
+        { id: 5, name: 'ChrisPChicken',    type: 'Basic',    expiry: '2025-02-28', contact: '090090909' },
       ]
     }
   },
