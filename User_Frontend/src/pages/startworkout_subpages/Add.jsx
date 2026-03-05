@@ -193,12 +193,12 @@ function AddWorkout() {
                         value={editCategory}
                         onChange={(e) => setEditCategory(e.target.value)}
                       >
-                        <option value="chest">Chest</option>
-                        <option value="back">Back</option>
-                        <option value="shoulders">Shoulders</option>
-                        <option value="arms">Arms</option>
-                        <option value="core/abs">Core/Abs</option>
-                        <option value="legs">Legs</option>
+                        <option value="Chest">Chest</option>
+                        <option value="Back">Back</option>
+                        <option value="Shoulders">Shoulders</option>
+                        <option value="Arms">Arms</option>
+                        <option value="Core/abs">Core/Abs</option>
+                        <option value="Legs">Legs</option>
                       </select>
 
                       <input
