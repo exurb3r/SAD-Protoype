@@ -7,5 +7,6 @@ router.use("/auth", require("./user_routes/auth"));
 router.use("/dashboard",require("./user_routes/dashboard"));
 router.use("/startworkout",require("./user_routes/startworkout"));
 router.use("/gymcalendar",require("./user_routes/gymcalendar"));
+router.use("/fitnessnotes",require("./user_routes/usernotes"));
 
 module.exports = router;

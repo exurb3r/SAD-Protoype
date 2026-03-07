@@ -4,7 +4,7 @@ const UserProgress = require('../../models/user_models/UserProgress');
 const UserPrefAndMisc = require('../../models/user_models/UserPreferenceAndMisc');
 const UserGameDetails = require('../../models/user_models/UserGameDetails');
 const UserSocial = require('../../models/user_models/UserSocial');
-const Task = require('../../models/user_models/Task');
+const Task = require('../../models/user_models/UserNotes');
 
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");

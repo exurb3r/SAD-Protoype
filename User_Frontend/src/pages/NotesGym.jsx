@@ -22,7 +22,7 @@ function NotesGym(){
         try{
             setLoading(true);
 
-            const response = await fetch(`http://localhost:3500/users/notes/get`, {
+            const response = await fetch("http://localhost:3500/users/fitnessnotes", {
                 headers: authHeader
             });
 
@@ -49,12 +49,11 @@ function NotesGym(){
         if(!title || !description) return;
 
         try{
-            const response = await fetch(`http://localhost:3500/user/add`, {
-                method: 'POST',
+            const response = await fetch("http://localhost:3500/users/fitnessnotes", {
+                method: "POST",
                 headers: authHeader,
                 body: JSON.stringify({ title, description })
             });
-
             if(!response.ok) throw new Error('Failed to add note');
 
             const updates = await response.json();
@@ -69,12 +68,11 @@ function NotesGym(){
 
     async function deleteNote(noteId){
         try{
-            const response = await fetch(`http://localhost:3500/user/delete`,{
-                method: 'POST',
+            const response = await fetch("http://localhost:3500/users/fitnessnotes", {
+                method: "DELETE",
                 headers: authHeader,
                 body: JSON.stringify({ noteId })
             });
-
             if(!response.ok) throw new Error('Failed to delete note');
 
             const updates = await response.json();
@@ -87,8 +85,8 @@ function NotesGym(){
 
     async function updateNote(noteId){
         try{
-            const response = await fetch(`http://localhost:3500/user/edit`, {
-                method: 'POST',
+            const response = await fetch("http://localhost:3500/users/fitnessnotes", {
+                method: "PATCH",
                 headers: authHeader,
                 body: JSON.stringify({
                     noteId,
