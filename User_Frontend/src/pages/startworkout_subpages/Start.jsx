@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "../../assets/Add.css";
 
 function StartingWorkout() {
+
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -15,6 +16,7 @@ function StartingWorkout() {
   const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
+
     let interval = null;
 
     if (isRunning && !isPaused) {
@@ -26,20 +28,25 @@ function StartingWorkout() {
     return () => {
       if (interval) clearInterval(interval);
     };
+
   }, [isRunning, isPaused]);
 
   function formatTime(totalSeconds) {
+
     const mins = Math.floor(totalSeconds / 60);
     const secs = totalSeconds % 60;
+
     return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+
   }
 
-
   function handleStart() {
+
     setSeconds(0);
-    setCompletedExercises([]); 
+    setCompletedExercises([]);
     setIsRunning(true);
     setIsPaused(false);
+
   }
 
   function handlePause() {
@@ -51,15 +58,20 @@ function StartingWorkout() {
   }
 
   async function handleDone() {
+
     if (!isRunning) return;
+
     if (completedExercises.length === 0) {
       alert("You must complete at least one exercise.");
       return;
     }
 
-    const submitProgress = confirm("Are you done with your workout? ");
-    if(submitProgress){
+    const submitProgress = confirm("Are you done with your workout?");
+
+    if (!submitProgress) return;
+
     try {
+
       setIsRunning(false);
       setIsPaused(false);
 
@@ -76,7 +88,8 @@ function StartingWorkout() {
             timeSpent: seconds,
             numberOfWorkout: exercises.length,
             numberOfFinished: completedExercises.length,
-            workoutList: exercises,
+            workoutList: completedExercises.map(i => exercises[i]),
+
           }),
         }
       );
@@ -88,7 +101,6 @@ function StartingWorkout() {
         return;
       }
 
-
       let message = `
         Workout Complete!
 
@@ -96,10 +108,10 @@ function StartingWorkout() {
         Completion: ${data.completionRate}%
         Multiplier: x${data.multiplier}
         Current Level: ${data.newLevel}
-      `;
+        `;
 
       if (data.leveledUp) {
-        message += "\n LEVEL UP! ";
+        message += "\nLEVEL UP!";
       }
 
       alert(message);
@@ -107,30 +119,42 @@ function StartingWorkout() {
       navigate("/startworkout");
 
     } catch (err) {
+
       console.error(err);
       alert("Server error.");
+
     }
+
   }
-}
+
 
   function toggleExercise(index) {
+
     if (!isRunning || isPaused) return;
 
     setCompletedExercises(prev => {
+
       if (prev.includes(index)) {
         return prev.filter(i => i !== index);
-      } else {
-        return [...prev, index];
       }
+
+      return [...prev, index];
+
     });
+
   }
 
-  function returnToPreviousStage(){
-    const confirmation = confirm(" Go back to previous page ?");
-    if (confirmation){
-      navigate('/startworkout');
+
+  function returnToPreviousStage() {
+
+    const confirmation = confirm("Go back to previous page?");
+
+    if (confirmation) {
+      navigate("/startworkout");
     }
+
   }
+
 
   const progressPercent =
     exercises.length === 0
@@ -138,7 +162,9 @@ function StartingWorkout() {
       : Math.round((completedExercises.length / exercises.length) * 100);
 
   async function fetchRoutine() {
+
     try {
+
       const res = await fetch(
         `http://localhost:3500/users/startworkout/${id}`,
         {
@@ -154,40 +180,60 @@ function StartingWorkout() {
         setRoutineName(data.routine.routineName);
         setExercises(data.routine.exercises || []);
       }
+
     } catch (err) {
       console.error(err);
     }
+
   }
 
   useEffect(() => {
     fetchRoutine();
   }, [id]);
 
-
   return (
+
     <div className="add-routine-page">
+
       <div className="add-routine-baryeah">
-        <button className="add-routine-back-btn" onClick={() => returnToPreviousStage()}>🔙</button>
+
+        <button
+          className="add-routine-back-btn"
+          onClick={returnToPreviousStage}
+        >
+          🔙
+        </button>
+
         <h1 className="add-routine-title">
           {routineName || "Starting Workout"}
         </h1>
+
       </div>
 
       <div className="add-routine-container">
+
+
         <div className="add-routine-left-box">
+
           <h2>Your List</h2>
+
           <div className="progress-bar">
-              <div
-                className="progress-fill"
-                style={{ width: `${progressPercent}%` }}
-              ></div>
-              
+            <div
+              className="progress-fill"
+              style={{ width: `${progressPercent}%` }}
+            />
           </div>
+
           <p>{progressPercent}% Completed</p>
+
           <div className="add-routine-exercise-preview">
+
             <ul className="add-routine-exercise-list">
+
               {exercises.map((ex, index) => (
+
                 <li key={index} className="add-routine-exercise-item">
+
                   <input
                     type="checkbox"
                     disabled={!isRunning || isPaused}
@@ -200,28 +246,38 @@ function StartingWorkout() {
                     <p>{ex.category}</p>
                     <p>{ex.reps} reps</p>
                   </label>
+
                 </li>
+
               ))}
+
             </ul>
+
           </div>
+
         </div>
 
         <div className="add-routine-right-box">
+
           <h2 className="add-routine-overview-title">
             Workout Overview
           </h2>
 
           <div className="progress-wrapper">
+
             <div className="progress-bar">
               <div
                 className="progress-fill"
                 style={{ width: `${progressPercent}%` }}
-              ></div>
+              />
             </div>
+
             <p>{progressPercent}% Completed</p>
+
           </div>
 
           <div className="workout-controls">
+
             <h2>{formatTime(seconds)}</h2>
 
             {!isRunning && (
@@ -237,13 +293,21 @@ function StartingWorkout() {
             )}
 
             {isRunning && (
-              <button onClick={handleDone}>Done / Exit</button>
+              <button onClick={handleDone}>
+                Done / Exit
+              </button>
             )}
+
           </div>
+
         </div>
+
       </div>
+
     </div>
+
   );
+
 }
 
 export default StartingWorkout;

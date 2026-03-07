@@ -121,20 +121,20 @@ function Dashboard(){
                 <div className='dashboard-big-box-progress'>
                     <Bar
                         data={{
-                            labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+                            labels: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
                             datasets: [
                             {
                                 label: "No. of Workouts",
-                                data: barData, 
-                                backgroundColor: ["#4d4dff"],
-                                borderRadius: 5, 
+                                data: barData,
+                                backgroundColor: "#4d4dff",
+                                borderRadius: 5,
                                 borderWidth: 0,
                             },
                             {
                                 label: "Time Spent (hrs)",
-                                data: barData2, 
-                                backgroundColor: ["#ff4d4d"],
-                                borderRadius: 5, 
+                                data: barData2,
+                                backgroundColor: "#ff4d4d",
+                                borderRadius: 5,
                                 borderWidth: 0,
                             },
                             ],

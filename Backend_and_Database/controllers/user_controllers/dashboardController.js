@@ -45,13 +45,28 @@ const dashboardData = async (req, res) => {
             "Core/Abs": 0,
             Legs: 0
         };
+        const now = new Date();
+        const day = now.getDay();
+
+        const startOfWeek = new Date(now);
+        startOfWeek.setDate(now.getDate() - day);
+        startOfWeek.setHours(0,0,0,0);
+
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 6);
+        endOfWeek.setHours(23,59,59,999);
+
         if (progressDoc?.progress) {
             progressDoc.progress.forEach(entry => {
-                const date = new Date(entry.date);
-                const day = date.getDay();
 
-                weeklyWorkouts[day] += entry.totalWorkouts || 0;
-                weeklyHours[day] += entry.hoursSpent || 0;
+                const date = new Date(entry.date);
+                if (date < startOfWeek || date > endOfWeek) return;
+
+                const dayIndex = date.getDay();
+
+                weeklyWorkouts[dayIndex] += entry.totalWorkouts || 0;
+                weeklyHours[dayIndex] += entry.hoursSpent || 0;
+
             });
         }
         if (routines?.routineHistory?.length > 0) {
