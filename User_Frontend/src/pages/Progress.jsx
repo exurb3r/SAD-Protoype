@@ -32,21 +32,16 @@ ChartJS.register(
 function Progress() {
 
   const [period, setPeriod] = useState("week");
-
   const [level, setLevel] = useState();
   const [exp, setExp] = useState();
   const [currentStreak, setCurrentStreak] = useState();
   const [highestStreak, setHighestStreak] = useState();
   const [recentAchievements, setRecentAchievements] = useState([]);
-
   const [workoutCounts, setWorkoutCounts] = useState([]);
   const [hourCounts, setHourCounts] = useState([]);
   const [workoutDistribution, setWorkoutDistribution] = useState([]);
-
   const [routineHistory, setRoutineHistory] = useState([]);
-
   const [heatmapData, setHeatmapData] = useState([]);
-
   const [maxBarValue, setMaxBarValue] = useState(10);
 
   useEffect(() => {
@@ -108,17 +103,12 @@ function Progress() {
   };
 
   const totalWorkouts = workoutCounts.reduce((a, b) => a + b, 0);
-
   const highestWorkout = Math.max(...workoutCounts, 0);
-
   const totalHours = hourCounts.reduce((a, b) => a + b, 0);
-
   const avgWorkout =
     workoutCounts.length > 0 ? (totalWorkouts / workoutCounts.length).toFixed(1) : 0;
-
   const avgTime =
     hourCounts.length > 0 ? (totalHours / hourCounts.length).toFixed(1) : 0;
-
 
 
   const labels =
@@ -128,6 +118,7 @@ function Progress() {
       ? Array.from({ length: 31 }, (_, i) => i + 1)
       : ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
+      
   return (
     <div className="page">
 

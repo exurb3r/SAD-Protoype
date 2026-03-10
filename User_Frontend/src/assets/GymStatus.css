@@ -108,3 +108,17 @@
     margin-bottom: 10px;
     float: left;
 }
+
+.membership-info{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.gym-status-card{
+    align-items:flex-start;
+}
+
+.gym-status-card p{
+    margin-left:5px;
+}

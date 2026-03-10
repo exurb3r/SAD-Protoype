@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const Users = require('../models/admin_models/Users'); // adjust path if needed
+const Users = require('../models/admin_models/Users'); 
 
 mongoose.connect('mongodb://127.0.0.1:27017/armztrongGym')
 .then(() => console.log("MongoDB Connected"))

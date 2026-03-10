@@ -26,7 +26,7 @@ function FriendView(){
                     </div>
                 </div>
                 <div className='profile-personal-card-lower'>
-                    {/* Will Serve like a NavBar*/}
+
                     <div className='profile-personal-card-lower-items'> <h3> Overview </h3></div>
                     <div className='profile-personal-card-lower-items'> <h3> Stats </h3></div>
                     <div className='profile-personal-card-lower-items'> <h3> Friends </h3></div>
@@ -36,8 +36,6 @@ function FriendView(){
             </div>
 
             <div className='profile-display-container-box'>
-                {/* Will rerender after the container above is pressed*/}
-
             </div>
                 
         </div>

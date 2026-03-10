@@ -34,7 +34,6 @@ const getProgressData = async (req, res) => {
         let startDate, endDate;
 
         if (period === "week") {
-
             const day = now.getDay();
 
             startDate = new Date(now);
@@ -47,46 +46,38 @@ const getProgressData = async (req, res) => {
         }
 
         if (period === "month") {
-
             startDate = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0);
             endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
 
         }
 
         if (period === "year") {
-
             startDate = new Date(now.getFullYear(), 0, 1, 0, 0, 0);
             endDate = new Date(now.getFullYear(), 11, 31, 23, 59, 59);
 
         }
 
+
         let workoutCounts, hourCounts;
 
         if (period === "week") {
-
             workoutCounts = new Array(7).fill(0);
             hourCounts = new Array(7).fill(0);
 
         } else if (period === "month") {
-
             workoutCounts = new Array(31).fill(0);
             hourCounts = new Array(31).fill(0);
 
         } else {
-
             workoutCounts = new Array(12).fill(0);
             hourCounts = new Array(12).fill(0);
 
         }
 
         if (progressDoc?.progress) {
-
             progressDoc.progress.forEach(entry => {
-
                 const entryDate = new Date(entry.date);
-
                 if (entryDate < startDate || entryDate > endDate) return;
-
                 let index;
 
                 if (period === "week") index = entryDate.getDay();
@@ -97,7 +88,6 @@ const getProgressData = async (req, res) => {
                 hourCounts[index] += entry.hoursSpent || 0;
 
             });
-
         }
 
         const distributionMap = {
@@ -112,27 +102,17 @@ const getProgressData = async (req, res) => {
         const routineHistory = [];
 
         if (routines?.routineHistory?.length) {
-
             routines.routineHistory.forEach(workout => {
-
                 const date = new Date(workout.dateCompleted);
-
                 if (date >= startDate && date <= endDate) {
-
                     routineHistory.push(workout);
-
                     workout.exercises.forEach(ex => {
-
                         if (distributionMap.hasOwnProperty(ex.category)) {
                             distributionMap[ex.category] += 1;
                         }
-
                     });
-
                 }
-
             });
-
         }
 
         const workoutDistribution = Object.values(distributionMap);
@@ -143,51 +123,37 @@ const getProgressData = async (req, res) => {
         let expGained = 0;
 
         if (routineHistory.length > 0) {
-
             const lastWorkout = routineHistory[routineHistory.length - 1];
-
             numberOfWorkouts = lastWorkout.exercises.length;
             duration = lastWorkout.duration || 0;
             expGained = lastWorkout.expGained || 0;
-
             const focusSet = new Set();
 
             lastWorkout.exercises.forEach(ex => {
-
                 if (ex.category) focusSet.add(ex.category);
-
             });
-
             focus = Array.from(focusSet);
-
         }
 
         res.json({
-
             username: user.username,
             currentStreak,
             recentAchievements,
             exp,
             level,
             notifications,
-
             workoutCounts,
             hourCounts,
             workoutDistribution,
-
             numberOfWorkouts,
             duration,
             focus,
             expGained,
-
             routineHistory
-
         });
 
     } catch (err) {
-
         res.status(500).json({ message: err.message });
-
     }
 };
 

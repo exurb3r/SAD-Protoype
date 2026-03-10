@@ -9,5 +9,9 @@ router.use("/startworkout",require("./user_routes/startworkout"));
 router.use("/gymcalendar",require("./user_routes/gymcalendar"));
 router.use("/fitnessnotes",require("./user_routes/usernotes"));
 router.use("/progress",require("./user_routes/progress"));
+router.use("/community", require("./user_routes/community"));
+router.use("/leaderboard", require("./user_routes/leaderboard"))
+router.use("/gymhistory", require("./user_routes/gymstatus"));
+router.use("/profile", require("./user_routes/profile"));
 
 module.exports = router;

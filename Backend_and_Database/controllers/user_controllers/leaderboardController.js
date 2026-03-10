@@ -1,23 +1,61 @@
-const AppUser = require("../../models/user_models/AppUser");
 const UserGameDetails = require("../../models/user_models/UserGameDetails");
 const UserProgress = require("../../models/user_models/UserProgress");
-const UserPreferenceAndMisc = require("../../models/user_models/UserPreferenceAndMisc");
-const UserRoutine = require("../../models/user_models/UserRoutine");
+const AppUsers = require("../../models/user_models/AppUsers");
 
-const leaderboardData = async (req, res) => {
-    try {
-        const userId = req.user.id;
+const getLeaderboards = async (req,res)=>{
+    try{
 
-        const user = await AppUser.findById(userId);
-        if (!user) return res.status(404).json({ message: "User not found" });
+        const game = await UserGameDetails.find();
+        const progress = await UserProgress.find();
+        const users = await AppUsers.find({}, "userId username email");
 
-        const gameDetails = await UserGameDetails.findOne({ userId });
-        const progress = await UserProgress.findOne({ userId });
-        const preferences = await UserPreferenceAndMisc.findOne({ userId });
-        const routines = await UserRoutine.findOne({ userId });
+        // Map userId -> username/email
+        let userMap = {};
+        users.forEach(u=>{
+            userMap[u.userId.toString()] = {
+                username: u.username,
+                email: u.email
+            };
+        });
 
-    } catch (err) {
-        res.status(500).json({ message: err.message });
+        // Calculate total workouts
+        let workoutsMap = {};
+        progress.forEach(p=>{
+            let total = 0;
+
+            p.progress.forEach(day=>{
+                total += day.totalWorkouts || 0;
+                });
+
+            workoutsMap[p.userId.toString()] = total;
+        });
+
+
+        
+        let result = game.map(g=>{
+            const user = userMap[g.userId.toString()] || {};
+                    return{
+                        username: user.username || "Unknown",
+                        email: user.email || "",
+                        level: g.level || 0,
+                        exp: g.exp_points || 0,
+                        streak: g.currentStreak || 0,
+                        workouts: workoutsMap[g.userId.toString()] || 0
+                    };
+        });
+
+        const leaderboard = {
+            topLevel:[...result].sort((a,b)=>b.level-a.level).slice(0,10),
+            topExp:[...result].sort((a,b)=>b.exp-a.exp).slice(0,10),
+            topStreak:[...result].sort((a,b)=>b.streak-a.streak).slice(0,10),
+            topWorkouts:[...result].sort((a,b)=>b.workouts-a.workouts).slice(0,10)
+        };
+
+        res.json(leaderboard);
+
+    }catch(err){
+        res.status(500).json({message:err.message});
     }
-}
-module.exports = { leaderboardData };
+};
+
+module.exports = { getLeaderboards };

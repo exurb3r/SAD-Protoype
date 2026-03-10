@@ -162,8 +162,7 @@ function Routine() {
                 </li>
               ))}
             </ul>
-
-            
+           
             <button
               className="calendar-btn-primary full-width"
               onClick={() => {
@@ -196,15 +195,8 @@ function Routine() {
 
       
       {showPopup && (
-        <div
-          className="gym-calendar-popup-overlay"
-          onClick={() => setShowPopup(false)}
-        >
-          <div
-            className="gym-calendar-popup"
-            onClick={(e) => e.stopPropagation()}
-          >
-
+        <div className="gym-calendar-popup-overlay" onClick={() => setShowPopup(false)}>
+          <div className="gym-calendar-popup" onClick={(e) => e.stopPropagation()}>
             <div className="gym-calendar-popup-top">
               <form>
                 <input

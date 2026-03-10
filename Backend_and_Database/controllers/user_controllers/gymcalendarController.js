@@ -76,7 +76,6 @@ const gymcalendarData = async (req, res) => {
                 events.push({
                     title: event.title,
                     date: event.date,
-                    
                     backgroundColor: "#FF9800"
                 });
                 theGymEvents.push({
@@ -117,7 +116,6 @@ const gymcalendarData = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
-
 
 const addEvent = async (req, res) => {
   try {
@@ -204,5 +202,4 @@ const deleteEvent = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-
 module.exports = { gymcalendarData, addEvent, editEvent, deleteEvent };
