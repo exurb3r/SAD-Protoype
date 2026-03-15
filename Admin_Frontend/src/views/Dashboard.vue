@@ -2,13 +2,15 @@
   <div class="dashboard-container">
 
     <!-- Welcome Box -->
-    <div class="welcome-box">
-      <div>
-        <p class="welcome-text">Welcome back</p>
-        <h2 class="welcome-name">{{ adminName }}</h2>
-        <p class="welcome-date">{{ today }}</p>
+    <div class="welcome-box" :style="{ backgroundImage: `url(${gymBanner})` }">
+      <div class="welcome-overlay">
+        <div>
+          <p class="welcome-text">Welcome back</p>
+          <h2 class="welcome-name">{{ adminName }}</h2>
+          <p class="welcome-date">{{ today }}</p>
+        </div>
+        <div class="welcome-badge">GYM ADMIN</div>
       </div>
-      <div class="welcome-badge">GYM ADMIN</div>
     </div>
 
     <!-- Stats Row -->
@@ -48,7 +50,7 @@
         <table class="member-table">
           <thead>
             <tr>
-              <th>Name</th>
+              <th>Member</th>
               <th>Plan</th>
               <th>Status</th>
               <th>Expiry</th>
@@ -56,7 +58,14 @@
           </thead>
           <tbody>
             <tr v-for="member in recentMembers" :key="member.id">
-              <td>{{ member.name }}</td>
+              <td>
+                <div class="member-cell">
+                  <div class="avatar">
+                   <img :src="`https://api.dicebear.com/7.x/initials/svg?seed=${member.name}&backgroundColor=481E14&fontFamily=Arial&fontSize=40`" :alt="member.name" />
+                  </div>
+                  {{ member.name }}
+                </div>
+              </td>
               <td>{{ member.plan }}</td>
               <td><span class="badge" :class="member.status">{{ member.status }}</span></td>
               <td>{{ member.expiry }}</td>
@@ -99,14 +108,18 @@ import DashboardCharts from "../components/DashboardCharts.vue";
 const adminName = "Juan dela Cruz";
 const today = new Date().toLocaleDateString("en-PH", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
 
+
+
+const gymBanner = "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&q=80";
+
 const stats = [
   {
     label: "Active Members", value: 124, icon: "",
     subtitle: "Total members with active memberships right now.",
     breakdown: [
-      { label: "Monthly",   value: 74,  percent: 60 },
-      { label: "Quarterly", value: 31,  percent: 25 },
-      { label: "Annual",    value: 19,  percent: 15 },
+      { label: "Monthly",   value: 74, percent: 60 },
+      { label: "Quarterly", value: 31, percent: 25 },
+      { label: "Annual",    value: 19, percent: 15 },
     ]
   },
   {
@@ -132,31 +145,31 @@ const stats = [
     label: "App Users", value: 200, icon: "",
     subtitle: "Total users registered on the mobile app.",
     breakdown: [
-      { label: "Active (30d)",  value: 140, percent: 70 },
-      { label: "Inactive",      value: 42,  percent: 21 },
-      { label: "Never logged in", value: 18, percent: 9 },
+      { label: "Active (30d)",     value: 140, percent: 70 },
+      { label: "Inactive",         value: 42,  percent: 21 },
+      { label: "Never logged in",  value: 18,  percent: 9  },
     ]
   },
 ];
 
 const recentActivity = [
-  { id: 1, type: "join",    message: "Roven Santos joined as Monthly member",      time: "2 mins ago" },
-  { id: 2, type: "payment", message: "Janina Somera renewed his Annual plan",          time: "18 mins ago" },
-  { id: 3, type: "expire",  message: "Kurt Morales' membership is expiring in 3 days",  time: "1 hour ago" },
-  { id: 4, type: "join",    message: "Abegail Moyaen joined as Quarterly member",   time: "3 hours ago" },
+  { id: 1, type: "join",    message: "Janine Somera joined as Monthly member",      time: "2 mins ago" },
+  { id: 2, type: "payment", message: "Roven Santos renewed his Annual plan",          time: "18 mins ago" },
+  { id: 3, type: "expire",  message: "Abegail Moyaen's membership is expiring in 3 days",  time: "1 hour ago" },
+  { id: 4, type: "join",    message: "Kurt Morales joined as Quarterly member",   time: "3 hours ago" },
   { id: 5, type: "payment", message: "Jochelle Maltu completed payment ₱2,500",          time: "5 hours ago" },
 ];
 
 const recentMembers = [
   { id: 1, name: "Roven Santos",   plan: "Monthly",   status: "active",   expiry: "Apr 15, 2026" },
-  { id: 2, name: "Janina Somera",     plan: "Annual",    status: "active",   expiry: "Mar 10, 2027" },
-  { id: 3, name: "Abegail Moyaen",        plan: "Monthly",   status: "expiring", expiry: "Mar 18, 2026" },
-  { id: 4, name: "Kurt Morales", plan: "Quarterly", status: "active",   expiry: "Jun 1, 2026" },
-  { id: 5, name: "Jochelle Maltu",      plan: "Monthly",   status: "active",   expiry: "Apr 20, 2026" },
+  { id: 2, name: "Abegail Moyaen",     plan: "Annual",    status: "active",   expiry: "Mar 10, 2027" },
+  { id: 3, name: "Jochelle Maltu",        plan: "Monthly",   status: "expiring", expiry: "Mar 18, 2026" },
+  { id: 4, name: "Janina Somera", plan: "Quarterly", status: "active",   expiry: "Jun 1, 2026" },
+  { id: 5, name: "Kurt Morales",      plan: "Monthly",   status: "active",   expiry: "Apr 20, 2026" },
 ];
 
 const activeModal = ref(null);
-const openModal = (stat) => { activeModal.value = stat; };
+const openModal  = (stat) => { activeModal.value = stat; };
 const closeModal = () => { activeModal.value = null; };
 </script>
 
@@ -165,18 +178,25 @@ const closeModal = () => { activeModal.value = null; };
 
 /* Welcome */
 .welcome-box {
-  background: linear-gradient(135deg, #1a1a1a, #2a1510);
-  padding: 28px;
   border-radius: 16px;
   margin-bottom: 25px;
   border: 1px solid #481E14;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  min-height: 130px;
+}
+.welcome-overlay {
+  background: linear-gradient(90deg, rgba(0,0,0,0.82) 40%, rgba(0,0,0,0.3) 100%);
+  padding: 28px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  min-height: 130px;
 }
-.welcome-text { color: #aaa; margin: 0 0 4px 0; }
+.welcome-text { color: #ccc; margin: 0 0 4px 0; }
 .welcome-name { color: white; margin: 0 0 6px 0; font-size: 24px; font-weight: 700; }
-.welcome-date { color: #777; margin: 0; font-size: 13px; }
+.welcome-date { color: #aaa; margin: 0; font-size: 13px; }
 .welcome-badge {
   background: #e8531a; color: white;
   padding: 8px 16px; border-radius: 20px;
@@ -191,15 +211,10 @@ const closeModal = () => { activeModal.value = null; };
   margin-bottom: 25px;
 }
 .box {
-  background: #1a1a1a;
-  padding: 20px;
-  border-radius: 16px;
-  border: 1px solid #481E14;
-  transition: 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  cursor: pointer;
+  background: #1a1a1a; padding: 20px;
+  border-radius: 16px; border: 1px solid #481E14;
+  transition: 0.2s ease; display: flex;
+  align-items: center; gap: 16px; cursor: pointer;
 }
 .box:hover { transform: translateY(-4px); border-color: #e8531a; background: #1f1210; }
 .box-icon { font-size: 28px; }
@@ -214,10 +229,8 @@ const closeModal = () => { activeModal.value = null; };
   margin-top: 25px;
 }
 .panel {
-  background: #1a1a1a;
-  border-radius: 16px;
-  border: 1px solid #481E14;
-  padding: 20px;
+  background: #1a1a1a; border-radius: 16px;
+  border: 1px solid #481E14; padding: 20px;
 }
 .panel-title { color: white; margin: 0 0 16px 0; font-size: 15px; font-weight: 600; }
 
@@ -237,40 +250,31 @@ const closeModal = () => { activeModal.value = null; };
 .member-table th { color: #777; font-size: 12px; text-align: left; padding: 8px 10px; border-bottom: 1px solid #2a2a2a; }
 .member-table td { color: #ddd; font-size: 13px; padding: 10px; border-bottom: 1px solid #1f1f1f; }
 .member-table tr:last-child td { border-bottom: none; }
+.member-cell { display: flex; align-items: center; gap: 10px; }
+.avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  overflow: hidden; background: #2a2a2a; flex-shrink: 0;
+}
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
 .badge { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; text-transform: capitalize; }
 .badge.active   { background: #14532d; color: #4ade80; }
 .badge.expiring { background: #451a03; color: #facc15; }
 
 /* Modal */
 .modal-overlay {
-  position: fixed;
-  inset: 0;
+  position: fixed; inset: 0;
   background: rgba(0,0,0,0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
+  display: flex; align-items: center; justify-content: center; z-index: 999;
 }
 .modal {
-  background: #1a1a1a;
-  border: 1px solid #481E14;
-  border-radius: 20px;
-  padding: 32px;
-  width: 420px;
-  max-width: 90vw;
+  background: #1a1a1a; border: 1px solid #481E14;
+  border-radius: 20px; padding: 32px;
+  width: 420px; max-width: 90vw;
 }
-.modal-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-}
+.modal-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
 .modal-icon { font-size: 28px; }
 .modal-header h3 { color: white; margin: 0; flex: 1; font-size: 18px; }
-.modal-close {
-  background: none; border: none; color: #aaa;
-  font-size: 18px; cursor: pointer; padding: 4px 8px;
-}
+.modal-close { background: none; border: none; color: #aaa; font-size: 18px; cursor: pointer; padding: 4px 8px; }
 .modal-close:hover { color: white; }
 .modal-value { color: #e8531a; font-size: 48px; font-weight: 700; margin-bottom: 4px; }
 .modal-subtitle { color: #777; font-size: 13px; margin: 0 0 24px 0; }

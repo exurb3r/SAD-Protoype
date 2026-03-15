@@ -3,10 +3,19 @@
     <h2 class="page-title">{{ $route.name }}</h2>
     <div class="admin-info">
       <span class="admin-name">Admin</span>
-      <div class="avatar">A</div>
+      <div class="avatar">
+        <img v-if="adminPhoto" :src="adminPhoto" alt="Admin" />
+        <span v-else>A</span>
+      </div>
     </div>
   </div>
 </template>
+
+<script setup>
+// 🔁 When you have a real photo, replace null with the import:
+// import adminPhoto from "../assets/admin-photo.jpg"
+const adminPhoto = null;
+</script>
 
 <style scoped>
 .topbar {
@@ -45,5 +54,12 @@
   justify-content: center;
   color: white;
   font-weight: bold;
+  overflow: hidden;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 </style>
