@@ -3,7 +3,7 @@
 
     <!-- Header -->
     <div class="page-header">
-      <h2>App Users</h2>
+      <h2></h2>
       <div class="header-actions">
         <input v-model="search" class="search-input" type="text" placeholder="Search users..." />
         <select v-model="filterRole" class="filter-select">
@@ -147,12 +147,12 @@ export default {
       deletingUser: null,
       errors: {},
       users: [
-        { id: 1, name: 'Admin User',     email: 'admin@gym.com',   role: 'Admin',  dateJoined: 'Jan 1, 2024',  status: 'Active'   },
-        { id: 2, name: 'Juan Dela Cruz', email: 'juan@email.com',  role: 'Member', dateJoined: 'Feb 3, 2024',  status: 'Active'   },
-        { id: 3, name: 'Maria Santos',   email: 'maria@email.com', role: 'Member', dateJoined: 'Mar 10, 2024', status: 'Active'   },
+        { id: 1, name: 'Janine Somera',     email: 'janine@gym.com',   role: 'Admin',  dateJoined: 'Jan 1, 2024',  status: 'Active'   },
+        { id: 2, name: 'Abegail Moyaen', email: 'abiabi@email.com',  role: 'Member', dateJoined: 'Feb 3, 2024',  status: 'Active'   },
+        { id: 3, name: 'Roven Santos',   email: 'robin@email.com', role: 'Member', dateJoined: 'Mar 10, 2024', status: 'Inactive'   },
         { id: 4, name: 'Carlo Reyes',    email: 'carlo@email.com', role: 'Staff',  dateJoined: 'Apr 5, 2024',  status: 'Active'   },
-        { id: 5, name: 'Anna Lim',       email: 'anna@email.com',  role: 'Member', dateJoined: 'May 18, 2024', status: 'Inactive' },
-        { id: 6, name: 'Jose Garcia',    email: 'jose@email.com',  role: 'Member', dateJoined: 'Jun 22, 2024', status: 'Inactive' },
+        { id: 5, name: 'Jochelle Maltu',       email: 'jochelle@email.com',  role: 'Member', dateJoined: 'May 18, 2024', status: 'Inactive' },
+        { id: 6, name: 'Kurt Morales',    email: 'kurtmor@email.com',  role: 'Member', dateJoined: 'Jun 22, 2024', status: 'Inactive' },
       ]
     }
   },

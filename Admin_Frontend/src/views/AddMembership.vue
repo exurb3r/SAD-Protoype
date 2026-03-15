@@ -22,25 +22,25 @@
 
         <div class="form-group">
   <label>First Name</label>
-  <input v-model="form.firstName" class="form-input" placeholder="e.g. Abie" />
+  <input v-model="form.firstName" class="form-input" placeholder="e.g. Janine" />
   <span class="error" v-if="errors.firstName">{{ errors.firstName }}</span>
 </div>
 
 <div class="form-group">
   <label>Last Name</label>
-  <input v-model="form.lastName" class="form-input" placeholder="e.g. Moyaen" />
+  <input v-model="form.lastName" class="form-input" placeholder="e.g. Somera" />
   <span class="error" v-if="errors.lastName">{{ errors.lastName }}</span>
 </div>
 
         <div class="form-group">
           <label>Contact Number</label>
-          <input v-model="form.contact" class="form-input" placeholder="e.g. 09123 asawa ni Marie" />
+          <input v-model="form.contact" class="form-input" placeholder="e.g. 0967123456" />
           <span class="error" v-if="errors.contact">{{ errors.contact }}</span>
         </div>
 
         <div class="form-group">
           <label>Email</label>
-          <input v-model="form.email" class="form-input" placeholder="e.g. abiejoshel@email.com" />
+          <input v-model="form.email" class="form-input" placeholder="e.g. chrispbacon@email.com" />
           <span class="error" v-if="errors.email">{{ errors.email }}</span>
         </div>
 
@@ -69,7 +69,7 @@
 
         <div class="form-group full-width">
           <label>Address</label>
-          <input v-model="form.address" class="form-input" placeholder="e.g. 123 Batumbakal Bukidnon basta malayo" />
+          <input v-model="form.address" class="form-input" placeholder="e.g. 123 Montclair Subdivision, Baguio City" />
           <span class="error" v-if="errors.address">{{ errors.address }}</span>
         </div>
 

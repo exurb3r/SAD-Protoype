@@ -3,7 +3,7 @@
 
     <!-- Header -->
     <div class="page-header">
-      <h2>Announcements</h2>
+      <h2></h2>
       <div class="header-actions">
         <input v-model="search" class="search-input" type="text" placeholder="Search announcements..." />
         <button class="btn-add" @click="openCreate">+ New Announcement</button>
@@ -102,11 +102,11 @@ export default {
       formData: { title: '', message: '', audience: '' },
       audiences: ['All', 'All Members', 'Premium', 'Standard', 'Basic'],
       announcements: [
-        { id: 1, title: 'Gym Closed on Holidays', message: 'Touch some grass mamen', audience: 'All Members', date: 'Mar 1, 2026' },
-        { id: 2, title: 'New Premium Perks', message: 'Premium members now get access to Abie relapse music playlist and free towel service every visit pramis', audience: 'Premium', date: 'Feb 25, 2026' },
-        { id: 3, title: 'Schedule Change', message: 'Special meeting ni Jochelle para sa free taste', audience: 'Standard', date: 'Feb 20, 2026' },
-        { id: 4, title: 'Membership Renewal Reminder', message: 'Paki renew na membership niyo para maangas tayo ritp', audience: 'Basic', date: 'Feb 15, 2026' },
-        { id: 5, title: 'New Equipment Arrived', message: 'Bumili kami bundok para mag hiking na tayo sabi ni Abie', audience: 'All Members', date: 'Feb 10, 2026' },
+        { id: 1, title: 'Gym Closed on Holidays', message: 'Gym is closed due to the opening of the Panagbenga Festival. ', audience: 'All Members', date: 'Feb 1, 2026' },
+        { id: 2, title: 'New Premium Perks', message: 'Premium members now get access to Abie relapse music playlist and free towel service every visit.', audience: 'Premium', date: 'Feb 25, 2026' },
+        { id: 3, title: 'Schedule Change', message: 'New schedule!', audience: 'Standard', date: 'Feb 20, 2026' },
+        { id: 4, title: 'Membership Renewal Reminder', message: 'Get membership or renew now!', audience: 'Basic', date: 'Feb 15, 2026' },
+        { id: 5, title: 'New Equipment Arrived', message: 'Must-try: Threadmill with advanced tracking and income tax return.', audience: 'All Members', date: 'Feb 10, 2026' },
       ]
     }
   },

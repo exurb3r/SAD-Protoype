@@ -11,9 +11,7 @@
       <router-link to="/calendar">Calendar</router-link>
     </nav>
 
-    <div class="logout">
-      <a href="#">Logout</a>
-    </div>
+    
   </div>
 </template>
 
