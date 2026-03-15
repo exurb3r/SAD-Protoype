@@ -105,7 +105,7 @@
 import { ref } from "vue";
 import DashboardCharts from "../components/DashboardCharts.vue";
 
-const adminName = "Juan dela Cruz";
+const adminName = "Janina Somera";
 const today = new Date().toLocaleDateString("en-PH", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
 
 
