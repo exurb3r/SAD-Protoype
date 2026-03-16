@@ -34,7 +34,7 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
   box-sizing: border-box;
   border-right: 1px solid #481E14;
   overflow-y: auto;

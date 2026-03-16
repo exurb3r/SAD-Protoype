@@ -20,8 +20,9 @@ const barSeries = [
   { name: "Revenue (₱)", type: "line", data: [4800, 4200, 6750, 5700, 7800, 9000, 3000] },
 ];
 
-const barOptions = {
+  const barOptions = {
   chart: { background: "transparent", toolbar: { show: false } },
+  grid: { padding: { right: 20 } },
   colors: ["#e8531a", "#f28c5e"],
   xaxis: { categories: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], labels: { style: { colors: "#aaa" } } },
   yaxis: [
