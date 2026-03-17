@@ -12,8 +12,7 @@
 </template>
 
 <script setup>
-// 🔁 When you have a real photo, replace null with the import:
-// import adminPhoto from "../assets/admin-photo.jpg"
+
 const adminPhoto = null;
 </script>
 
