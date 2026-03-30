@@ -1,126 +1,270 @@
-.progress-game-summary {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
+
+
+/* ── Page ── */
+.pg-page {
+    min-height: 100vh;
+    padding: 28px 32px 60px;
+    background: #0f0f0f;
+    color: #e5e5e5;
+    font-family: 'DM Sans', sans-serif;
+    box-sizing: border-box;
 }
 
-.progress-game-box {
-    background: #ffffff;
-    padding: 24px;
-    border-radius: 20px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-    transition: all 0.2s ease;
-    text-align: left;
+/* ── Header ── */
+.pg-header { margin-bottom: 24px; }
+
+.pg-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #fff;
+    margin: 0 0 4px;
+    letter-spacing: -0.5px;
 }
 
-.progress-game-box:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+.pg-sub {
+    font-size: 13px;
+    color: #555;
+    margin: 0;
 }
 
-.progress-game-box h3 {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #6b7280;
-    margin-bottom: 10px;
-    text-align: center;
+/* ── Section spacing ── */
+.pg-section {
+    margin-bottom: 14px;
 }
 
-.progress-game-box p {
-    font-size: 1.8rem;
+/* ── Card shell ── */
+.pg-card {
+    background: #161616;
+    border: 0.5px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.pg-card-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
     font-weight: 700;
-    color: #111827;
-    text-align: center;
-    justify-content: center;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    margin: 0 0 14px;
 }
 
-.progress-upper-container {
-    margin: 30px 0;
+/* ── Player stat boxes ── */
+.pg-game-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
 }
 
-.progress-calendar {
-    padding: 25px;
+.pg-game-box {
+    background: #161616;
+    border: 0.5px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: border-color 0.15s;
+}
+
+.pg-game-box:hover {
+    border-color: rgba(255,255,255,0.12);
+}
+
+.pg-game-box h3 {
+    font-size: 10px;
+    font-weight: 600;
+    color: #444;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin: 0;
+}
+
+.pg-game-box p {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    line-height: 1.2;
+}
+
+/* Achievements box spans wider */
+.pg-achievements-box {
+    grid-column: span 2;
+}
+
+.pg-achieve-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.pg-achieve-badge {
+    background: rgba(220,38,38,0.1);
+    color: #f87171;
+    border: 0.5px solid rgba(220,38,38,0.2);
     border-radius: 20px;
-    border: 2px solid black;
-    background: #f9fafb;
-    text-align: center;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
 }
 
-.color-empty { fill: #1f2937; }
-.color-scale-1 { fill: #14532d; }
-.color-scale-2 { fill: #166534; }
-.color-scale-3 { fill: #22c55e; }
-.color-scale-4 { fill: #4ade80; }
-
-
-.progress-third-container {
-    border: 2px solid #000;
+/* ── Heatmap ── */
+.pg-heatmap-wrap {
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
 }
 
-.progress-third-container {
-    background: #f9fafb;
-    padding: 30px;
-    border-radius: 24px;
-    margin: 40px 0;
+.pg-heatmap-wrap::-webkit-scrollbar { display: none; }
+
+.pg-heatmap-wrap .react-calendar-heatmap text {
+    fill: #555;
+    font-size: 9px;
+    font-family: 'DM Sans', sans-serif;
 }
 
-.progress-charts-holder {
+.color-empty   { fill: #1a1a1a; }
+.color-scale-1 { fill: #3f1010; }
+.color-scale-2 { fill: #7f1d1d; }
+.color-scale-3 { fill: #dc2626; }
+.color-scale-4 { fill: #f87171; }
+
+/* ── Charts section ── */
+.pg-charts-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.pg-charts-head .pg-card-label { margin: 0; }
+
+.pg-period-select {
+    background: #1c1c1c;
+    border: 0.5px solid rgba(255,255,255,0.1);
+    border-radius: 7px;
+    color: #e5e5e5;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    padding: 6px 10px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.12s;
+}
+
+.pg-period-select:focus { border-color: rgba(220,38,38,0.5); }
+
+.pg-charts-holder {
     display: grid;
     grid-template-columns: 2fr 1fr;
-    gap: 30px;
+    gap: 12px;
+    margin-bottom: 14px;
 }
 
-
-
-.progress-bar-item,
-.progress-pie-item {
-    background: white;
-    border-radius: 20px;
-    padding: 25px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-    height: 380px;
+.pg-bar-holder,
+.pg-polar-holder {
+    background: #1c1c1c;
+    border: 0.5px solid rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 16px;
 }
 
-.progress-routine-history-container table {
+.pg-chart-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin: 0 0 12px;
+}
+
+.pg-bar-item,
+.pg-pie-item {
+    height: 300px;
+    position: relative;
+}
+
+/* Period stats row reuses pg-game-summary */
+.pg-stats-row {
+    grid-template-columns: repeat(5, 1fr);
+}
+
+/* ── History table ── */
+.pg-table-wrap {
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.06) transparent;
+}
+
+.pg-table-wrap::-webkit-scrollbar { height: 4px; }
+.pg-table-wrap::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 10px; }
+
+.pg-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    font-size: 13px;
 }
 
-.progress-routine-history-container th {
+.pg-table thead tr {
+    border-bottom: 0.5px solid rgba(255,255,255,0.07);
+}
+
+.pg-table th {
     text-align: left;
+    font-size: 10px;
     font-weight: 600;
-    font-size: 0.85rem;
-    color: #6b7280;
-    padding: 14px 0;
-    border-bottom: 1px solid #e5e7eb;
+    color: #444;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0 14px 10px 0;
+    white-space: nowrap;
 }
 
-.progress-routine-history-container td {
-    padding: 16px 0;
-    border-bottom: 1px solid #f3f4f6;
-    font-size: 0.95rem;
+.pg-table td {
+    padding: 12px 14px 12px 0;
+    color: #888;
+    border-bottom: 0.5px solid rgba(255,255,255,0.04);
+    vertical-align: middle;
 }
 
-tr:hover {
-    background: #f9fafb;
+.pg-table tbody tr:last-child td { border-bottom: none; }
+.pg-table tbody tr:hover td { color: #c8c8c8; }
+
+.pg-td-name { color: #e5e5e5 !important; font-weight: 500; }
+.pg-td-xp   { color: #f87171 !important; font-weight: 600; }
+
+.pg-focus-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.pg-focus-tag {
+    background: rgba(255,255,255,0.05);
+    color: #666;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 4px;
 }
 
 
-.progress-stats-holder{
-    margin-top: 10px;
+@media (max-width: 1000px) {
+    .pg-stats-row { grid-template-columns: repeat(3, 1fr) !important; }
 }
 
-.progress-page {
-    padding: 40px 60px;
-    background: #f3f4f6;
-    min-height: 100vh;
+@media (max-width: 800px) {
+    .pg-charts-holder { grid-template-columns: 1fr; }
+    .pg-stats-row { grid-template-columns: repeat(2, 1fr) !important; }
+    .pg-achievements-box { grid-column: span 1; }
 }
 
-.progress-routine-history-container{
-
-    padding: 25px;
-    border: 2px solid black;
-    border-radius: 24px;
-    margin: 40px 0;
+@media (max-width: 600px) {
+    .pg-page { padding: 16px 16px 48px; }
+    .pg-game-summary { grid-template-columns: 1fr 1fr; }
+    .pg-stats-row { grid-template-columns: 1fr 1fr !important; }
 }

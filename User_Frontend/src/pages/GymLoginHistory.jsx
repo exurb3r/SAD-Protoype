@@ -3,119 +3,84 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import '../assets/GymStatus.css';
 
-function GymLoginHistory(){
+function GymLoginHistory() {
+    const [memberships, setMemberships] = useState([]);
+    const [logs, setLogs] = useState([]);
+    const [events, setEvents] = useState([]);
 
-    const [memberships,setMemberships] = useState([]);
-    const [logs,setLogs] = useState([]);
-    const [events,setEvents] = useState([]);
+    const membership = memberships[0] || {};
 
-    const membership = memberships[0] || {}; 
-
-    useEffect(()=>{
-
+    useEffect(() => {
         const fetchData = async () => {
-
-            try{
-
+            try {
                 const token = localStorage.getItem("token");
-
-                const res = await fetch("http://localhost:3500/users/gymhistory",{
-                    headers:{
-                        "Authorization": `Bearer ${token}`
-                    }
+                const res = await fetch("http://localhost:3500/users/gymhistory", {
+                    headers: { "Authorization": `Bearer ${token}` }
                 });
-
                 const data = await res.json();
-
                 setMemberships(data.memberships || []);
                 setLogs(data.logs || []);
                 setEvents(data.calendarEvents || []);
-
-            }catch(err){
+            } catch (err) {
                 console.error(err);
             }
-
-        }
-
+        };
         fetchData();
+    }, []);
 
-    },[]);
+    const fmt = (dateStr) => dateStr
+        ? new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+        : "N/A";
 
-    return(
-       <div className='gym-history-page'>
+    const statusCards = [
+        { label: "Membership", value: membership.category || "No Membership", accent: true },
+        { label: "Branch",     value: membership.branch || "N/A" },
+        { label: "Started",    value: fmt(membership.startDate) },
+        { label: "Expires",    value: fmt(membership.expiryDate) },
+        { label: "Days Left",  value: membership.remainingDays ?? "N/A" },
+    ];
 
-            <h1> My Gym Status </h1>
-            <p> My Gym Membership Status</p>
+    return (
+        <div className="gs-page">
 
-            <div className='gym-status-container-box'>
-                <div className='gym-status-card'>
-                    <div className='gym-badge-holder'></div>
-
-                    <div className='membership-info'>
-                        <p className='membership-rank'>
-                            {membership.category || "No Membership"}
-                        </p>
-                    </div>
-                </div>
-
-                <div className='gym-status-card'>
-                    <div className='membership-info'>
-                        <p className='branch-location'>
-                            Branch: {membership.branch || "N/A"}
-                        </p>
-                    </div>
-                </div>
-
-                <div className='gym-status-card'>
-                    <div className='membership-info'>
-                        <p className='day-started'>
-                            Started: {membership.startDate ?
-                            new Date(membership.startDate).toLocaleDateString() : "N/A"}
-                        </p>
-                    </div>
-                </div>
-
-                <div className='gym-status-card'>
-                    <div className='membership-info'>
-                        <p className='membership-expiry'>
-                            Expiry: {membership.expiryDate ?
-                            new Date(membership.expiryDate).toLocaleDateString() : "N/A"}
-                        </p>
-                    </div>
-                </div>
-
-                <div className='gym-status-card'>
-                    <div className='membership-info'>
-                        <p className='remaining-days'>
-                            Remaining Days: {membership.remainingDays ?? "N/A"}
-                        </p>
-                    </div>
-                </div>
-
+            <div className="gs-header">
+                <h1 className="gs-title">My Gym Status</h1>
+                <p className="gs-sub">Membership info and visit history</p>
             </div>
 
-            <div className="gym-history-calendar-container-box">
+            {/* Status cards */}
+            <div className="gs-status-row">
+                {statusCards.map((card, i) => (
+                    <div key={i} className={`gs-status-card ${card.accent ? 'accent' : ''}`}>
+                        <span className="gs-status-label">{card.label}</span>
+                        <span className="gs-status-value">{card.value}</span>
+                    </div>
+                ))}
+            </div>
 
-                <div className="gym-history-calendar-container">
+            {/* Calendar + table */}
+            <div className="gs-layout">
 
+                <div className="gs-card gs-calendar-card">
                     <FullCalendar
                         plugins={[dayGridPlugin]}
                         initialView="dayGridMonth"
                         events={events}
+                        height="100%"
                     />
-
                 </div>
 
-                <div className="calendar-events-container">
+                <div className="gs-card gs-log-card">
+                    <div className="gs-card-head">
+                        <span className="gs-card-label">Login History</span>
+                        <span className="gs-count">{logs.length}</span>
+                    </div>
 
-                    <div className="calendar-card">
-
-                        <h2>Gym Login History</h2>
-
-                        <div className="login-history-table-wrapper">
-
-                            <table className="login-history-table">
-
+                    <div className="gs-table-wrap">
+                        {logs.length === 0 ? (
+                            <p className="gs-empty">No login records found.</p>
+                        ) : (
+                            <table className="gs-table">
                                 <thead>
                                     <tr>
                                         <th>Date</th>
@@ -124,32 +89,24 @@ function GymLoginHistory(){
                                         <th>Branch</th>
                                     </tr>
                                 </thead>
-
                                 <tbody>
-                                    {logs.map((log,index)=>(
-                                        <tr key={index}>
-                                            <td>
-                                                {new Date(log.date).toLocaleDateString()}
-                                            </td>
+                                    {logs.map((log, i) => (
+                                        <tr key={i}>
+                                            <td>{new Date(log.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</td>
                                             <td>{log.timeIn}</td>
                                             <td>{log.timeOut}</td>
                                             <td>{log.branch}</td>
                                         </tr>
                                     ))}
                                 </tbody>
-
                             </table>
-
-                        </div>
-
+                        )}
                     </div>
-
                 </div>
 
             </div>
-
-       </div>
-    )
+        </div>
+    );
 }
 
 export default GymLoginHistory;

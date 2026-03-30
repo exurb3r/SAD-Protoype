@@ -1,181 +1,447 @@
-.profile-page {
-    padding: 40px 60px;
-    background: #f3f4f6;
+
+/* ── Page ── */
+.pf-page {
     min-height: 100vh;
+    max-height: 100vh;
     overflow-y: auto;
+    padding: 28px 32px 60px;
+    background: #0f0f0f;
+    color: #e5e5e5;
+    font-family: 'DM Sans', sans-serif;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: 25px;
-    max-height: 100vh;
-}
-.profile-personal-card{
-background:#ffffff;
-border-radius:18px;
-padding:30px;
-display:flex;
-flex-direction:column;
-gap:25px;
-box-shadow:0 8px 25px rgba(0,0,0,0.05);
+    gap: 14px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.08) transparent;
 }
 
-.profile-personal-card-upper{
-display:flex;
-gap:25px;
-align-items:center;
+.pf-page::-webkit-scrollbar { width: 5px; }
+.pf-page::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 10px; }
+
+/* ── Card shell ── */
+.pf-card {
+    background: #161616;
+    border: 0.5px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 20px;
 }
 
-.profile-picture-holder{
-width:90px;
-height:90px;
-border-radius:50%;
-background:#d9d9d9;
+.pf-card-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    margin: 0 0 16px;
 }
 
-.profile-information-holder{
-display:flex;
-flex-direction:column;
-gap:8px;
+/* ── Identity card ── */
+.pf-identity-upper {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
 }
 
-.profile-information-holder-upper{
-display:flex;
-align-items:center;
-gap:15px;
+.pf-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(220,38,38,0.15);
+    border: 0.5px solid rgba(220,38,38,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #f87171;
+    flex-shrink: 0;
 }
 
-.profile-information-holder-upper p:first-child{
-font-size:20px;
-font-weight:600;
+.pf-identity-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-width: 0;
 }
 
-.profile-btn-edit{
-margin-left:auto;
-padding:6px 14px;
-border:none;
-border-radius:6px;
+.pf-identity-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
-.profile-information-holder-middle p{
-color:#666;
+.pf-username {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
 }
 
-.profile-information-holder-lower{
-display:flex;
-gap:25px;
-font-size:14px;
-color:#777;
+.pf-level-badge {
+    background: rgba(220,38,38,0.12);
+    color: #f87171;
+    border: 0.5px solid rgba(220,38,38,0.25);
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 9px;
 }
 
-.profile-personal-card-lower{
-display:flex;
-gap:15px;
-border-top:1px solid #eee;
-padding-top:20px;
+.pf-xp-badge {
+    background: rgba(255,255,255,0.05);
+    color: #888;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 9px;
 }
 
-.profile-personal-card-lower-items{
-flex:1;
-padding:12px;
-text-align:center;
-border-radius:10px;
-background:#f8fafc;
-font-size:14px;
-font-weight:500;
-cursor:pointer;
+.pf-btn-edit {
+    margin-left: auto;
+    background: transparent;
+    border: 0.5px solid rgba(255,255,255,0.1);
+    color: #888;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
 }
 
-.profile-display-container-box{
-background:#ffffff;
-border-radius:18px;
-padding:25px;
-box-shadow:0 8px 25px rgba(0,0,0,0.04);
-min-height:400px;
+.pf-btn-edit:hover { background: rgba(255,255,255,0.05); color: #e5e5e5; }
+
+.pf-motto {
+    font-size: 13px;
+    color: #555;
+    margin: 0;
+    font-style: italic;
 }
 
-/* SUMMARY CARDS */
-
-.profile-game-summary{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:20px;
-margin-top:20px;
+.pf-meta-row {
+    display: flex;
+    gap: 8px;
+    font-size: 12px;
+    color: #444;
 }
 
-.profile-game-box{
-background:white;
-padding:24px;
-border-radius:20px;
-box-shadow:0 8px 24px rgba(0,0,0,0.06);
-text-align:center;
-transition:0.2s;
+/* ── Tabs ── */
+.pf-tabs {
+    display: flex;
+    gap: 4px;
+    border-top: 0.5px solid rgba(255,255,255,0.06);
+    padding-top: 16px;
 }
 
-.profile-game-box:hover{
-transform:translateY(-4px);
+.pf-tab {
+    background: transparent;
+    border: none;
+    color: #555;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 7px 14px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
 }
 
-/* CHARTS */
+.pf-tab:hover { background: rgba(255,255,255,0.04); color: #c8c8c8; }
 
-.profile-charts-holder{
-display:grid;
-grid-template-columns:2fr 1fr;
-gap:30px;
-margin-top:30px;
+.pf-tab.active {
+    background: rgba(220,38,38,0.1);
+    color: #f87171;
 }
 
-.profile-bar-card,
-.profile-pie-card{
-background:white;
-border-radius:20px;
-padding:25px;
-box-shadow:0 8px 24px rgba(0,0,0,0.06);
-height:380px;
+/* ── Content card ── */
+.pf-content-card { min-height: 380px; }
+
+/* ── Overview ── */
+.pf-overview-hero {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    padding: 16px;
+    background: #1c1c1c;
+    border: 0.5px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
 }
 
-/* FRIENDS */
+.pf-ring { width: 90px; height: 90px; flex-shrink: 0; }
 
-.profile-friend-card{
-display:flex;
-justify-content:space-between;
-background:white;
-padding:16px;
-border-radius:16px;
-margin-bottom:10px;
-box-shadow:0 4px 10px rgba(0,0,0,0.05);
+.pf-overview-meta { flex: 1; }
+
+.pf-overview-exp {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 8px;
 }
 
-.profile-unfriend-btn{
-margin-left:10px;
-color:red;
+.pf-overview-exp span { font-size: 14px; color: #555; font-family: 'DM Sans', sans-serif; font-weight: 400; }
+
+.pf-exp-bar-bg {
+    height: 4px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 6px;
 }
 
-/* MODALS */
-
-.profile-modal{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.5);
-display:flex;
-justify-content:center;
-align-items:center;
-z-index:1000;
+.pf-exp-bar-fill {
+    height: 100%;
+    background: #dc2626;
+    border-radius: 10px;
+    transition: width 0.6s ease;
 }
 
-.profile-modal-content{
-background:white;
-padding:25px;
-border-radius:12px;
-display:flex;
-flex-direction:column;
-gap:10px;
-min-width:300px;
+.pf-exp-caption { font-size: 11px; color: #444; margin: 0; }
+
+/* ── Stat grid (shared by overview + achievements) ── */
+.pf-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
 }
 
-.profile-modal-content input{
-padding:8px;
-border:1px solid #ccc;
-border-radius:6px;
+.pf-stat-box {
+    background: #1c1c1c;
+    border: 0.5px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.pf-stat-label {
+    font-size: 10px;
+    color: #444;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+.pf-stat-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+}
+
+/* ── Stats charts ── */
+.pf-charts-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 12px;
+}
+
+.pf-chart-wrap {
+    background: #1c1c1c;
+    border: 0.5px solid rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 16px;
+}
+
+.pf-chart-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin: 0 0 12px;
+}
+
+.pf-chart-inner {
+    height: 280px;
+    position: relative;
+}
+
+/* ── Friends ── */
+.pf-friend-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 0.5px solid rgba(255,255,255,0.05);
+}
+
+.pf-friend-row:last-child { border-bottom: none; }
+
+.pf-friend-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #888;
+    flex-shrink: 0;
+}
+
+.pf-friend-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: #e5e5e5;
+    flex: 1;
+}
+
+.pf-friend-actions { display: flex; gap: 6px; }
+
+/* ── Achievements ── */
+.pf-achieve-card {
+    background: #1c1c1c;
+    border: 0.5px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.pf-achieve-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e5e5e5;
+    margin: 0;
+}
+
+.pf-achieve-desc {
+    font-size: 12px;
+    color: #666;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.pf-achieve-xp {
+    font-size: 11px;
+    color: #f87171;
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+/* ── Shared routines ── */
+.pf-routine-row {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 0.5px solid rgba(255,255,255,0.05);
+    font-size: 13px;
+    color: #aaa;
+}
+
+.pf-routine-row:last-child { border-bottom: none; }
+
+/* ── Shared buttons ── */
+.pf-btn-primary {
+    background: #dc2626;
+    color: #fff;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 9px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+}
+
+.pf-btn-primary:hover { background: #b91c1c; }
+.pf-btn-primary:active { transform: scale(0.97); }
+
+.pf-btn-ghost {
+    background: transparent;
+    border: 0.5px solid rgba(255,255,255,0.1);
+    color: #888;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+    white-space: nowrap;
+}
+
+.pf-btn-ghost:hover { background: rgba(255,255,255,0.05); color: #e5e5e5; }
+.pf-btn-ghost.danger:hover { background: rgba(220,38,38,0.1); color: #f87171; border-color: rgba(220,38,38,0.25); }
+
+.pf-empty { font-size: 13px; color: #444; margin: 0; }
+
+/* ── Modals ── */
+.pf-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.pf-modal {
+    background: #1a1a1a;
+    border: 0.5px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 320px;
+    max-width: 420px;
+    width: 100%;
+}
+
+.pf-modal-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 4px;
+}
+
+.pf-modal-input {
+    background: #111;
+    border: 0.5px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    color: #e5e5e5;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    padding: 9px 12px;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.12s;
+}
+
+.pf-modal-input:focus { border-color: rgba(220,38,38,0.5); }
+.pf-modal-input::placeholder { color: #444; }
+
+.pf-modal-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 4px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 800px) {
+    .pf-charts-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+    .pf-page { padding: 16px 16px 48px; }
+    .pf-tabs { flex-wrap: wrap; }
+    .pf-stat-grid { grid-template-columns: 1fr 1fr; }
 }

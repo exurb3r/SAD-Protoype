@@ -1,18 +1,22 @@
 import React, { useState } from "react";
-import { useNavigate, Navigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Doughnut } from "react-chartjs-2";
+import { ArcElement, Chart as ChartJS, Tooltip, Legend } from "chart.js";
 import "../../assets/Add.css";
+
+ChartJS.register(ArcElement, Tooltip, Legend);
+
+const CATEGORIES = ["Chest", "Back", "Shoulders", "Arms", "Core/Abs", "Legs"];
+const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
 function AddWorkout() {
     const navigate = useNavigate();
+
     const [routineName, setRoutineName] = useState("");
-
     const [exerciseName, setExerciseName] = useState("");
-    const [category, setCategory] = useState("");
+    const [category, setCategory] = useState("Chest");
     const [reps, setReps] = useState("");
-
     const [exercises, setExercises] = useState([]);
-
     const [editingIndex, setEditingIndex] = useState(null);
     const [editName, setEditName] = useState("");
     const [editCategory, setEditCategory] = useState("");
@@ -23,286 +27,240 @@ function AddWorkout() {
     function handleAddExercise(e) {
         e.preventDefault();
         if (!exerciseName || !reps) return;
-
-        const newExercise = {
-        nameOfexercise: exerciseName,
-        category,
-        reps: Number(reps)
-        };
-        setExercises([...exercises, newExercise]);
+        setExercises([...exercises, { nameOfexercise: exerciseName, category, reps: Number(reps) }]);
         setExerciseName("");
         setReps("");
     }
 
     function handleDelete(index) {
-        const updated = exercises.filter((_, i) => i !== index);
-        setExercises(updated);
+        setExercises(exercises.filter((_, i) => i !== index));
     }
 
     function handleCopy(index) {
-        const copiedExercise = { ...exercises[index] };
-        setExercises([...exercises, copiedExercise]);
+        setExercises([...exercises, { ...exercises[index] }]);
     }
 
     function handleUpdate(index) {
         const updated = [...exercises];
-        updated[index] = {
-        ...updated[index],
-        nameOfexercise: editName,
-        category: editCategory,
-        reps: Number(editReps)
-        };
-
+        updated[index] = { nameOfexercise: editName, category: editCategory, reps: Number(editReps) };
         setExercises(updated);
         setEditingIndex(null);
     }
-    function returnToPreviousStage(){
-      const confirmation = confirm(" Go back to previous page ?");
-      if (confirmation){
-        navigate('/startworkout');
-      }
+
+    function returnToPreviousStage() {
+        const confirmation = confirm("Go back to previous page?");
+        if (confirmation) navigate('/startworkout');
     }
-
-
 
     async function handleSaveRoutine() {
         if (!routineName || exercises.length === 0) {
             alert("Please add a routine name and at least one exercise.");
             return;
         }
-
         try {
             const response = await fetch("http://localhost:3500/users/startworkout/add", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-            },
-            body: JSON.stringify({
-                routineName,
-                exercises,
-                dayAssigned,
-                timeAssigned
-            })
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                },
+                body: JSON.stringify({ routineName, exercises, dayAssigned, timeAssigned })
             });
-
-            const data = await response.json();
-            console.log(data);
-            alert("Routine saved!");
+            await response.json();
             navigate("/startworkout");
         } catch (err) {
             console.error(err);
         }
     }
 
-  return (
-    <div className="add-routine-page">
-        <div className="add-routine-baryeah">
-            <button className="add-routine-back-btn" onClick={() => returnToPreviousStage()}>🔙</button>
-            <h1 className="add-routine-title">Add Workout</h1>
-        </div>
+    const focusAreas = [...new Set(exercises.map(e => e.category))];
+    const doughnutCounts = CATEGORIES.map(cat => exercises.filter(e => e.category === cat).length);
+    const isEmpty = doughnutCounts.every(v => v === 0);
 
-      <div className="add-routine-container">
+    return (
+        <div className="aw-page">
 
-        <div className="add-routine-left-box">
-            <h2>Exercise Details </h2>
-            <div className="add-routine-baryeah">
-                <label className="add-routine-category-label">Assign a day (optional):</label>
-                <select
-                    className="add-routine-category-select"
-                    value={dayAssigned}
-                    onChange={(e) => setDayAssigned(e.target.value)}
-                >
-                    <option value={null}>None</option>
-                    <option value="Monday">Monday</option>
-                    <option value="Tuesday">Tuesday</option>
-                    <option value="Wednesday">Wednesday</option>
-                    <option value="Thursday">Thursday</option>
-                    <option value="Friday">Friday</option>
-                    <option value="Saturday">Saturday</option>
-                    <option value="Sunday">Sunday</option>
-
-                    
-                </select>
-                <label className="add-routine-time-label">Select a time:</label>
-                <input type="time" value={timeAssigned} onChange={(e) => setTimeAssigned(e.target.value)}></input>
-            </div>  
-          <form onSubmit={handleAddExercise} className="add-routine-form">
-            <input
-              className="add-routine-title-input"
-              type="text"
-              placeholder="Title of Routine"
-              value={routineName}
-              onChange={(e) => setRoutineName(e.target.value)}
-            />
-
-            <div className="add-routine-exercise-inputs">
-              <input
-                className="add-routine-exercise-name"
-                type="text"
-                placeholder="Exercise Name"
-                value={exerciseName}
-                onChange={(e) => setExerciseName(e.target.value)}
-              />
-
-              <select
-                className="add-routine-category-select"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              >
-                <option value="Chest">Chest</option>
-                <option value="Back">Back</option>
-                <option value="Shoulders">Shoulders</option>
-                <option value="Arms">Arms</option>
-                <option value="Core/Abs">Core/Abs</option>
-                <option value="Legs">Legs</option>
-              </select>
-
-              <input
-                className="add-routine-reps-input"
-                type="number"
-                placeholder="Number of Sets/Reps"
-                value={reps}
-                onChange={(e) => setReps(e.target.value)}
-                min="0"
-              />
-                <button
-                type="submit"
-                className="add-routine-add-btn"
-                >
-                Add Exercise
-            </button>
+            {/* Top bar */}
+            <div className="aw-topbar">
+                <button className="aw-back-btn" onClick={returnToPreviousStage}>← Back</button>
+                <div>
+                    <h1 className="aw-title">Add Workout</h1>
+                    <p className="aw-sub">Build your routine exercise by exercise</p>
+                </div>
             </div>
-          </form>
 
-          <div className="add-routine-exercise-preview">
-            <ul className="add-routine-exercise-list">
-              {exercises.map((ex, index) => (
-                <li key={index} className="add-routine-exercise-item">
+            <div className="aw-layout">
 
-                  {editingIndex === index ? (
-                    <>
-                      <input
-                        className="add-routine-edit-name"
-                        value={editName}
-                        onChange={(e) => setEditName(e.target.value)}
-                      />
+                {/* Left — form + list */}
+                <div className="aw-left">
 
-                      <select
-                        className="add-routine-edit-category"
-                        value={editCategory}
-                        onChange={(e) => setEditCategory(e.target.value)}
-                      >
-                        <option value="Chest">Chest</option>
-                        <option value="Back">Back</option>
-                        <option value="Shoulders">Shoulders</option>
-                        <option value="Arms">Arms</option>
-                        <option value="Core/abs">Core/Abs</option>
-                        <option value="Legs">Legs</option>
-                      </select>
+                    {/* Meta row */}
+                    <div className="aw-card">
+                        <p className="aw-card-label">Routine Details</p>
+                        <input
+                            className="aw-input full"
+                            type="text"
+                            placeholder="Routine name (e.g. Push Day A)"
+                            value={routineName}
+                            onChange={e => setRoutineName(e.target.value)}
+                        />
+                        <div className="aw-meta-row">
+                            <div className="aw-field">
+                                <label className="aw-field-label">Day</label>
+                                <select className="aw-select" value={dayAssigned} onChange={e => setDayAssigned(e.target.value)}>
+                                    <option value="">None</option>
+                                    {DAYS.map(d => <option key={d} value={d}>{d}</option>)}
+                                </select>
+                            </div>
+                            <div className="aw-field">
+                                <label className="aw-field-label">Time</label>
+                                <input className="aw-input" type="time" value={timeAssigned} onChange={e => setTimeAssigned(e.target.value)} />
+                            </div>
+                        </div>
+                    </div>
 
-                      <input
-                        className="add-routine-edit-reps"
-                        type="number"
-                        value={editReps}
-                        onChange={(e) => setEditReps(e.target.value)}
-                        min="0"
-                      />
+                    {/* Add exercise form */}
+                    <div className="aw-card">
+                        <p className="aw-card-label">Add Exercise</p>
+                        <form onSubmit={handleAddExercise} className="aw-exercise-form">
+                            <input
+                                className="aw-input"
+                                type="text"
+                                placeholder="Exercise name"
+                                value={exerciseName}
+                                onChange={e => setExerciseName(e.target.value)}
+                            />
+                            <select className="aw-select" value={category} onChange={e => setCategory(e.target.value)}>
+                                {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+                            </select>
+                            <input
+                                className="aw-input aw-reps"
+                                type="number"
+                                placeholder="Sets / Reps"
+                                value={reps}
+                                onChange={e => setReps(e.target.value)}
+                                min="0"
+                            />
+                            <button type="submit" className="aw-btn-primary">+ Add</button>
+                        </form>
+                    </div>
 
-                      <button
-                        className="add-routine-btn-outline"
-                        onClick={() => setEditingIndex(null)}
-                      >
-                        Cancel
-                      </button>
+                    {/* Exercise list */}
+                    <div className="aw-card aw-list-card">
+                        <div className="aw-list-header">
+                            <p className="aw-card-label">Exercises</p>
+                            <span className="aw-count">{exercises.length}</span>
+                        </div>
 
-                      <button
-                        className="add-routine-btn-outline"
-                        onClick={() => handleUpdate(index)}
-                      >
-                        Confirm
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <span className="add-routine-ex-name">{ex.nameOfexercise}</span>
-                      <span className="add-routine-ex-category">{ex.category}</span>
-                      <span className="add-routine-ex-reps">{ex.reps} reps</span>
+                        {exercises.length === 0 && (
+                            <p className="aw-empty">No exercises added yet.</p>
+                        )}
 
-                      <button
-                        className="add-routine-btn-outline"
-                        onClick={() => {
-                          setEditingIndex(index);
-                          setEditName(ex.nameOfexercise);
-                          setEditCategory(ex.category);
-                          setEditReps(ex.reps);
-                        }}
-                      >
-                        Edit
-                      </button>
+                        <ul className="aw-exercise-list">
+                            {exercises.map((ex, index) => (
+                                <li key={index} className="aw-exercise-item">
+                                    {editingIndex === index ? (
+                                        <div className="aw-edit-row">
+                                            <input className="aw-input" value={editName} onChange={e => setEditName(e.target.value)} />
+                                            <select className="aw-select" value={editCategory} onChange={e => setEditCategory(e.target.value)}>
+                                                {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+                                            </select>
+                                            <input className="aw-input aw-reps" type="number" value={editReps} onChange={e => setEditReps(e.target.value)} min="0" />
+                                            <div className="aw-actions">
+                                                <button className="aw-btn-ghost" onClick={() => setEditingIndex(null)}>Cancel</button>
+                                                <button className="aw-btn-ghost confirm" onClick={() => handleUpdate(index)}>Save</button>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="aw-ex-row">
+                                            <div className="aw-ex-info">
+                                                <span className="aw-ex-name">{ex.nameOfexercise}</span>
+                                                <div className="aw-ex-tags">
+                                                    <span className="aw-tag cat">{ex.category}</span>
+                                                    <span className="aw-tag reps">{ex.reps} reps</span>
+                                                </div>
+                                            </div>
+                                            <div className="aw-actions">
+                                                <button className="aw-btn-ghost" onClick={() => { setEditingIndex(index); setEditName(ex.nameOfexercise); setEditCategory(ex.category); setEditReps(ex.reps); }}>Edit</button>
+                                                <button className="aw-btn-ghost" onClick={() => handleCopy(index)}>Copy</button>
+                                                <button className="aw-btn-ghost danger" onClick={() => handleDelete(index)}>Del</button>
+                                            </div>
+                                        </div>
+                                    )}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
 
-                      <button
-                        className="add-routine-btn-outline"
-                        onClick={() => handleCopy(index)}
-                      >
-                        Copy
-                      </button>
+                {/* Right — overview */}
+                <div className="aw-right">
+                    <div className="aw-card aw-overview-card">
+                        <p className="aw-card-label">Overview</p>
 
-                      <button
-                        className="add-routine-btn-outline"
-                        onClick={() => handleDelete(index)}
-                      >
-                        Delete
-                      </button>
-                    </>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
+                        <div className="aw-chart-wrap">
+                            {isEmpty ? (
+                                <div className="aw-chart-empty">
+                                    <p>Add exercises to see your muscle split</p>
+                                </div>
+                            ) : (
+                                <Doughnut
+                                    data={{
+                                        labels: CATEGORIES,
+                                        datasets: [{
+                                            data: doughnutCounts,
+                                            backgroundColor: ["#dc2626","#f87171","#ffffff","#9ca3af","#4b4b4b","#1f1f1f"],
+                                            borderWidth: 0,
+                                            borderRadius: 4,
+                                        }],
+                                    }}
+                                    options={{
+                                        responsive: true,
+                                        maintainAspectRatio: false,
+                                        plugins: {
+                                            legend: {
+                                                position: 'bottom',
+                                                labels: { color: '#888', font: { size: 11 }, padding: 10, boxWidth: 10 }
+                                            }
+                                        },
+                                        cutout: '65%',
+                                    }}
+                                />
+                            )}
+                        </div>
+
+                        <div className="aw-summary">
+                            <div className="aw-summary-row">
+                                <span>Routine</span>
+                                <span>{routineName || "—"}</span>
+                            </div>
+                            <div className="aw-summary-row">
+                                <span>Exercises</span>
+                                <span>{exercises.length}</span>
+                            </div>
+                            <div className="aw-summary-row">
+                                <span>Day</span>
+                                <span>{dayAssigned || "—"}</span>
+                            </div>
+                            <div className="aw-summary-row">
+                                <span>Focus</span>
+                                <span>{focusAreas.length > 0 ? focusAreas.join(", ") : "—"}</span>
+                            </div>
+                        </div>
+
+                        <button
+                            className={`aw-btn-primary full aw-save-btn ${(!routineName || exercises.length === 0) ? 'disabled' : ''}`}
+                            onClick={handleSaveRoutine}
+                            disabled={!routineName || exercises.length === 0}
+                        >
+                            Save Routine
+                        </button>
+                    </div>
+                </div>
+
+            </div>
         </div>
-
-        <div className="add-routine-right-box">
-          <h2 className="add-routine-overview-title">Workout Overview</h2>
-
-          <div className="add-routine-chart-container">
-            <Doughnut
-              data={{
-                labels: ["Chest", "Back", "Shoulders", "Arms", "Core/Abs", "Legs"],
-                datasets: [{
-                  data: [
-                    exercises.filter(e => e.category === "Chest").length,
-                    exercises.filter(e => e.category === "Back").length,
-                    exercises.filter(e => e.category === "Shoulders").length,
-                    exercises.filter(e => e.category === "Arms").length,
-                    exercises.filter(e => e.category === "Core/Abs").length,
-                    exercises.filter(e => e.category === "Legs").length,
-                  ],
-                  backgroundColor: ["blue", "red", "yellow", "green", "violet", "orange"],
-                  borderWidth: 0,
-                }],
-              }}
-              options={{ responsive: true, maintainAspectRatio: false }}
-            />
-          </div>
-
-          <div className="add-routine-summary">
-            <p><strong>{routineName || "No Title Yet"}</strong></p>
-            <p>Total Exercises: {exercises.length}</p>
-            <p>
-              Focus:{" "}
-              {exercises
-                .map(e => e.category)
-                .filter((v, i, a) => a.indexOf(v) === i)
-                .join(", ")}
-            </p>
-            <button className="add-routine-save-btn" onClick={handleSaveRoutine}>Save Routine</button>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  );
+    );
 }
 
 export default AddWorkout;

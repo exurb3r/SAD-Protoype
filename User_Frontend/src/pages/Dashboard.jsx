@@ -1,9 +1,9 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import '../assets/Dashboard.css'
-import { Bar, Doughnut, Line } from 'react-chartjs-2';
+import '../assets/Dashboard.css';
+import { Bar, Doughnut } from 'react-chartjs-2';
 import { ArcElement } from "chart.js";
-import { CircularProgressbar } from 'react-circular-progressbar';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import {
   Chart as ChartJS,
@@ -15,35 +15,41 @@ import {
   Legend,
 } from "chart.js";
 
-
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 
-function Dashboard(){
+function StatCard({ label, value, sub }) {
+    return (
+        <div className="stat-card">
+            <span className="stat-label">{label}</span>
+            <span className="stat-value">{value}</span>
+            {sub && <span className="stat-sub">{sub}</span>}
+        </div>
+    );
+}
+
+function SectionTitle({ children }) {
+    return <h2 className="section-title">{children}</h2>;
+}
+
+function Dashboard() {
     const [username, setUsername] = useState('');
     const [membership, setMembership] = useState('');
-    const [currentStreak, setCurrentStreak] = useState();
-    const [membershipDuration, setMembershipDuration] = useState();
+    const [currentStreak, setCurrentStreak] = useState(0);
+    const [membershipDuration, setMembershipDuration] = useState(0);
     const [recentAchievements, setRecentAchievements] = useState([]);
-    const [exp, setExp] = useState();
-    const [level, setLevel] = useState();
+    const [exp, setExp] = useState(0);
+    const [level, setLevel] = useState(0);
     const [notifications, setNotifications] = useState([]);
-
     const [barData, setBarData] = useState([]);
     const [barData2, setBarData2] = useState([]);
     const [doughnutData, setDoughnutData] = useState([]);
-    const [maxBarValue, setMaxBarValue] = useState('');
-    console.log(doughnutData)
-    
-    const [numberOfWorkouts, setNumberOfWorkouts] = useState();
-    const [duration, setDuration] = useState();
+    const [maxBarValue, setMaxBarValue] = useState(10);
+    const [numberOfWorkouts, setNumberOfWorkouts] = useState(0);
+    const [duration, setDuration] = useState(0);
     const [focus, setFocus] = useState([]);
-    const [expGained, setExpGained] = useState();
+    const [expGained, setExpGained] = useState(0);
 
-    useEffect(() => {
-        loadUserData();
-    }, []);
-
-
+    useEffect(() => { loadUserData(); }, []);
 
     const loadUserData = async () => {
         try {
@@ -70,126 +76,191 @@ function Dashboard(){
                 setDuration(Math.ceil((data.duration / 60) * 100) / 100);
                 setFocus(data.focus);
                 setExpGained(data.expGained);
-            }   else {              
-                console.error('Failed to load user data:', data.message);
             }
         } catch (error) {
             console.error('Error fetching user data:', error);
         }
+    };
 
-    }
+    const expPercent = 70;
 
-    return(
-       <div className='dashboard-page'>
-            <h1> Dashboard </h1>
-            <div className='welcome-back-section'><p> Welcome Back  <span> {username}</span></p>    <Link to={"/startworkout"}> <button> Start Workout Now</button></Link></div>
-            <div className='dashboard-container-box'>
-                <div className='dashboard-upper-box-firstbox'> 
-                    <div>
-                        <div className='lvl-holder'>
-                            <CircularProgressbar value={70} text={`Lvl ${level}`} />
+    return (
+        <div className="dashboard-page">
+
+            {/* Header */}
+            <div className="dashboard-header">
+                <div>
+                    <h1 className="dashboard-title">Dashboard</h1>
+                    <p className="dashboard-greeting">Welcome back, <span>{username}</span></p>
+                </div>
+                <Link to="/startworkout">
+                    <button className="start-btn">+ Start Workout</button>
+                </Link>
+            </div>
+
+            {/* Top row */}
+            <div className="top-row">
+
+                {/* Level card */}
+                <div className="card level-card">
+                    <div className="level-ring">
+                        <CircularProgressbar
+                            value={expPercent}
+                            text={`Lvl ${level}`}
+                            styles={buildStyles({
+                                textColor: '#fff',
+                                textSize: '18px',
+                                pathColor: '#dc2626',
+                                trailColor: 'rgba(255,255,255,0.07)',
+                                strokeLinecap: 'round',
+                            })}
+                        />
+                    </div>
+                    <div className="level-info">
+                        <p className="level-exp-label">Total EXP</p>
+                        <p className="level-exp-value">{exp?.toLocaleString()}</p>
+                        <div className="exp-bar-bg">
+                            <div className="exp-bar-fill" style={{ width: `${expPercent}%` }} />
                         </div>
-                        <p> TOTAL EXP : </p><p> {exp} exp gained</p>
+                        <p className="exp-bar-caption">{expPercent}% to next level</p>
                     </div>
                 </div>
-                <div className='dashboard-upper-box-middlebox'>
-                    <div className='upper-section' >
-                        <div className='dashboard-inner-first-box-streak'> <p> Current Streak: </p> <p>{currentStreak} Days</p></div>
-                        <div className='dashboard-inner-first-box-membership'>  <p> Membership: </p>
-                                                                                <p> {membership} </p> 
-                                                                                <p> {membershipDuration} days</p></div>
+
+                {/* Stats row */}
+                <div className="card stats-card">
+                    <div className="stats-top-row">
+                        <StatCard label="Current Streak" value={`${currentStreak}`} sub="days" />
+                        <StatCard label="Membership" value={membership} sub={`${membershipDuration} days`} />
                     </div>
-                    <div className='dashboard-inner-first-box-achievements'><p> Recent Achievements</p>
-                                                                            {recentAchievements.map((achievement, index) => (
-                                                                                <p key={index}> {achievement} </p>
-                                                                            ))}
+                    <div className="achievements-box">
+                        <p className="achievements-label">Recent Achievements</p>
+                        <div className="achievements-list">
+                            {recentAchievements.length > 0
+                                ? recentAchievements.map((a, i) => (
+                                    <span key={i} className="achievement-badge">{a}</span>
+                                ))
+                                : <span className="no-data">No achievements yet</span>
+                            }
+                        </div>
                     </div>
                 </div>
-                <div className='dashboard-upper-box-lastbox'> <p>Previous Workout Preview </p> 
-                                                        <ul> 
-                                                            <li> No. of Workouts <p>{numberOfWorkouts}</p></li> 
-                                                            <li> Duration <p>{duration} hours</p></li>
-                                                            <li> Focus : {focus.join(', ')}</li>
-                                                            <li> Exp Gained <p>{expGained}</p></li>
-                                                        </ul>
+
+                {/* Last workout */}
+                <div className="card last-workout-card">
+                    <p className="card-label">Last Workout</p>
+                    <div className="last-workout-grid">
+                        <div className="lw-item">
+                            <span className="lw-num">{numberOfWorkouts}</span>
+                            <span className="lw-sub">Exercises</span>
+                        </div>
+                        <div className="lw-item">
+                            <span className="lw-num">{duration}h</span>
+                            <span className="lw-sub">Duration</span>
+                        </div>
+                        <div className="lw-item">
+                            <span className="lw-num">+{expGained}</span>
+                            <span className="lw-sub">EXP</span>
+                        </div>
+                    </div>
+                    {focus.length > 0 && (
+                        <div className="focus-tags">
+                            {focus.map((f, i) => (
+                                <span key={i} className="focus-tag">{f}</span>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
 
-            <div className='dashboard-container-box'>
-                <div>
-                <h2> Your Week </h2>
-                <div className='dashboard-big-box-progress'>
-                    <Bar
-                        data={{
-                            labels: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
-                            datasets: [
-                            {
-                                label: "No. of Workouts",
-                                data: barData,
-                                backgroundColor: "#4d4dff",
-                                borderRadius: 5,
-                                borderWidth: 0,
-                            },
-                            {
-                                label: "Time Spent (hrs)",
-                                data: barData2,
-                                backgroundColor: "#ff4d4d",
-                                borderRadius: 5,
-                                borderWidth: 0,
-                            },
-                            ],
-                        }}
-                        options={{
-                            responsive: true,
-                            plugins: {
-                            legend: {
-                                display: true,
-                            },
-                            },
-                            scales: {
-                            y: {
-                                beginAtZero: true,
-                                max: maxBarValue,
-                            },
-                            },
-                        }}
+            {/* Charts */}
+            <div className="charts-row">
+                <div className="card chart-card chart-bar">
+                    <SectionTitle>Your Week</SectionTitle>
+                    <div className="chart-wrap">
+                        <Bar
+                            data={{
+                                labels: ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
+                                datasets: [
+                                    {
+                                        label: "Workouts",
+                                        data: barData,
+                                        backgroundColor: "#dc2626",
+                                        borderRadius: 6,
+                                        borderWidth: 0,
+                                    },
+                                    {
+                                        label: "Hours",
+                                        data: barData2,
+                                        backgroundColor: "rgba(255,255,255,0.12)",
+                                        borderRadius: 6,
+                                        borderWidth: 0,
+                                    },
+                                ],
+                            }}
+                            options={{
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        labels: { color: '#888', font: { size: 11 } }
+                                    },
+                                },
+                                scales: {
+                                    x: { ticks: { color: '#555' }, grid: { color: 'rgba(255,255,255,0.04)' } },
+                                    y: { beginAtZero: true, max: maxBarValue, ticks: { color: '#555' }, grid: { color: 'rgba(255,255,255,0.04)' } },
+                                },
+                            }}
                         />
-                </div>
-                </div>
-                <div>
-                <h2> Your Workout Distribution </h2>
-                <div className='dashboard-big-box-progress-pie'>
-                    <Doughnut
-                        data={{
-                            labels: ["Chest", "Back", "Shoulders", "Arms", "Core/Abs", "Legs"],
-                            datasets: [{
-                                data: doughnutData,
-                                backgroundColor: ["red", "blue", "green", "orange", "purple", "cyan"],
-                                borderRadius: 5,
-                                borderWidth: 0,
-                                barThickness: 50,
-
-                            }],
-                        }}
-                        options={{
-                            responsive: true,
-                            maintainAspectRatio: false, 
-                        }}
-                        />
-
-                </div>
-                </div>
-            </div>
-            <p> Recent Notifications </p>
-            <div className='dashboard-notif-box'>
-                {notifications.map((notification) => (
-                    <div key={notification.id} className='dashboard-notif-item'>
-                        <p>{notification.message}</p>
                     </div>
-                ))}
+                </div>
+
+                <div className="card chart-card chart-doughnut">
+                    <SectionTitle>Workout Split</SectionTitle>
+                    <div className="chart-wrap">
+                        <Doughnut
+                            data={{
+                                labels: ["Chest","Back","Shoulders","Arms","Core","Legs"],
+                                datasets: [{
+                                    data: doughnutData,
+                                    backgroundColor: ["#dc2626","#f87171","#fff","#9ca3af","#4b4b4b","#1f1f1f"],
+                                    borderWidth: 0,
+                                    borderRadius: 4,
+                                }],
+                            }}
+                            options={{
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                        labels: { color: '#888', font: { size: 11 }, padding: 12, boxWidth: 10 }
+                                    },
+                                },
+                                cutout: '68%',
+                            }}
+                        />
+                    </div>
+                </div>
             </div>
-       </div>
-    )
+
+            {/* Notifications */}
+            <div className="notif-section">
+                <SectionTitle>Notifications</SectionTitle>
+                <div className="notif-list">
+                    {notifications.length > 0
+                        ? notifications.map((n) => (
+                            <div key={n.id} className="notif-item">
+                                <span className="notif-dot" />
+                                <p>{n.message}</p>
+                            </div>
+                        ))
+                        : <p className="no-data">No new notifications</p>
+                    }
+                </div>
+            </div>
+
+        </div>
+    );
 }
 
 export default Dashboard;
