@@ -44,7 +44,8 @@ const UserGameDetailsSchema = new Schema({
     },
     achievements: [achievementsSchema],
     level: {
-        type: Number
+        type: Number,
+        default: 1
     },
     exp_points: {
         type: Number

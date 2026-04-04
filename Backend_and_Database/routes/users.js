@@ -13,5 +13,7 @@ router.use("/community", require("./user_routes/community"));
 router.use("/leaderboard", require("./user_routes/leaderboard"))
 router.use("/gymhistory", require("./user_routes/gymstatus"));
 router.use("/profile", require("./user_routes/profile"));
+router.use("/notifications", require("./user_routes/notifications"));
+
 
 module.exports = router;

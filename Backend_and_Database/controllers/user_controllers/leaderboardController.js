@@ -9,7 +9,6 @@ const getLeaderboards = async (req,res)=>{
         const progress = await UserProgress.find();
         const users = await AppUsers.find({}, "userId username email");
 
-        // Map userId -> username/email
         let userMap = {};
         users.forEach(u=>{
             userMap[u.userId.toString()] = {
@@ -18,7 +17,6 @@ const getLeaderboards = async (req,res)=>{
             };
         });
 
-        // Calculate total workouts
         let workoutsMap = {};
         progress.forEach(p=>{
             let total = 0;

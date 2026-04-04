@@ -1,5 +1,4 @@
 
-/* ── Page ── */
 .pf-page {
     min-height: 100vh;
     max-height: 100vh;
@@ -19,7 +18,6 @@
 .pf-page::-webkit-scrollbar { width: 5px; }
 .pf-page::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 10px; }
 
-/* ── Card shell ── */
 .pf-card {
     background: #161616;
     border: 0.5px solid rgba(255,255,255,0.07);
@@ -37,7 +35,6 @@
     margin: 0 0 16px;
 }
 
-/* ── Identity card ── */
 .pf-identity-upper {
     display: flex;
     align-items: center;
@@ -132,7 +129,6 @@
     color: #444;
 }
 
-/* ── Tabs ── */
 .pf-tabs {
     display: flex;
     gap: 4px;
@@ -160,10 +156,8 @@
     color: #f87171;
 }
 
-/* ── Content card ── */
 .pf-content-card { min-height: 380px; }
 
-/* ── Overview ── */
 .pf-overview-hero {
     display: flex;
     align-items: center;
@@ -206,7 +200,6 @@
 
 .pf-exp-caption { font-size: 11px; color: #444; margin: 0; }
 
-/* ── Stat grid (shared by overview + achievements) ── */
 .pf-stat-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -237,7 +230,6 @@
     color: #fff;
 }
 
-/* ── Stats charts ── */
 .pf-charts-grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -265,7 +257,6 @@
     position: relative;
 }
 
-/* ── Friends ── */
 .pf-friend-row {
     display: flex;
     align-items: center;
@@ -299,7 +290,6 @@
 
 .pf-friend-actions { display: flex; gap: 6px; }
 
-/* ── Achievements ── */
 .pf-achieve-card {
     background: #1c1c1c;
     border: 0.5px solid rgba(255,255,255,0.06);
@@ -331,7 +321,6 @@
     margin-top: 4px;
 }
 
-/* ── Shared routines ── */
 .pf-routine-row {
     display: flex;
     align-items: center;
@@ -343,7 +332,6 @@
 
 .pf-routine-row:last-child { border-bottom: none; }
 
-/* ── Shared buttons ── */
 .pf-btn-primary {
     background: #dc2626;
     color: #fff;
@@ -379,7 +367,6 @@
 
 .pf-empty { font-size: 13px; color: #444; margin: 0; }
 
-/* ── Modals ── */
 .pf-modal-overlay {
     position: fixed;
     inset: 0;
@@ -435,7 +422,24 @@
     margin-top: 4px;
 }
 
-/* ── Responsive ── */
+.pf-friend-clickable {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    cursor: pointer;
+    min-width: 0;
+}
+
+.pf-friend-clickable:hover .pf-friend-name {
+    color: #f87171;
+}
+
+.pf-friend-clickable:hover .pf-friend-avatar {
+    background: rgba(220, 38, 38, 0.15);
+    color: #f87171;
+}
+
 @media (max-width: 800px) {
     .pf-charts-grid { grid-template-columns: 1fr; }
 }

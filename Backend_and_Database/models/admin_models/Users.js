@@ -59,7 +59,7 @@ const userSchema = new Schema({
     rfid: {
         type: String,
         unique: true
-    } //for those who have RFID cards, optional field, for RFID login
+    }
 })
 
 module.exports = mongoose.model('Users', userSchema);

@@ -9,7 +9,7 @@ import Layout from "./layout/Layout";
 import Dashboard from "./pages/Dashboard";
 
 import About from "./pages/About";
-import Announcements from "./pages/Announcements";
+import Notifications from "./pages/Notifications";
 import Community from "./pages/Community";
 import GymLoginHistory from "./pages/GymLoginHistory";
 import StartWorkout from "./pages/StartWorkout";
@@ -20,6 +20,7 @@ import Routine from "./pages/Routine";
 import Progress from "./pages/Progress";
 import Settings from "./pages/Settings";
 import Leaderboard from "./pages/Leaderboard";
+import FriendProfile from "./pages/FriendProfile";  
 
 import Add from "./pages/startworkout_subpages/Add";
 import Edit from "./pages/startworkout_subpages/Edit";
@@ -46,7 +47,7 @@ function App() {
           <Route path="community" element={<Community/>} />
           <Route path="leaderboard" element={<Leaderboard/>} />
           <Route path="gymloginhistory" element={<GymLoginHistory/>} />
-          <Route path="announcements" element={<Announcements />} />
+          <Route path="notifications" element={<Notifications />} />
           <Route path="profile" element={<Profile />} />
           <Route path="about" element={<About />} />
           <Route path="settings" element={<Settings />} />
@@ -54,6 +55,7 @@ function App() {
           <Route path="startworkout/add" element={<Add />} />
           <Route path="startworkout/edit/:id" element={<Edit />} />
           <Route path="startworkout/start/:id" element={<Start />} />
+          <Route path="friend/:id" element={<FriendProfile />} />
 
           <Route path="*" element={<PageNotFound />} />
 

@@ -34,7 +34,6 @@
 }
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Syne:wght@700;800&display=swap');
 
-/* ── Page ── */
 .notes-page {
     min-height: 100vh;
     padding: 28px 32px 60px;
@@ -44,7 +43,6 @@
     box-sizing: border-box;
 }
 
-/* ── Header ── */
 .notes-header {
     margin-bottom: 24px;
 }
@@ -64,7 +62,6 @@
     margin: 0;
 }
 
-/* ── Layout ── */
 .notes-layout {
     display: grid;
     grid-template-columns: 300px 1fr;
@@ -72,7 +69,6 @@
     align-items: start;
 }
 
-/* ── Add panel ── */
 .notes-add-panel {
     background: #161616;
     border: 0.5px solid rgba(255,255,255,0.07);
@@ -101,7 +97,6 @@
     gap: 10px;
 }
 
-/* ── Inputs ── */
 .notes-input {
     background: #1c1c1c;
     border: 0.5px solid rgba(255,255,255,0.08);
@@ -139,7 +134,6 @@
 .notes-textarea:focus { border-color: rgba(220,38,38,0.5); }
 .notes-textarea::placeholder { color: #444; }
 
-/* ── Buttons ── */
 .notes-btn-primary {
     background: #dc2626;
     color: #fff;
@@ -194,7 +188,6 @@
     border-color: rgba(34,197,94,0.25);
 }
 
-/* ── Grid ── */
 .notes-grid-area { min-width: 0; }
 
 .notes-grid {
@@ -203,7 +196,6 @@
     gap: 12px;
 }
 
-/* ── Note card ── */
 .note-card {
     background: #161616;
     border: 0.5px solid rgba(255,255,255,0.07);
@@ -271,7 +263,6 @@
     border-top: 0.5px solid rgba(255,255,255,0.05);
 }
 
-/* ── States ── */
 .notes-loading {
     font-size: 13px;
     color: #444;
@@ -293,7 +284,6 @@
     margin: 0;
 }
 
-/* ── Responsive ── */
 @media (max-width: 860px) {
     .notes-layout {
         grid-template-columns: 1fr;

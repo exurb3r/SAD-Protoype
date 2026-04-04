@@ -56,19 +56,12 @@ const calendarSchema = new Schema({
     }
 })
 const userSocialSchema = new Schema({
-    userId: {
-        type: Schema.Types.ObjectId,
-        ref: 'Users',
-        required: true
-    }, 
-    friends: [friendSubSchema],
-    friendRequests: [friendSubSchema],
-    trainerAssigned: {
-        type: String
-    },
-    invitationsSent: [invitationSchema],
-    calendar: [ calendarSchema]
-
+    userId: { type: Schema.Types.ObjectId, ref: 'Users', required: true },
+    friends:             [friendSubSchema],
+    friendRequests:      [friendSubSchema],
+    trainerAssigned:     { type: String },
+    invitationsSent:     [invitationSchema],
+    invitationsReceived: [invitationSchema], 
+    calendar:            [calendarSchema]
 });
-
 module.exports = mongoose.model('UserSocial', userSocialSchema);

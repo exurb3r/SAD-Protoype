@@ -1,5 +1,4 @@
 
-/* ── Page ── */
 .gc-page {
     height: 100vh;
     overflow: hidden;
@@ -12,7 +11,6 @@
     box-sizing: border-box;
 }
 
-/* ── Header ── */
 .gc-header { margin-bottom: 20px; flex-shrink: 0; }
 
 .gc-title {
@@ -26,7 +24,6 @@
 
 .gc-sub { font-size: 13px; color: #555; margin: 0; }
 
-/* ── Layout ── */
 .gc-layout {
     display: grid;
     grid-template-columns: 1fr 300px;
@@ -36,7 +33,6 @@
     overflow: hidden;
 }
 
-/* ── Card shell ── */
 .gc-card {
     background: #161616;
     border: 0.5px solid rgba(255,255,255,0.07);
@@ -75,10 +71,8 @@
     padding: 2px 9px;
 }
 
-/* ── Calendar card ── */
 .gc-calendar-card { padding: 12px; }
 
-/* FullCalendar dark theme overrides */
 .gc-calendar-card .fc {
     font-family: 'DM Sans', sans-serif;
     font-size: 12px;
@@ -165,7 +159,6 @@
 .gc-calendar-card .fc-daygrid-event { white-space: normal !important; }
 .gc-calendar-card .fc-event-title { white-space: normal !important; }
 
-/* ── Side panels ── */
 .gc-side {
     display: flex;
     flex-direction: column;
@@ -177,7 +170,6 @@
 .gc-events-card { flex: 1; }
 .gc-gym-card    { flex: 1; }
 
-/* ── Event list ── */
 .gc-event-list {
     list-style: none;
     padding: 0;
@@ -245,7 +237,6 @@
 
 .gc-empty { font-size: 12px; color: #444; padding: 4px 0; }
 
-/* ── Buttons ── */
 .gc-btn-primary {
     background: #dc2626;
     color: #fff;
@@ -281,7 +272,6 @@
 .gc-btn-ghost:hover { background: rgba(255,255,255,0.05); color: #e5e5e5; }
 .gc-btn-ghost.danger:hover { background: rgba(220,38,38,0.1); color: #f87171; border-color: rgba(220,38,38,0.25); }
 
-/* ── Modal ── */
 .gc-modal-overlay {
     position: fixed;
     inset: 0;
@@ -352,7 +342,6 @@
     gap: 8px;
 }
 
-/* ── Responsive ── */
 @media (max-width: 860px) {
     .gc-page { height: auto; overflow-y: auto; }
     .gc-layout { grid-template-columns: 1fr; height: auto; overflow: visible; }

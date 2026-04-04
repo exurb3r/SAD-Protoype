@@ -130,8 +130,8 @@ function Progress() {
           <p className="pg-card-label">Workout Stats</p>
           <select className="pg-period-select" value={period} onChange={(e) => setPeriod(e.target.value)}>
             <option value="week">Weekly</option>
-            <option value="month">Monthly</option>
-            <option value="year">Yearly</option>
+            <option value="month">Daily</option>
+            <option value="year">Monthly</option>
           </select>
         </div>
 

@@ -1,5 +1,3 @@
-
-/* ── Page ── */
 .aw-page {
     min-height: 100vh;
     padding: 28px 32px 60px;
@@ -9,7 +7,6 @@
     box-sizing: border-box;
 }
 
-/* ── Top bar ── */
 .aw-topbar {
     display: flex;
     align-items: center;
@@ -52,7 +49,6 @@
     margin: 0;
 }
 
-/* ── Layout ── */
 .aw-layout {
     display: grid;
     grid-template-columns: 1.6fr 1fr;
@@ -60,7 +56,6 @@
     align-items: start;
 }
 
-/* ── Cards ── */
 .aw-card {
     background: #161616;
     border: 0.5px solid rgba(255,255,255,0.07);
@@ -81,14 +76,12 @@
     margin: 0;
 }
 
-/* ── Left column ── */
 .aw-left {
     display: flex;
     flex-direction: column;
     gap: 14px;
 }
 
-/* Inputs */
 .aw-input {
     background: #1c1c1c;
     border: 0.5px solid rgba(255,255,255,0.08);
@@ -124,7 +117,6 @@
 
 .aw-reps { max-width: 110px; }
 
-/* Meta row */
 .aw-meta-row {
     display: flex;
     gap: 12px;
@@ -144,7 +136,6 @@
     letter-spacing: 0.5px;
 }
 
-/* Exercise form */
 .aw-exercise-form {
     display: flex;
     gap: 8px;
@@ -156,7 +147,6 @@
 .aw-exercise-form .aw-select { flex: 1; min-width: 100px; }
 .aw-exercise-form .aw-reps { flex: 1; }
 
-/* Buttons */
 .aw-btn-primary {
     background: #dc2626;
     color: #fff;
@@ -199,7 +189,6 @@
 .aw-btn-ghost.danger:hover { background: rgba(220,38,38,0.1); color: #f87171; border-color: rgba(220,38,38,0.25); }
 .aw-btn-ghost.confirm:hover { background: rgba(34,197,94,0.1); color: #4ade80; border-color: rgba(34,197,94,0.25); }
 
-/* Exercise list */
 .aw-list-card { gap: 10px; }
 
 .aw-list-header {
@@ -305,7 +294,6 @@
 .aw-edit-row .aw-select { flex: 1; min-width: 90px; }
 .aw-edit-row .aw-reps { flex: 1; min-width: 70px; }
 
-/* ── Right — overview ── */
 .aw-right { position: sticky; top: 20px; }
 
 .aw-overview-card { gap: 14px; }
@@ -355,7 +343,6 @@
 
 .aw-save-btn { margin-top: 4px; }
 
-/* ── Responsive ── */
 @media (max-width: 860px) {
     .aw-layout { grid-template-columns: 1fr; }
     .aw-right { position: static; }

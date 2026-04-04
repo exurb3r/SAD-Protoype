@@ -164,14 +164,18 @@ const updateIndividualRoutine = async (req, res) => {
 const finishedWorkoutSession = async (req, res) => {
   try {
     const userId = req.user.id;
-    const {
+
+    let {
       routineId,
-      timeSpent,             
-      numberOfWorkout,        
-      numberOfFinished,       
-      workoutList             
+      timeSpent,
+      numberOfWorkout,
+      numberOfFinished,
+      workoutList
     } = req.body;
 
+    const safeTimeSpent = Number(timeSpent) || 0;
+    const safeNumberOfWorkout = Number(numberOfWorkout) || 0;
+    const safeNumberOfFinished = Number(numberOfFinished) || 0;
 
     const userRoutine = await UserRoutine.findOne({ userId });
     if (!userRoutine) {
@@ -192,10 +196,11 @@ const finishedWorkoutSession = async (req, res) => {
     if (!routine) {
       return res.status(400).json({ message: "Routine does not exist" });
     }
+
     const completionRate =
-      numberOfWorkout === 0
+      safeNumberOfWorkout === 0
         ? 0
-        : (numberOfFinished / numberOfWorkout) * 100;
+        : (safeNumberOfFinished / safeNumberOfWorkout) * 100;
 
     let multiplier = 1;
 
@@ -207,13 +212,13 @@ const finishedWorkoutSession = async (req, res) => {
       multiplier = 1.2;
     }
 
-    const baseExp = numberOfFinished * 10;
-    const expGained = Math.round(baseExp * multiplier);
+    const baseExp = safeNumberOfFinished * 10;
+    const expGained = Math.round(baseExp * multiplier) || 0;
 
     userRoutine.routineHistory.push({
       routineName: routine.routineName,
       exercises: workoutList || routine.exercises,
-      duration: timeSpent,
+      duration: safeTimeSpent,
       expGained
     });
 
@@ -231,13 +236,13 @@ const finishedWorkoutSession = async (req, res) => {
     );
 
     if (todayProgress) {
-      todayProgress.hoursSpent += timeSpent / 3600;
-      todayProgress.totalWorkouts += numberOfFinished;
+      todayProgress.hoursSpent += safeTimeSpent / 3600;
+      todayProgress.totalWorkouts += safeNumberOfFinished;
       todayProgress.totalExpGained += expGained;
     } else {
       userProgress.progress.push({
         date: new Date(),
-        hoursSpent: timeSpent / 3600,
+        hoursSpent: safeTimeSpent / 3600,
         totalWorkouts: 1,
         totalExpGained: expGained,
         distribution: []
@@ -246,11 +251,17 @@ const finishedWorkoutSession = async (req, res) => {
 
     await userProgress.save();
 
+    // ✅ 🔥 CRITICAL FIX (NO MORE NaN)
+    userGameDetails.exp_points = Number(userGameDetails.exp_points) || 0;
+    userGameDetails.level = Number(userGameDetails.level) || 1;
+
     userGameDetails.exp_points += expGained;
 
+    // ✅ LEVEL SYSTEM
     function getExpRequired(level) {
       return Math.floor(100 * Math.pow(level, 1.5));
     }
+
     let leveledUp = false;
 
     while (
@@ -261,6 +272,7 @@ const finishedWorkoutSession = async (req, res) => {
       userGameDetails.level += 1;
       leveledUp = true;
     }
+
     await userGameDetails.save();
 
     res.status(200).json({
@@ -273,7 +285,6 @@ const finishedWorkoutSession = async (req, res) => {
       nextLevelRequirement: getExpRequired(userGameDetails.level),
       leveledUp
     });
-
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ message: "Server error" });

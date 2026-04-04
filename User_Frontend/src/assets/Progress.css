@@ -1,6 +1,4 @@
 
-
-/* ── Page ── */
 .pg-page {
     min-height: 100vh;
     padding: 28px 32px 60px;
@@ -10,7 +8,6 @@
     box-sizing: border-box;
 }
 
-/* ── Header ── */
 .pg-header { margin-bottom: 24px; }
 
 .pg-title {
@@ -28,12 +25,10 @@
     margin: 0;
 }
 
-/* ── Section spacing ── */
 .pg-section {
     margin-bottom: 14px;
 }
 
-/* ── Card shell ── */
 .pg-card {
     background: #161616;
     border: 0.5px solid rgba(255,255,255,0.07);
@@ -51,7 +46,6 @@
     margin: 0 0 14px;
 }
 
-/* ── Player stat boxes ── */
 .pg-game-summary {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -91,7 +85,6 @@
     line-height: 1.2;
 }
 
-/* Achievements box spans wider */
 .pg-achievements-box {
     grid-column: span 2;
 }
@@ -113,7 +106,6 @@
     padding: 3px 10px;
 }
 
-/* ── Heatmap ── */
 .pg-heatmap-wrap {
     width: 100%;
     overflow-x: auto;
@@ -134,7 +126,6 @@
 .color-scale-3 { fill: #dc2626; }
 .color-scale-4 { fill: #f87171; }
 
-/* ── Charts section ── */
 .pg-charts-head {
     display: flex;
     align-items: center;
@@ -189,12 +180,10 @@
     position: relative;
 }
 
-/* Period stats row reuses pg-game-summary */
 .pg-stats-row {
     grid-template-columns: repeat(5, 1fr);
 }
 
-/* ── History table ── */
 .pg-table-wrap {
     overflow-x: auto;
     scrollbar-width: thin;

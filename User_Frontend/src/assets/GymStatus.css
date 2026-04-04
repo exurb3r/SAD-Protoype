@@ -1,5 +1,4 @@
 
-/* ── Page ── */
 .gs-page {
     height: 100vh;
     overflow: hidden;
@@ -12,7 +11,6 @@
     box-sizing: border-box;
 }
 
-/* ── Header ── */
 .gs-header { margin-bottom: 20px; flex-shrink: 0; }
 
 .gs-title {
@@ -26,7 +24,6 @@
 
 .gs-sub { font-size: 13px; color: #555; margin: 0; }
 
-/* ── Status row ── */
 .gs-status-row {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -70,7 +67,6 @@
 
 .gs-status-card.accent .gs-status-value { color: #f87171; }
 
-/* ── Main layout ── */
 .gs-layout {
     display: grid;
     grid-template-columns: 1fr 340px;
@@ -80,7 +76,6 @@
     overflow: hidden;
 }
 
-/* ── Card shell ── */
 .gs-card {
     background: #161616;
     border: 0.5px solid rgba(255,255,255,0.07);
@@ -92,7 +87,6 @@
     min-height: 0;
 }
 
-/* ── Calendar card ── */
 .gs-calendar-card { }
 
 .gs-calendar-card .fc {
@@ -159,7 +153,6 @@
     padding: 1px 5px;
 }
 
-/* ── Log card ── */
 .gs-log-card { }
 
 .gs-card-head {
@@ -189,7 +182,6 @@
     padding: 2px 9px;
 }
 
-/* ── Table ── */
 .gs-table-wrap {
     flex: 1;
     overflow-y: auto;
@@ -238,7 +230,6 @@
 
 .gs-empty { font-size: 13px; color: #444; margin: 0; padding: 8px 0; }
 
-/* ── Responsive ── */
 @media (max-width: 900px) {
     .gs-page { height: auto; overflow-y: auto; }
     .gs-status-row { grid-template-columns: repeat(3, 1fr); }

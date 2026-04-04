@@ -32,11 +32,13 @@ export default function Sidebar({ isOpen, onClose }) {
                 { path: "progress", label: "My Progress", icon: <FiBarChart2/> },
                 { path: "gymloginhistory", label: "Gym Status", icon: <FiActivity/> },
                 { path: "leaderboard", label: "Leaderboards", icon: <FiUsers/> },
+                { path: "community", label: "Community", icon: <FiUsers/> },
             ]
         },
         {
             label: "Account",
             links: [
+                { path: "notifications", label: "Notifications"},
                 { path: "profile", label: "Profile", icon: <FiUser/> },
                 { path: "settings", label: "Settings", icon: <FiSettings/> },
             ]

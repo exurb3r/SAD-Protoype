@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../assets/Profile.css';
 import { Bar, Doughnut } from 'react-chartjs-2';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
@@ -19,6 +20,7 @@ const TABS = ["overview", "stats", "friends", "achievements", "routine"];
 const TAB_LABELS = { overview: "Overview", stats: "Stats", friends: "Friends", achievements: "Achievements", routine: "Shared Routines" };
 
 function Profile() {
+    const navigate = useNavigate();
     const [tab, setTab] = useState("overview");
     const [showEdit, setShowEdit] = useState(false);
     const [showInvite, setShowInvite] = useState(false);
@@ -174,7 +176,6 @@ function Profile() {
                 {tab === "overview" && (
                     <div className="pf-overview">
                         <p className="pf-card-label">Gamification Overview</p>
-
                         <div className="pf-overview-hero">
                             <div className="pf-ring">
                                 <CircularProgressbar
@@ -197,7 +198,6 @@ function Profile() {
                                 <p className="pf-exp-caption">{expPercent}% to next level</p>
                             </div>
                         </div>
-
                         <div className="pf-stat-grid">
                             <div className="pf-stat-box"><span className="pf-stat-label">Streak</span><span className="pf-stat-value">{profile.streak} days</span></div>
                             <div className="pf-stat-box"><span className="pf-stat-label">Total XP</span><span className="pf-stat-value">{profile.exp?.toLocaleString()}</span></div>
@@ -243,11 +243,30 @@ function Profile() {
                         {friends.length === 0 && <p className="pf-empty">No friends yet.</p>}
                         {friends.map(friend => (
                             <div key={friend.userId} className="pf-friend-row">
-                                <div className="pf-friend-avatar">{friend.username?.[0]?.toUpperCase()}</div>
-                                <span className="pf-friend-name">{friend.username}</span>
+                                {/* Clickable avatar + name area */}
+                                <div
+                                    className="pf-friend-clickable"
+                                    onClick={() => navigate(`/friend/${friend.userId}`)}
+                                >
+                                    <div className="pf-friend-avatar">
+                                        {friend.username?.[0]?.toUpperCase()}
+                                    </div>
+                                    <span className="pf-friend-name">{friend.username}</span>
+                                </div>
+                                {/* Actions stay separate so they don't trigger navigation */}
                                 <div className="pf-friend-actions">
-                                    <button className="pf-btn-ghost" onClick={() => openInvite(friend)}>Invite</button>
-                                    <button className="pf-btn-ghost danger" onClick={() => unfriend(friend.userId)}>Remove</button>
+                                    <button
+                                        className="pf-btn-ghost"
+                                        onClick={(e) => { e.stopPropagation(); openInvite(friend); }}
+                                    >
+                                        Invite
+                                    </button>
+                                    <button
+                                        className="pf-btn-ghost danger"
+                                        onClick={(e) => { e.stopPropagation(); unfriend(friend.userId); }}
+                                    >
+                                        Remove
+                                    </button>
                                 </div>
                             </div>
                         ))}

@@ -150,8 +150,6 @@ function SignUp() {
                         {spanCPwd && <span className="auth-field-error">{spanCPwd}</span>}
                     </div>
                 </div>
-
-                {/* Password strength hints */}
                 {password && (
                     <div className="auth-hints">
                         <span className={`auth-hint ${password.length >= 8 ? 'pass' : ''}`}>8+ chars</span>
