@@ -3,7 +3,7 @@
 
     <!-- Header -->
     <div class="members-header">
-      <h2>Active Members</h2>
+      <h2></h2>
       <input
         v-model="search"
         class="search-input"
@@ -112,6 +112,17 @@ export default {
         { id: 3, name: 'Janina Somera',    type: 'Standard', expiry: '2025-05-01', contact: '09123456789' },
         { id: 4, name: 'Andy Lim',       type: 'Premium',  expiry: '2025-07-20', contact: '0936912151' },
         { id: 5, name: 'ChrisPChicken',    type: 'Basic',    expiry: '2025-02-28', contact: '090090909' },
+        { id: 6, name: 'ChrisPChicken',    type: 'Basic',    expiry: '2025-02-28', contact: '090090909' },
+        { id: 7, name: 'ChrisPChicken',    type: 'Premium',    expiry: '2025-02-28', contact: '090090909' },
+        { id: 8, name: 'ChrisPChicken',    type: 'Basic',    expiry: '2025-02-28', contact: '090090909' },
+        { id: 9, name: 'ChrisPChicken',    type: 'Standard',    expiry: '2025-02-28', contact: '090090909' },
+        { id: 10, name: 'ChrisPChicken',    type: 'Standard',    expiry: '2025-02-28', contact: '090090909' },
+        { id: 11, name: 'ChrisPChicken',    type: 'Basic',    expiry: '2025-02-28', contact: '090090909' },
+        { id: 12, name: 'ChrisPChicken',    type: 'Premium',    expiry: '2025-02-28', contact: '090090909' },
+        { id: 13, name: 'ChrisPChicken',    type: 'Basic',    expiry: '2025-02-28', contact: '090090909' },
+        { id: 14, name: 'ChrisPChicken',    type: 'Premium',    expiry: '2025-02-28', contact: '090090909' },
+        { id: 15, name: 'ChrisPChicken',    type: 'Standard',    expiry: '2025-02-28', contact: '090090909' },
+        { id: 16, name: 'ChrisPChicken',    type: 'Basic',    expiry: '2025-02-28', contact: '090090909' },
       ]
     }
   },

@@ -28,7 +28,8 @@ body {
 .layout {
   display: flex;
   min-height: 100vh;
-   background: #0C0C0C;
+  background: #0C0C0C;
+  align-items: stretch;
 }
 
 .main {
