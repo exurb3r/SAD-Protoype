@@ -1,18 +1,11 @@
 <template>
   <div class="members-container">
 
-    <!-- Header -->
     <div class="members-header">
       <h2></h2>
-      <input
-        v-model="search"
-        class="search-input"
-        type="text"
-        placeholder="Search members..."
-      />
+      <input v-model="search" class="search-input" type="text" placeholder="Search members..." />
     </div>
 
-    <!-- Table -->
     <div class="table-wrapper">
       <table>
         <thead>
@@ -24,23 +17,36 @@
             <th>Actions</th>
           </tr>
         </thead>
+
         <tbody>
           <tr v-for="member in filteredMembers" :key="member.id">
             <td class="member-info">
-              <div class="avatar">{{ initials(member.name) }}</div>
-              <span>{{ member.name }}</span>
+              <div class="avatar">{{ initials(member.firstname, member.lastname) }}</div>
+              <span>{{ member.firstname }} {{ member.lastname }}</span>
             </td>
+
             <td>
-              <span :class="['badge', member.type.toLowerCase()]">{{ member.type }}</span>
+              <span class="badge">
+                {{ member.membershipStatus[0]?.category }}
+              </span>
             </td>
-            <td>{{ member.expiry }}</td>
-            <td>{{ member.contact }}</td>
+
+            <td>
+              {{ member.membershipStatus[0]?.expiryDate }}
+            </td>
+
+            <td>
+              {{ member.contactNum }}
+            </td>
+            
+
             <td class="actions">
               <button class="btn view" @click="viewMember(member)">View</button>
               <button class="btn edit" @click="editMember(member)">Edit</button>
               <button class="btn delete" @click="deletingMember = member">Delete</button>
             </td>
           </tr>
+
           <tr v-if="filteredMembers.length === 0">
             <td colspan="5" class="no-results">No members found.</td>
           </tr>
@@ -48,50 +54,116 @@
       </table>
     </div>
 
-    <!-- View Modal -->
+    <!-- VIEW MODAL -->
+
     <div class="modal-overlay" v-if="selectedMember" @click.self="selectedMember = null">
       <div class="modal">
-        <div class="modal-avatar">{{ initials(selectedMember.name) }}</div>
-        <h3>{{ selectedMember.name }}</h3>
-        <p><span>Membership:</span> {{ selectedMember.type }}</p>
-        <p><span>Expiry:</span> {{ selectedMember.expiry }}</p>
-        <p><span>Contact:</span> {{ selectedMember.contact }}</p>
+        <div class="modal-avatar">
+          {{ initials(selectedMember.firstname, selectedMember.lastname) }}
+        </div>
+
+        <h3>{{ selectedMember.firstname }} {{ selectedMember.lastname }}</h3>
+
+        <p><span>Membership:</span> {{ selectedMember.membershipStatus[0]?.category }}</p>
+        <p><span>Expiry:</span> {{ selectedMember.membershipStatus[0]?.expiryDate }}</p>
+        <p><span>Contact:</span> {{ selectedMember.contactNum }}</p>
+        <p><span>Contact Person:</span> {{ selectedMember.contactPerson }}</p>
+        <p><span>Contact Person Number:</span> {{ selectedMember.contactPersonNum }}</p>
+        <p><span>Address:</span> {{ selectedMember.address }}</p>
+
         <button class="btn delete" @click="selectedMember = null">Close</button>
       </div>
     </div>
 
-    <!-- Edit Modal -->
+    <!-- EDIT MODAL -->
+
     <div class="modal-overlay" v-if="editingMember" @click.self="editingMember = null">
       <div class="modal">
+
         <h3>Edit Member</h3>
-        <label>Name</label>
-        <input v-model="editingMember.name" class="modal-input" />
-        <label>Membership Type</label>
-        <select v-model="editingMember.type" class="modal-input">
-          <option>Basic</option>
-          <option>Standard</option>
-          <option>Premium</option>
-        </select>
-        <label>Expiry Date</label>
-        <input v-model="editingMember.expiry" type="date" class="modal-input" />
+
+        <label>First Name</label>
+        <input v-model="editingMember.firstname" class="modal-input" />
+
+        <label>Last Name</label>
+        <input v-model="editingMember.lastname" class="modal-input" />
+
+        <label>Email</label>
+        <input v-model="editingMember.email" class="modal-input" />
+
         <label>Contact</label>
-        <input v-model="editingMember.contact" class="modal-input" />
+        <input v-model="editingMember.contactNum" class="modal-input" />
+
+        <label>Contact Person</label>
+        <input v-model="editingMember.contactPerson" class="modal-input" />
+
+        <label>Contact Person Number</label>
+        <input v-model="editingMember.contactPersonNum" class="modal-input" />
+
+        <label>Address</label>
+        <input v-model="editingMember.address" class="modal-input" />
+
+        <label>Gym ID</label>
+        <input v-model="editingMember.gymId" class="modal-input" />
+
+        <label>RFID</label>
+        <input v-model="editingMember.rfid" class="modal-input" />
+
+        <label>Assigned Trainer</label>
+        <input v-model="editingMember.assignedTrainer" class="modal-input" />
+
+        <label>Membership Type</label>
+        <select v-model="editingMember.membershipStatus[0].category" class="modal-input">
+          <option>Standard</option>
+          <option>Standard Renewal</option>
+          <option>New Member / Early Renew</option>
+          <option>Classic (Student)</option>
+          <option>Classic (Regular)</option>
+          <option>Premium (Student)</option>
+          <option>Premium (Regular)</option>
+          <option>VIP (Student)</option>
+          <option>VIP (Regular)</option>
+        </select>
+
+        <label>Start Date</label>
+        <input
+          v-model="editingMember.membershipStatus[0].startDate"
+          type="date"
+          class="modal-input"
+        />
+
+        <label>Expiry Date</label>
+        <input
+          v-model="editingMember.membershipStatus[0].expiryDate"
+          type="date"
+          class="modal-input"
+        />
+
         <div class="modal-actions">
           <button class="btn edit" @click="saveEdit">Save</button>
           <button class="btn delete" @click="editingMember = null">Cancel</button>
         </div>
+
       </div>
     </div>
 
-    <!-- Delete Confirmation Modal -->
+    <!-- DELETE MODAL -->
+
     <div class="modal-overlay" v-if="deletingMember" @click.self="deletingMember = null">
       <div class="modal">
+
         <h3>Delete Member?</h3>
-        <p class="delete-msg">Are you sure you want to delete <span>{{ deletingMember.name }}</span>? This cannot be undone.</p>
+
+        <p class="delete-msg">
+          Are you sure you want to delete
+          <span>{{ deletingMember.firstname }} {{ deletingMember.lastname }}</span> ?
+        </p>
+
         <div class="modal-actions">
           <button class="btn delete" @click="confirmDelete">Yes, Delete</button>
           <button class="btn edit" @click="deletingMember = null">Cancel</button>
         </div>
+
       </div>
     </div>
 
@@ -100,61 +172,114 @@
 
 <script>
 export default {
-  data() {
-    return {
-      search: '',
-      selectedMember: null,
-      editingMember: null,
-      deletingMember: null,
-      members: [
-        { id: 1, name: 'Abegail Moyaen', type: 'Premium',  expiry: '2025-06-30', contact: '09123123123' },
-        { id: 2, name: 'Jochelle Maltu',   type: 'Basic',    expiry: '2025-03-15', contact: '091231234' },
-        { id: 3, name: 'Janina Somera',    type: 'Standard', expiry: '2025-05-01', contact: '09123456789' },
-        { id: 4, name: 'Andy Lim',       type: 'Premium',  expiry: '2025-07-20', contact: '0936912151' },
-        { id: 5, name: 'ChrisPChicken',    type: 'Basic',    expiry: '2025-02-28', contact: '090090909' },
-        { id: 6, name: 'ChrisPChicken',    type: 'Basic',    expiry: '2025-02-28', contact: '090090909' },
-        { id: 7, name: 'ChrisPChicken',    type: 'Premium',    expiry: '2025-02-28', contact: '090090909' },
-        { id: 8, name: 'ChrisPChicken',    type: 'Basic',    expiry: '2025-02-28', contact: '090090909' },
-        { id: 9, name: 'ChrisPChicken',    type: 'Standard',    expiry: '2025-02-28', contact: '090090909' },
-        { id: 10, name: 'ChrisPChicken',    type: 'Standard',    expiry: '2025-02-28', contact: '090090909' },
-        { id: 11, name: 'ChrisPChicken',    type: 'Basic',    expiry: '2025-02-28', contact: '090090909' },
-        { id: 12, name: 'ChrisPChicken',    type: 'Premium',    expiry: '2025-02-28', contact: '090090909' },
-        { id: 13, name: 'ChrisPChicken',    type: 'Basic',    expiry: '2025-02-28', contact: '090090909' },
-        { id: 14, name: 'ChrisPChicken',    type: 'Premium',    expiry: '2025-02-28', contact: '090090909' },
-        { id: 15, name: 'ChrisPChicken',    type: 'Standard',    expiry: '2025-02-28', contact: '090090909' },
-        { id: 16, name: 'ChrisPChicken',    type: 'Basic',    expiry: '2025-02-28', contact: '090090909' },
-      ]
-    }
-  },
-  computed: {
-    filteredMembers() {
-      return this.members.filter(m =>
-        m.name.toLowerCase().includes(this.search.toLowerCase()) ||
-        m.type.toLowerCase().includes(this.search.toLowerCase()) ||
-        m.contact.includes(this.search)
-      )
-    }
-  },
-  methods: {
-    initials(name) {
-      return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
-    },
-    viewMember(member) {
-      this.selectedMember = { ...member }
-    },
-    editMember(member) {
-      this.editingMember = { ...member }
-    },
-    saveEdit() {
-      const index = this.members.findIndex(m => m.id === this.editingMember.id)
-      if (index !== -1) this.members[index] = { ...this.editingMember }
-      this.editingMember = null
-    },
-    confirmDelete() {
-      this.members = this.members.filter(m => m.id !== this.deletingMember.id)
-      this.deletingMember = null
-    }
-  }
+
+data() {
+return {
+
+search: '',
+selectedMember: null,
+editingMember: null,
+deletingMember: null,
+
+members: [
+
+{
+id:1,
+firstname:"Abegail",
+lastname:"Moyaen",
+email:"abegail@email.com",
+contactNum:"09123123123",
+contactPerson:"Juan Moyaen",
+contactPersonNum:"0912312312",
+address:"General Luna",
+gymId:"GYM001",
+rfid:"RF001",
+assignedTrainer:"Coach Mike",
+membershipStatus:[
+{
+category:"Premium (Regular)",
+branch:"General Luna",
+startDate:"2025-05-01",
+expiryDate:"2025-06-01",
+remainingDays:30,
+isActive:true
+}
+]
+},
+
+{
+id:2,
+firstname:"Jochelle",
+lastname:"Maltu",
+email:"jochelle@email.com",
+contactNum:"091231234",
+contactPerson:"Maria Maltu",
+contactPersonNum:"0912312312",
+address:"General Luna",
+gymId:"GYM002",
+rfid:"RF002",
+assignedTrainer:"Coach Ken",
+membershipStatus:[
+{
+category:"Standard",
+branch:"General Luna",
+startDate:"2025-03-01",
+expiryDate:"2025-04-01",
+remainingDays:30,
+isActive:true
+}
+]
+}
+
+]
+
+}
+},
+
+computed: {
+
+filteredMembers(){
+return this.members.filter(m=>
+(m.firstname+" "+m.lastname).toLowerCase().includes(this.search.toLowerCase()) ||
+m.membershipStatus[0]?.category.toLowerCase().includes(this.search.toLowerCase()) ||
+m.contactNum.includes(this.search)
+)
+}
+
+},
+
+methods: {
+
+initials(first,last){
+return (first[0]+last[0]).toUpperCase()
+},
+
+viewMember(member){
+this.selectedMember={...member}
+},
+
+editMember(member){
+this.editingMember=JSON.parse(JSON.stringify(member))
+},
+
+saveEdit(){
+
+const index=this.members.findIndex(m=>m.id===this.editingMember.id)
+
+if(index!==-1){
+this.members[index]={...this.editingMember}
+}
+
+this.editingMember=null
+},
+
+confirmDelete(){
+this.members=this.members.filter(m=>m.id!==this.deletingMember.id)
+this.deletingMember=null
+}
+
+}
+
 }
 </script>
 
@@ -249,7 +374,6 @@ tr:hover td {
   font-size: 13px;
   font-weight: bold;
   color: white;
-  flex-shrink: 0;
 }
 
 .badge {
@@ -257,21 +381,8 @@ tr:hover td {
   border-radius: 20px;
   font-size: 12px;
   font-weight: bold;
-}
-
-.badge.premium {
-  background-color: #481E14;
-  color: #F2613F;
-}
-
-.badge.standard {
-  background-color: #2a2a2a;
-  color: #aaa;
-}
-
-.badge.basic {
-  background-color: #1f1f1f;
-  color: #777;
+  background-color:#2a2a2a;
+  color:#aaa;
 }
 
 .actions {
@@ -285,7 +396,6 @@ tr:hover td {
   border: none;
   font-size: 13px;
   cursor: pointer;
-  transition: 0.2s;
 }
 
 .btn.view {
@@ -293,19 +403,9 @@ tr:hover td {
   color: #F2613F;
 }
 
-.btn.view:hover {
-  background-color: #9B3922;
-  color: white;
-}
-
 .btn.edit {
   background-color: #2a2a2a;
   color: #aaa;
-}
-
-.btn.edit:hover {
-  background-color: #444;
-  color: white;
 }
 
 .btn.delete {
@@ -314,99 +414,180 @@ tr:hover td {
   border: 1px solid #c0392b;
 }
 
-.btn.delete:hover {
-  background-color: #c0392b;
-  color: white;
-}
-
 .no-results {
   text-align: center;
   color: #555;
   padding: 40px;
 }
 
-/* Modals */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 100;
+  z-index: 1000;
+
+  animation: fadeIn 0.2s ease;
 }
 
 .modal {
-  background: #1a1a1a;
-  border: 1px solid #481E14;
-  border-radius: 16px;
-  padding: 32px;
-  width: 360px;
+  background: #121212;
+  border: 1px solid #2b2b2b;
+  border-radius: 18px;
+  padding: 28px 28px 24px 28px;
+
+  width: 420px;
+  max-height: 85vh;
+
   display: flex;
   flex-direction: column;
-  gap: 12px;
-}
+  gap: 14px;
 
-.modal-avatar {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background-color: #9B3922;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  font-weight: bold;
-  color: white;
-  margin: 0 auto 8px;
+  overflow-y: auto;
+
+  box-shadow:
+    0 10px 40px rgba(0,0,0,0.6),
+    0 0 0 1px rgba(255,255,255,0.02);
+
+  animation: modalPop 0.18s ease;
 }
 
 .modal h3 {
+  margin: 0 0 10px 0;
   color: white;
-  margin: 0;
-  text-align: center;
-}
-
-.modal p {
-  color: #aaa;
-  margin: 0;
-  font-size: 14px;
-}
-
-.modal p span {
-  color: #F2613F;
-  font-weight: bold;
-}
-
-.delete-msg {
-  text-align: center;
-  color: #aaa;
+  font-size: 20px;
+  font-weight: 600;
 }
 
 .modal label {
-  color: #aaa;
-  font-size: 13px;
+  font-size: 12px;
+  color: #888;
+  margin-top: 4px;
 }
 
 .modal-input {
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #481E14;
+  padding: 11px 12px;
+  border-radius: 10px;
+  border: 1px solid #2a2a2a;
   background: #0C0C0C;
   color: white;
   font-size: 14px;
-  outline: none;
-  width: 100%;
-  box-sizing: border-box;
+
+  transition: all 0.15s ease;
 }
 
 .modal-input:focus {
+  outline: none;
   border-color: #F2613F;
+  box-shadow: 0 0 0 2px rgba(242,97,63,0.15);
 }
+
+/* AVATAR */
+
+.modal-avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: linear-gradient(135deg,#9B3922,#F2613F);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: bold;
+  color: white;
+  margin: 0 auto 10px;
+}
+
+/* VIEW TEXT */
+
+.modal p {
+  margin: 2px 0;
+  font-size: 14px;
+  color: #ddd;
+}
+
+.modal p span {
+  color: #888;
+  margin-right: 6px;
+}
+
 
 .modal-actions {
   display: flex;
+  justify-content: flex-end;
   gap: 10px;
-  margin-top: 8px;
+  margin-top: 14px;
+}
+
+
+.btn {
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: none;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+.btn.edit {
+  background: #F2613F;
+  color: white;
+}
+
+.btn.edit:hover {
+  background: #ff7b5a;
+}
+
+
+.btn.delete {
+  background: transparent;
+  border: 1px solid #444;
+  color: #aaa;
+}
+
+.btn.delete:hover {
+  background: #1f1f1f;
+  border-color: #666;
+}
+
+.delete-msg {
+  color: #bbb;
+  font-size: 14px;
+}
+
+.delete-msg span {
+  color: #F2613F;
+  font-weight: 600;
+}
+
+
+.modal::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+
+
+@keyframes modalPop {
+  from {
+    transform: scale(0.92);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity:0 }
+  to { opacity:1 }
 }
 </style>

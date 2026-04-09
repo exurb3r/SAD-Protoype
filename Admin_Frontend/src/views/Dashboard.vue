@@ -106,71 +106,93 @@ import { ref } from "vue";
 import DashboardCharts from "../components/DashboardCharts.vue";
 
 const adminName = "Janina Somera";
-const today = new Date().toLocaleDateString("en-PH", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
 
+const today = new Date().toLocaleDateString("en-PH", {
+  weekday: "long",
+  year: "numeric",
+  month: "long",
+  day: "numeric"
+});
 
+const gymBanner =
+  "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&q=80";
 
-const gymBanner = "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&q=80";
+/* DASHBOARD STATS */
 
 const stats = [
   {
-    label: "Active Members", value: 124, icon: "",
-    subtitle: "Total members with active memberships right now.",
+    label: "Active Gym Members",
+    value: 124,
+    icon: "🏋️",
+    subtitle: "Total members with active gym memberships.",
     breakdown: [
-      { label: "Monthly",   value: 74, percent: 60 },
+      { label: "Monthly", value: 74, percent: 60 },
       { label: "Quarterly", value: 31, percent: 25 },
-      { label: "Annual",    value: 19, percent: 15 },
+      { label: "Annual", value: 19, percent: 15 },
     ]
   },
   {
-    label: "New This Month", value: 15, icon: "",
-    subtitle: "Members who joined in March 2026.",
+    label: "Total Log-In Today",
+    value: 38,
+    icon: "📋",
+    subtitle: "Members who logged in at the gym today.",
     breakdown: [
-      { label: "Week 1", value: 4, percent: 27 },
-      { label: "Week 2", value: 6, percent: 40 },
-      { label: "Week 3", value: 3, percent: 20 },
-      { label: "Week 4", value: 2, percent: 13 },
+      { label: "Morning (6-10 AM)", value: 18, percent: 47 },
+      { label: "Midday (10-2 PM)", value: 12, percent: 32 },
+      { label: "Afternoon (2-8 PM)", value: 8, percent: 21 },
     ]
   },
   {
-    label: "Expiring Soon", value: 8, icon: "",
-    subtitle: "Memberships expiring within the next 7 days.",
+    label: "Walk-In Guests Today",
+    value: 12,
+    icon: "🚶",
+    subtitle: "Visitors who entered the gym without membership.",
     breakdown: [
-      { label: "In 1-2 days", value: 2, percent: 25 },
-      { label: "In 3-4 days", value: 3, percent: 37 },
-      { label: "In 5-7 days", value: 3, percent: 38 },
+      { label: "Morning", value: 5, percent: 42 },
+      { label: "Midday", value: 4, percent: 33 },
+      { label: "Afternoon", value: 3, percent: 25 },
     ]
   },
   {
-    label: "App Users", value: 200, icon: "",
-    subtitle: "Total users registered on the mobile app.",
+    label: "App Users",
+    value: 200,
+    icon: "📱",
+    subtitle: "Total users registered in the gym mobile application.",
     breakdown: [
-      { label: "Active (30d)",     value: 140, percent: 70 },
-      { label: "Inactive",         value: 42,  percent: 21 },
-      { label: "Never logged in",  value: 18,  percent: 9  },
+      { label: "Active (30d)", value: 140, percent: 70 },
+      { label: "Inactive", value: 42, percent: 21 },
+      { label: "Never Logged In", value: 18, percent: 9 },
     ]
   },
 ];
 
+/* RECENT ACTIVITY (NO PAYMENTS / NO MONEY) */
+
 const recentActivity = [
-  { id: 1, type: "join",    message: "Janine Somera joined as Monthly member",      time: "2 mins ago" },
-  { id: 2, type: "payment", message: "Roven Santos renewed his Annual plan",          time: "18 mins ago" },
-  { id: 3, type: "expire",  message: "Abegail Moyaen's membership is expiring in 3 days",  time: "1 hour ago" },
-  { id: 4, type: "join",    message: "Kurt Morales joined as Quarterly member",   time: "3 hours ago" },
-  { id: 5, type: "payment", message: "Jochelle Maltu completed payment ₱2,500",          time: "5 hours ago" },
+  { id: 1, type: "join", message: "Janine Somera joined as Monthly member", time: "2 mins ago" },
+  { id: 2, type: "join", message: "Roven Santos logged in at the gym", time: "18 mins ago" },
+  { id: 3, type: "expire", message: "Abegail Moyaen's membership expires in 3 days", time: "1 hour ago" },
+  { id: 4, type: "join", message: "Kurt Morales joined as Quarterly member", time: "3 hours ago" },
+  { id: 5, type: "join", message: "Jochelle Maltu logged in at the gym", time: "5 hours ago" },
 ];
 
 const recentMembers = [
-  { id: 1, name: "Roven Santos",   plan: "Monthly",   status: "active",   expiry: "Apr 15, 2026" },
-  { id: 2, name: "Abegail Moyaen",     plan: "Annual",    status: "active",   expiry: "Mar 10, 2027" },
-  { id: 3, name: "Jochelle Maltu",        plan: "Monthly",   status: "expiring", expiry: "Mar 18, 2026" },
-  { id: 4, name: "Janina Somera", plan: "Quarterly", status: "active",   expiry: "Jun 1, 2026" },
-  { id: 5, name: "Kurt Morales",      plan: "Monthly",   status: "active",   expiry: "Apr 20, 2026" },
+  { id: 1, name: "Roven Santos", plan: "Monthly", status: "active", expiry: "Apr 15, 2026" },
+  { id: 2, name: "Abegail Moyaen", plan: "Annual", status: "active", expiry: "Mar 10, 2027" },
+  { id: 3, name: "Jochelle Maltu", plan: "Monthly", status: "expiring", expiry: "Mar 18, 2026" },
+  { id: 4, name: "Janina Somera", plan: "Quarterly", status: "active", expiry: "Jun 1, 2026" },
+  { id: 5, name: "Kurt Morales", plan: "Monthly", status: "active", expiry: "Apr 20, 2026" },
 ];
 
 const activeModal = ref(null);
-const openModal  = (stat) => { activeModal.value = stat; };
-const closeModal = () => { activeModal.value = null; };
+
+const openModal = (stat) => {
+  activeModal.value = stat;
+};
+
+const closeModal = () => {
+  activeModal.value = null;
+};
 </script>
 
 <style scoped>
@@ -239,9 +261,8 @@ const closeModal = () => { activeModal.value = null; };
 .activity-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid #2a2a2a; }
 .activity-item:last-child { border-bottom: none; }
 .activity-dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
-.activity-dot.join    { background: #4ade80; }
-.activity-dot.payment { background: #e8531a; }
-.activity-dot.expire  { background: #facc15; }
+.activity-dot.join { background: #4ade80; }
+.activity-dot.expire { background: #facc15; }
 .activity-main { color: #ddd; margin: 0 0 3px 0; font-size: 13px; }
 .activity-time { color: #666; margin: 0; font-size: 11px; }
 
@@ -257,7 +278,7 @@ const closeModal = () => { activeModal.value = null; };
 }
 .avatar img { width: 100%; height: 100%; object-fit: cover; }
 .badge { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; text-transform: capitalize; }
-.badge.active   { background: #14532d; color: #4ade80; }
+.badge.active { background: #14532d; color: #4ade80; }
 .badge.expiring { background: #451a03; color: #facc15; }
 
 /* Modal */

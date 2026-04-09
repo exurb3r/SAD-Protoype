@@ -1,9 +1,21 @@
 <template>
-  <router-view />
+  <div class="layout">
+    <SideBar />
+    <div class="main">
+      <TopBar />
+      <div class="page-content">
+        <router-view />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-  import AppLayout from './layout/AppLayout.vue';
+import SideBar from '../components/SideBar.vue'
+import TopBar from '../components/TopBar.vue'
+export default {
+  components: { SideBar, TopBar }
+}
 </script>
 
 <style>

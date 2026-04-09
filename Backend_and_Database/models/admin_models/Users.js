@@ -8,7 +8,8 @@ const membershipStatusSchema = new Schema({
     },
     branch: {
         type: String,
-        required: true
+        required: true,
+        default: 'General Luna'
     },
     startDate: {
         type: Date
@@ -18,6 +19,14 @@ const membershipStatusSchema = new Schema({
     },
     remainingDays: {
         type: Number
+    },
+    isActive: {
+        type: Boolean,
+        default: true
+    },
+    registrationDate: {
+        type: Date,
+        default: Date.now
     }
 },{ _id: false });
 
@@ -35,11 +44,15 @@ const userSchema = new Schema({
         required: true,
         unique: true
     },
-    password: {
+    contactNum: {
         type: String,
         required: true
     },
-    contactNum: {
+    contactPerson: {
+        type: String,
+        required: true
+    },
+    contactPersonNum: {
         type: String,
         required: true
     },
