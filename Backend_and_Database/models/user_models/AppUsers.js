@@ -50,7 +50,12 @@ const appUserSchema = new Schema({
     joinDate: {
          type: Date,
          default: Date.now 
+    },
+    status: {
+    type: String,
+    enum: ["Active", "Inactive"],
+    default: "Active"
     }
-})
+    })
 
 module.exports = mongoose.model('AppUsers', appUserSchema);

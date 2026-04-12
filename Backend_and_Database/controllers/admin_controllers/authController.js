@@ -14,21 +14,22 @@ const login = async (req, res) => {
         if (!match) return res.status(401).json({'message': 'Invalid Password'});
 
         const token = jwt.sign(
-            { id: adminFound._id, role: adminFound.role  },
+            { id: adminFound._id, role: adminFound.role, branch: adminFound.branch, email: adminFound.email },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: "1h" }
+            { expiresIn: 60 * 60 * 24 } 
         );
-
         res.json({
             token,
             user: {
                 id: adminFound._id,
                 username: adminFound.username,
                 email: adminFound.email,
-                role: adminFound.role
+                role: adminFound.role,
+                branch: adminFound.branch
             } 
-        }
-        );
+        });
+
+        console.log("Admin logged in successfully");
 
     } catch (err) {
         res.status(500).json({ message: err.message});
@@ -37,8 +38,8 @@ const login = async (req, res) => {
 
 const signup = async(req, res) => {
     try{
-        const {firstname, lastname, username, email, password, contactNum, address} = req.body;    
-        if(!firstname ||!lastname ||!username ||!email || !password || !contactNum || !address) return res.status(400).json({message: "All credentials are required"});
+        const {firstname, lastname, username, email, password, contactNum, address, branch} = req.body;    
+        if(!firstname ||!lastname ||!username ||!email || !password || !contactNum || !address || !branch) return res.status(400).json({message: "All credentials are required"});
         const newAdmin = await Admin.findOne({email});
 
         if(newAdmin) return res.status(400).json({message: "Email is already in use"});
@@ -52,7 +53,7 @@ const signup = async(req, res) => {
             password: hashedPassword,
             contactNum: contactNum,
             address: address,
-            branch: "General_Luna",
+            branch: branch,
             role: 765
         })
 

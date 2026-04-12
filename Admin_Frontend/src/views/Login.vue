@@ -1,28 +1,57 @@
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, onMounted } from "vue"
 import { useRouter } from "vue-router"
 
 const router = useRouter()
 
-const username = ref("")
+const email = ref("")
 const password = ref("")
 const error = ref("")
 const loading = ref(false)
+
+// Redirect if already logged in
+onMounted(() => {
+  const token = localStorage.getItem("token")
+  if (token) {
+    router.push("/dashboard")
+  }
+})
 
 const handleLogin = async () => {
   error.value = ""
   loading.value = true
 
-  // Simulate request delay (for UX)
-  setTimeout(() => {
-    if (username.value === "admin" && password.value === "admin123") {
-      localStorage.setItem("isAdmin", "true")
-      router.push("/")
-    } else {
-      error.value = "Invalid username or password"
+  try {
+    const response = await fetch("http://localhost:3500/admins/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email: email.value,
+        password: password.value
+      })
+    })
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      error.value = data.message || "Login failed"
+      loading.value = false
+      return
     }
+
+    localStorage.setItem("adminToken", data.token)
+    localStorage.setItem("adminCredentials", JSON.stringify(data.user))
+
+    router.push("/dashboard")
+
+  } catch (err) {
+    error.value = "Server error. Please try again."
+    console.error(err)
+  } finally {
     loading.value = false
-  }, 800)
+  }
 }
 </script>
 
@@ -52,24 +81,38 @@ const handleLogin = async () => {
         <h2>Admin Login</h2>
         <p class="subtitle">Sign in to continue</p>
 
-        <div v-if="error" class="error-box">
-          {{ error }}
-        </div>
+        <form @submit.prevent="handleLogin">
 
-        <div class="input-group">
-          <label>Username</label>
-          <input v-model="username" placeholder="Enter your username" />
-        </div>
+          <div v-if="error" class="error-box">
+            {{ error }}
+          </div>
 
-        <div class="input-group">
-          <label>Password</label>
-          <input type="password" v-model="password" placeholder="Enter your password" />
-        </div>
+          <div class="input-group">
+            <label>Email</label>
+            <input
+              v-model="email"
+              type="email"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
 
-        <button @click="handleLogin" :disabled="loading">
-          <span v-if="!loading">Sign In</span>
-          <span v-else>Signing in...</span>
-        </button>
+          <div class="input-group">
+            <label>Password</label>
+            <input
+              v-model="password"
+              type="password"
+              placeholder="Enter your password"
+              required
+            />
+          </div>
+
+          <button type="submit" :disabled="loading">
+            <span v-if="!loading">Sign In</span>
+            <span v-else>Signing in...</span>
+          </button>
+
+        </form>
 
         <div class="footer-note">
           Secure admin access only
@@ -82,14 +125,12 @@ const handleLogin = async () => {
 </template>
 
 <style scoped>
-/* Layout */
 .login-page {
   height: 100vh;
   display: flex;
   font-family: Arial, sans-serif;
 }
 
-/* LEFT PANEL */
 .left-panel {
   flex: 1;
   background: linear-gradient(135deg, #0C0C0C, #1a1a1a);
@@ -127,7 +168,6 @@ const handleLogin = async () => {
   line-height: 1.6;
 }
 
-/* RIGHT PANEL */
 .right-panel {
   flex: 1;
   display: flex;
@@ -136,7 +176,6 @@ const handleLogin = async () => {
   background: #0C0C0C;
 }
 
-/* CARD */
 .login-card {
   width: 360px;
   padding: 35px;
@@ -157,7 +196,6 @@ h2 {
   margin-bottom: 20px;
 }
 
-/* INPUTS */
 .input-group {
   margin-bottom: 14px;
 }
@@ -185,7 +223,6 @@ input:focus {
   box-shadow: 0 0 0 2px rgba(242,97,63,0.2);
 }
 
-/* BUTTON */
 button {
   width: 100%;
   padding: 12px;
@@ -208,7 +245,6 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* ERROR */
 .error-box {
   background: rgba(255, 77, 77, 0.1);
   border: 1px solid #ff4d4d;
@@ -219,7 +255,6 @@ button:disabled {
   margin-bottom: 15px;
 }
 
-/* FOOTER */
 .footer-note {
   margin-top: 15px;
   font-size: 11px;

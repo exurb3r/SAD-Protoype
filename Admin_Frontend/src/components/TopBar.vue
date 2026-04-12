@@ -2,17 +2,21 @@
   <div class="topbar">
     <h2 class="page-title">{{ $route.name }}</h2>
     <div class="admin-info">
-      <span class="admin-name">Admin</span>
+      <span class="admin-name">{{ adminName }}</span>
       <div class="avatar">
         <img v-if="adminPhoto" :src="adminPhoto" alt="Admin" />
-        <span v-else>A</span>
+        <span v-else>{{ adminLetter }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-
+  const adminName = localStorage.getItem("adminCredentials")
+    ? JSON.parse(localStorage.getItem("adminCredentials")).username
+    : "Admin";
+  
+  const adminLetter = adminName.charAt(0).toUpperCase();
 const adminPhoto = null;
 </script>
 

@@ -1,150 +1,144 @@
-const UserRoutine = require("../../models/user_models/UserRoutine");
+const UserRoutine    = require("../../models/user_models/UserRoutine");
 const UserGameDetails = require("../../models/user_models/UserGameDetails");
-const UserSocial = require("../../models/user_models/UserSocial");
-const AppUsers = require("../../models/user_models/AppUsers");
-const GymEvents = require("../../models/admin_models/GymEvents");
+const UserSocial     = require("../../models/user_models/UserSocial");
+const AppUsers       = require("../../models/user_models/AppUsers");
+const GymEvents      = require("../../models/admin_models/GymEvents");
 
 const gymcalendarData = async (req, res) => {
-    try {
-        const userId = req.user.id;
-        let events = [];
-        let personalEvents = [];
-        let theGymEvents = [];
+  try {
+    const userId = req.user.id;
+    let events = [];
+    let personalEvents = [];
+    let theGymEvents = [];
+    let membershipEvents = [];
 
-        const routines = await UserRoutine.findOne({ userId });
-
-        if (routines) {
-            routines.routines.forEach(routine => {
-                if (routine.dayAssigned) {
-                    const dayMap = {
-                        Sunday: 0,
-                        Monday: 1,
-                        Tuesday: 2,
-                        Wednesday: 3,
-                        Thursday: 4,
-                        Friday: 5,
-                        Saturday: 6,
-                    };
-
-                    events.push({
-                        title: `${routine.routineName}`,
-                        daysOfWeek: [dayMap[routine.dayAssigned]],
-                        backgroundColor: "#4CAF50"
-                    });
-                }
-            });
+    const routines = await UserRoutine.findOne({ userId });
+    if (routines) {
+      const dayMap = { Sunday:0, Monday:1, Tuesday:2, Wednesday:3, Thursday:4, Friday:5, Saturday:6 };
+      routines.routines.forEach(r => {
+        if (r.dayAssigned) {
+          events.push({
+            title: r.routineName,
+            daysOfWeek: [dayMap[r.dayAssigned]],
+            backgroundColor: "#16a34a",
+            type: "routine"
+          });
         }
-
-        const gameDetails = await UserGameDetails.findOne({ userId });
-
-        if (gameDetails) {
-            gameDetails.acceptedInvites.forEach(invite => {
-                events.push({
-                    title: "Workout Invite",
-                    date: invite.date,
-                    backgroundColor: "#2196F3"
-                });
-            });
-        }
-
-        const user = await AppUsers.findOne({ userId });
-
-        if (user && user.membershipStatus.length > 0) {
-            const membership = user.membershipStatus[0];
-
-            if (membership.startDate) {
-                events.push({
-                    title: "Membership Started",
-                    date: membership.startDate,
-                    backgroundColor: "#9C27B0"
-                });
-            }
-
-            if (membership.expiryDate) {
-                events.push({
-                    title: "Membership Expires",
-                    date: membership.expiryDate,
-                    backgroundColor: "#F44336"
-                });
-            }
-        }
-
-        const gymEvents = await GymEvents.findOne();
-
-        if (gymEvents) {
-            gymEvents.event.forEach(event => {
-                events.push({
-                    title: event.title,
-                    date: event.date,
-                    backgroundColor: "#FF9800"
-                });
-                theGymEvents.push({
-                    
-                    _id: event._id,
-                    title: event.title,
-                    date: event.date,
-                    time: event.time
-                })
-            });
-        }
-
-        const social = await UserSocial.findOne({ userId });
-
-        if (social) {
-            social.calendar.forEach(event => {
-                events.push({
-                    title: event.title,
-                    date: event.date,
-                    backgroundColor: "#607D8B"
-                });
-                personalEvents.push({
-                    _id: event._id,
-                    title: event.title,
-                    date: event.date,
-                    time: event.time
-                })
-            });
-        }
-
-        res.status(200).json({
-            events,
-            personalEvents,
-            gymEvents: theGymEvents
-        });
-
-    } catch (err) {
-        res.status(500).json({ message: err.message });
+      });
     }
+
+    // ── Workout Invites ───────────────────────────────────────
+    const gameDetails = await UserGameDetails.findOne({ userId });
+    if (gameDetails) {
+      gameDetails.acceptedInvites.forEach(invite => {
+        events.push({
+          title: "Workout Invite",
+          date: invite.date,
+          backgroundColor: "#2563eb",
+          type: "invite"
+        });
+      });
+    }
+
+    // ── Memberships — ALL of them ─────────────────────────────
+    const user = await AppUsers.findOne({ userId });
+    if (user) {
+      const allMemberships = user.membershipStatus || [];
+      const hasReal = allMemberships.some(m => m.branch !== "Walk-in");
+      const memberships = hasReal
+        ? allMemberships.filter(m => m.branch !== "Walk-in")
+        : allMemberships;
+
+      memberships.forEach(m => {
+        if (m.startDate) {
+          const e = {
+            title: `🟢 Start · ${m.branch}`,
+            date: m.startDate,
+            backgroundColor: "#7c3aed",
+            type: "membership_start",
+            branch: m.branch,
+            category: m.category
+          };
+          events.push(e);
+          membershipEvents.push(e);
+        }
+        if (m.expiryDate) {
+          const e = {
+            title: `🔴 Expiry · ${m.branch}`,
+            date: m.expiryDate,
+            backgroundColor: "#dc2626",
+            type: "membership_expiry",
+            branch: m.branch,
+            category: m.category
+          };
+          events.push(e);
+          membershipEvents.push(e);
+        }
+      });
+    }
+
+    // ── Gym Events ────────────────────────────────────────────
+    const gymEventsDoc = await GymEvents.findOne();
+    if (gymEventsDoc) {
+      gymEventsDoc.event.forEach(ev => {
+        events.push({
+          title: ev.title,
+          date: ev.date,
+          backgroundColor: "#d97706",
+          type: "gym"
+        });
+        theGymEvents.push({
+          _id: ev._id, title: ev.title,
+          date: ev.date, time: ev.time,
+          description: ev.description || ""
+        });
+      });
+    }
+
+    const social = await UserSocial.findOne({ userId });
+    if (social) {
+      social.calendar.forEach(ev => {
+        events.push({
+          title: ev.title,
+          date: ev.date,
+          backgroundColor: "#0891b2",
+          type: "personal"
+        });
+        personalEvents.push({
+          _id: ev._id, title: ev.title,
+          date: ev.date, time: ev.time || "",
+          description: ev.description || ""
+        });
+      });
+    }
+
+    res.status(200).json({ events, personalEvents, gymEvents: theGymEvents, membershipEvents });
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
 
 const addEvent = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { title, date, time } = req.body;
-
-    if (!title || !date) {
-      return res.status(400).json({ message: "Title and date required" });
-    }
+    const { title, date, time, description } = req.body;
+    if (!title || !date) return res.status(400).json({ message: "Title and date required" });
 
     const social = await UserSocial.findOne({ userId });
+    if (!social) return res.status(404).json({ message: "UserSocial not found" });
 
-    if (!social) {
-      return res.status(404).json({ message: "UserSocial not found" });
-    }
-
-    social.calendar.push({
-      title,
-      date,
-      time
-    });
-
+    social.calendar.push({ title, date, time, description });
     await social.save();
 
-    res.status(201).json({ message: "Event added successfully" });
-
+    const added = social.calendar[social.calendar.length - 1];
+    res.status(201).json({
+      _id: added._id, title: added.title,
+      date: added.date, time: added.time || "",
+      description: added.description || ""
+    });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: err.message });
   }
 };
 
@@ -152,31 +146,23 @@ const editEvent = async (req, res) => {
   try {
     const userId = req.user.id;
     const { id } = req.params;
-    const { title, date, time } = req.body;
+    const { title, date, time, description } = req.body;
 
     const social = await UserSocial.findOne({ userId });
+    if (!social) return res.status(404).json({ message: "UserSocial not found" });
 
-    if (!social) {
-      return res.status(404).json({ message: "UserSocial not found" });
-    }
+    const ev = social.calendar.id(id);
+    if (!ev) return res.status(404).json({ message: "Event not found" });
 
-    const event = social.calendar.id( id );
-
-    if (!event) {
-      return res.status(404).json({ message: "Event not found" });
-    }
-
-    event.title = title;
-    event.date = date;
-    event.time = time;
-
+    ev.title = title;
+    ev.date = date;
+    ev.time = time;
+    ev.description = description;
     await social.save();
 
-    res.json({ message: "Event updated successfully" });
-
+    res.json({ _id: ev._id, title: ev.title, date: ev.date, time: ev.time, description: ev.description });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: err.message });
   }
 };
 
@@ -186,20 +172,14 @@ const deleteEvent = async (req, res) => {
     const { id } = req.params;
 
     const social = await UserSocial.findOne({ userId });
+    if (!social) return res.status(404).json({ message: "UserSocial not found" });
 
-    if (!social) {
-      return res.status(404).json({ message: "UserSocial not found" });
-    }
-
-    social.calendar.pull( id );
-
+    social.calendar.pull(id);
     await social.save();
-
-    res.json({ message: "Event deleted successfully" });
-
+    res.json({ message: "Deleted" });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: err.message });
   }
 };
+
 module.exports = { gymcalendarData, addEvent, editEvent, deleteEvent };

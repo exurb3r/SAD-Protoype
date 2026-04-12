@@ -1,4 +1,4 @@
-const ROLES = { USER: 452, ADMIN: 765 };
+const ROLES = { USER: 452, ADMIN: 765, SUPERADMIN: 999 };
 
 const permit = (...allowedRoles) => (req, res, next) => {
     if (!req.user) return res.status(401).json({ message: "Not authenticated" });

@@ -1,245 +1,212 @@
-
 .gs-page {
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    padding: 28px 32px 20px;
-    background: #0f0f0f;
-    color: #e5e5e5;
-    font-family: 'DM Sans', sans-serif;
-    box-sizing: border-box;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 28px 16px;
+  background: #0f0f0f;
+  color: #e5e5e5;
+  font-family: 'DM Sans', sans-serif;
+  box-sizing: border-box;
+  gap: 14px;
 }
 
-.gs-header { margin-bottom: 20px; flex-shrink: 0; }
-
+/* ── Header ── */
+.gs-header { flex-shrink: 0; }
 .gs-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 2rem;
-    font-weight: 800;
-    color: #fff;
-    margin: 0 0 4px;
-    letter-spacing: -0.5px;
+  font-family: 'Syne', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 2px;
+  letter-spacing: -0.5px;
+}
+.gs-sub { font-size: 12px; color: #555; margin: 0; }
+
+/* ── Membership strip ── */
+.gs-memberships-strip {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  flex-shrink: 0;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.06) transparent;
+}
+.gs-memberships-strip::-webkit-scrollbar { height: 3px; }
+.gs-memberships-strip::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.06);
+  border-radius: 10px;
 }
 
-.gs-sub { font-size: 13px; color: #555; margin: 0; }
-
-.gs-status-row {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
-    margin-bottom: 14px;
-    flex-shrink: 0;
+.gs-membership-card {
+  min-width: 200px;
+  flex-shrink: 0;
+  background: rgba(220,38,38,0.06);
+  border: 0.5px solid rgba(220,38,38,0.18);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.gs-status-card {
-    background: #161616;
-    border: 0.5px solid rgba(255,255,255,0.07);
-    border-radius: 10px;
-    padding: 14px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    transition: border-color 0.15s;
+.gs-mc-branch {
+  font-size: 10px;
+  font-weight: 600;
+  color: #f87171;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
 }
 
-.gs-status-card:hover { border-color: rgba(255,255,255,0.12); }
-
-.gs-status-card.accent {
-    background: rgba(220,38,38,0.07);
-    border-color: rgba(220,38,38,0.2);
+.gs-mc-category {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
 }
 
-.gs-status-label {
-    font-size: 10px;
-    color: #444;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
+.gs-mc-meta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: #555;
+  margin-top: 2px;
 }
+.gs-mc-sep { color: #333; }
 
-.gs-status-value {
-    font-family: 'Syne', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    color: #fff;
-    line-height: 1.2;
+.gs-mc-days {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-top: 4px;
 }
+.gs-mc-days-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+.gs-mc-days-label { font-size: 11px; color: #444; }
 
-.gs-status-card.accent .gs-status-value { color: #f87171; }
+.gs-no-membership { font-size: 13px; color: #444; flex-shrink: 0; }
 
+/* ── Main layout ── */
 .gs-layout {
-    display: grid;
-    grid-template-columns: 1fr 340px;
-    gap: 14px;
-    flex: 1;
-    min-height: 0;
-    overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .gs-card {
-    background: #161616;
-    border: 0.5px solid rgba(255,255,255,0.07);
-    border-radius: 12px;
-    padding: 14px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    min-height: 0;
+  background: #161616;
+  border: 0.5px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
 }
 
-.gs-calendar-card { }
-
+/* ── Calendar ── */
 .gs-calendar-card .fc {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    height: 100%;
-    color: #e5e5e5;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  height: 100%;
+  color: #e5e5e5;
 }
-
 .gs-calendar-card .fc-theme-standard td,
 .gs-calendar-card .fc-theme-standard th,
 .gs-calendar-card .fc-theme-standard .fc-scrollgrid {
-    border-color: rgba(255,255,255,0.06) !important;
+  border-color: rgba(255,255,255,0.06) !important;
 }
-
 .gs-calendar-card .fc .fc-daygrid-day { background: transparent; }
 .gs-calendar-card .fc .fc-daygrid-day:hover { background: rgba(255,255,255,0.02); }
-
 .gs-calendar-card .fc .fc-col-header-cell-cushion {
-    color: #555;
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-    text-decoration: none;
+  color: #555; font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.4px; text-decoration: none;
 }
-
 .gs-calendar-card .fc .fc-daygrid-day-number {
-    color: #888;
-    font-size: 12px;
-    text-decoration: none;
+  color: #888; font-size: 11px; text-decoration: none;
 }
-
 .gs-calendar-card .fc .fc-day-today { background: rgba(220,38,38,0.07) !important; }
 .gs-calendar-card .fc .fc-day-today .fc-daygrid-day-number { color: #f87171; font-weight: 700; }
-
 .gs-calendar-card .fc .fc-toolbar-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    color: #fff;
+  font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: #fff;
 }
-
 .gs-calendar-card .fc .fc-button {
-    background: #1c1c1c;
-    border: 0.5px solid rgba(255,255,255,0.1);
-    color: #888;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    padding: 4px 10px;
-    border-radius: 6px;
+  background: #1c1c1c;
+  border: 0.5px solid rgba(255,255,255,0.1);
+  color: #888; font-family: 'DM Sans', sans-serif;
+  font-size: 11px; padding: 3px 8px; border-radius: 6px;
 }
-
-.gs-calendar-card .fc .fc-button:hover {
-    background: rgba(255,255,255,0.06);
-    color: #e5e5e5;
-}
-
+.gs-calendar-card .fc .fc-button:hover { background: rgba(255,255,255,0.06); color: #e5e5e5; }
 .gs-calendar-card .fc .fc-event {
-    background: rgba(220,38,38,0.7);
-    border: none;
-    border-radius: 4px;
-    font-size: 11px;
-    padding: 1px 5px;
+  border: none; border-radius: 3px; font-size: 10px; padding: 1px 4px;
 }
 
-.gs-log-card { }
-
+/* ── Log table ── */
 .gs-card-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-    flex-shrink: 0;
+  display: flex; align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px; flex-shrink: 0;
 }
-
 .gs-card-label {
-    font-family: 'Syne', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    color: #fff;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+  font-family: 'Syne', sans-serif;
+  font-size: 10px; font-weight: 700;
+  color: #fff; text-transform: uppercase; letter-spacing: 0.5px;
 }
-
 .gs-count {
-    background: rgba(220,38,38,0.12);
-    color: #f87171;
-    border: 0.5px solid rgba(220,38,38,0.2);
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 600;
-    padding: 2px 9px;
+  background: rgba(220,38,38,0.12);
+  color: #f87171;
+  border: 0.5px solid rgba(220,38,38,0.2);
+  border-radius: 20px; font-size: 10px;
+  font-weight: 600; padding: 2px 8px;
 }
-
 .gs-table-wrap {
-    flex: 1;
-    overflow-y: auto;
-    min-height: 0;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255,255,255,0.06) transparent;
+  flex: 1; overflow-y: auto; min-height: 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.06) transparent;
 }
-
-.gs-table-wrap::-webkit-scrollbar { width: 4px; }
-.gs-table-wrap::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 10px; }
-
-.gs-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
+.gs-table-wrap::-webkit-scrollbar { width: 3px; }
+.gs-table-wrap::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.06); border-radius: 10px;
 }
-
+.gs-table { width: 100%; border-collapse: collapse; font-size: 11px; }
 .gs-table thead tr {
-    border-bottom: 0.5px solid rgba(255,255,255,0.07);
-    position: sticky;
-    top: 0;
-    background: #161616;
+  border-bottom: 0.5px solid rgba(255,255,255,0.07);
+  position: sticky; top: 0; background: #161616;
 }
-
 .gs-table th {
-    text-align: left;
-    font-size: 10px;
-    font-weight: 600;
-    color: #444;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 0 8px 10px 0;
-    white-space: nowrap;
+  text-align: left; font-size: 9px; font-weight: 600;
+  color: #444; text-transform: uppercase; letter-spacing: 0.5px;
+  padding: 0 6px 8px 0; white-space: nowrap;
 }
-
 .gs-table td {
-    padding: 10px 8px 10px 0;
-    color: #888;
-    border-bottom: 0.5px solid rgba(255,255,255,0.04);
-    vertical-align: middle;
+  padding: 8px 6px 8px 0; color: #888;
+  border-bottom: 0.5px solid rgba(255,255,255,0.04);
+  vertical-align: middle;
 }
-
 .gs-table tbody tr:last-child td { border-bottom: none; }
 .gs-table tbody tr:hover td { color: #c8c8c8; }
 .gs-table td:first-child { color: #e5e5e5; font-weight: 500; }
+.gs-empty { font-size: 12px; color: #444; margin: 0; padding: 8px 0; }
 
-.gs-empty { font-size: 13px; color: #444; margin: 0; padding: 8px 0; }
-
+/* ── Responsive ── */
 @media (max-width: 900px) {
-    .gs-page { height: auto; overflow-y: auto; }
-    .gs-status-row { grid-template-columns: repeat(3, 1fr); }
-    .gs-layout { grid-template-columns: 1fr; height: auto; overflow: visible; }
-    .gs-calendar-card { height: 400px; }
-    .gs-log-card { overflow: visible; }
-    .gs-table-wrap { max-height: 320px; }
+  .gs-page { height: auto; overflow-y: auto; }
+  .gs-layout { grid-template-columns: 1fr; height: auto; overflow: visible; }
+  .gs-calendar-card { height: 380px; }
+  .gs-log-card { overflow: visible; }
+  .gs-table-wrap { max-height: 280px; }
 }
-
 @media (max-width: 600px) {
-    .gs-page { padding: 16px 16px 48px; }
-    .gs-status-row { grid-template-columns: 1fr 1fr; }
+  .gs-page { padding: 14px 14px 48px; }
 }

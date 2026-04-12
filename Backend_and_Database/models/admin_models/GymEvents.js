@@ -8,16 +8,20 @@ const eventSubSchema = new Schema({
     },
     date: {
         type: Date,
-        default: Date.now
+        required: true
     },
     time: {
         type: String,
         required: true
+    },
+    description: {
+        type: String,
+        required: true
     }
-})
+}, { timestamps: true });
 
 const gymEventsSchema = new Schema({
-    event: [ eventSubSchema ]
-})
+    event: [eventSubSchema]
+});
 
 module.exports = mongoose.model('GymEvents', gymEventsSchema);

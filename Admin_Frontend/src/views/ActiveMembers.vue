@@ -2,43 +2,47 @@
   <div class="members-container">
 
     <div class="members-header">
-      <h2></h2>
-      <input v-model="search" class="search-input" type="text" placeholder="Search members..." />
+      <h2>Members</h2>
+      <div class="header-right">
+        <input v-model="search" class="search-input" type="text" placeholder="Search members..." />
+        <button class="btn-add" @click="$router.push('/add-member')">+ Add New Member</button>
+      </div>
     </div>
+
+    <div v-if="loading" class="loading">Loading members...</div>
+    <div v-if="error" class="error-msg">{{ error }}</div>
 
     <div class="table-wrapper">
       <table>
         <thead>
           <tr>
             <th>Member</th>
-            <th>Membership Type</th>
-            <th>Expiry Date</th>
+            <th>Memberships</th>
             <th>Contact</th>
             <th>Actions</th>
           </tr>
         </thead>
 
         <tbody>
-          <tr v-for="member in filteredMembers" :key="member.id">
+          <tr v-for="member in filteredMembers" :key="member._id">
             <td class="member-info">
               <div class="avatar">{{ initials(member.firstname, member.lastname) }}</div>
               <span>{{ member.firstname }} {{ member.lastname }}</span>
             </td>
 
             <td>
-              <span class="badge">
-                {{ member.membershipStatus[0]?.category }}
-              </span>
+              <div class="membership-badges">
+                <span
+                  v-for="(ms, i) in member.membershipStatus"
+                  :key="i"
+                  :class="['badge', ms.isActive ? 'active' : 'inactive']"
+                >
+                  {{ ms.category }} — {{ ms.branch }}
+                </span>
+              </div>
             </td>
 
-            <td>
-              {{ member.membershipStatus[0]?.expiryDate }}
-            </td>
-
-            <td>
-              {{ member.contactNum }}
-            </td>
-            
+            <td>{{ member.contactNum }}</td>
 
             <td class="actions">
               <button class="btn view" @click="viewMember(member)">View</button>
@@ -47,15 +51,14 @@
             </td>
           </tr>
 
-          <tr v-if="filteredMembers.length === 0">
-            <td colspan="5" class="no-results">No members found.</td>
+          <tr v-if="filteredMembers.length === 0 && !loading">
+            <td colspan="4" class="no-results">No members found.</td>
           </tr>
         </tbody>
       </table>
     </div>
 
     <!-- VIEW MODAL -->
-
     <div class="modal-overlay" v-if="selectedMember" @click.self="selectedMember = null">
       <div class="modal">
         <div class="modal-avatar">
@@ -64,22 +67,37 @@
 
         <h3>{{ selectedMember.firstname }} {{ selectedMember.lastname }}</h3>
 
-        <p><span>Membership:</span> {{ selectedMember.membershipStatus[0]?.category }}</p>
-        <p><span>Expiry:</span> {{ selectedMember.membershipStatus[0]?.expiryDate }}</p>
         <p><span>Contact:</span> {{ selectedMember.contactNum }}</p>
         <p><span>Contact Person:</span> {{ selectedMember.contactPerson }}</p>
         <p><span>Contact Person Number:</span> {{ selectedMember.contactPersonNum }}</p>
         <p><span>Address:</span> {{ selectedMember.address }}</p>
 
-        <button class="btn delete" @click="selectedMember = null">Close</button>
+        <div class="section-label">Memberships</div>
+        <div
+          v-for="(ms, i) in selectedMember.membershipStatus"
+          :key="i"
+          class="membership-card"
+          :class="ms.isActive ? 'ms-active' : 'ms-inactive'"
+        >
+          <div class="ms-row">
+            <span class="ms-category">{{ ms.category }}</span>
+            <span :class="['ms-status', ms.isActive ? 'active' : 'inactive']">
+              {{ ms.isActive ? 'Active' : 'Inactive' }}
+            </span>
+          </div>
+          <div class="ms-row">
+            <span class="ms-meta">Branch: {{ ms.branch }}</span>
+            <span class="ms-meta">Expires: {{ formatDate(ms.expiryDate) }}</span>
+          </div>
+        </div>
+
+        <button class="btn delete" style="margin-top:8px" @click="selectedMember = null">Close</button>
       </div>
     </div>
 
     <!-- EDIT MODAL -->
-
     <div class="modal-overlay" v-if="editingMember" @click.self="editingMember = null">
       <div class="modal">
-
         <h3>Edit Member</h3>
 
         <label>First Name</label>
@@ -112,58 +130,81 @@
         <label>Assigned Trainer</label>
         <input v-model="editingMember.assignedTrainer" class="modal-input" />
 
-        <label>Membership Type</label>
-        <select v-model="editingMember.membershipStatus[0].category" class="modal-input">
-          <option>Standard</option>
-          <option>Standard Renewal</option>
-          <option>New Member / Early Renew</option>
-          <option>Classic (Student)</option>
-          <option>Classic (Regular)</option>
-          <option>Premium (Student)</option>
-          <option>Premium (Regular)</option>
-          <option>VIP (Student)</option>
-          <option>VIP (Regular)</option>
-        </select>
-
-        <label>Start Date</label>
-        <input
-          v-model="editingMember.membershipStatus[0].startDate"
-          type="date"
-          class="modal-input"
-        />
-
-        <label>Expiry Date</label>
-        <input
-          v-model="editingMember.membershipStatus[0].expiryDate"
-          type="date"
-          class="modal-input"
-        />
-
-        <div class="modal-actions">
-          <button class="btn edit" @click="saveEdit">Save</button>
-          <button class="btn delete" @click="editingMember = null">Cancel</button>
+        <!-- ALL MEMBERSHIPS -->
+        <div class="section-label">
+          Memberships
+          <button class="btn-add-ms" @click="addMembershipSlot">+ Add</button>
         </div>
 
+        <div
+          v-for="(ms, i) in editingMember.membershipStatus"
+          :key="i"
+          class="membership-edit-block"
+        >
+          <div class="ms-edit-header">
+            <span>Membership {{ i + 1 }}</span>
+            <button class="btn-remove-ms" @click="removeMembershipSlot(i)">✕</button>
+          </div>
+
+          <label>Category</label>
+          <select v-model="ms.category" class="modal-input">
+            <option>Standard</option>
+            <option>Standard Renewal</option>
+            <option>New Member / Early Renew</option>
+            <option>Classic (Student)</option>
+            <option>Classic (Regular)</option>
+            <option>Premium (Student)</option>
+            <option>Premium (Regular)</option>
+            <option>VIP (Student)</option>
+            <option>VIP (Regular)</option>
+          </select>
+
+          <label>Branch</label>
+          <select v-model="ms.branch" class="modal-input">
+            <option>General Luna</option>
+            <option>Rimando Road</option>
+            <option>Walk-in</option>
+          </select>
+
+          <label>Start Date</label>
+          <input v-model="ms.startDate" type="date" class="modal-input" />
+
+          <label>Expiry Date</label>
+          <input v-model="ms.expiryDate" type="date" class="modal-input" />
+
+          <label>Active</label>
+          <select v-model="ms.isActive" class="modal-input">
+            <option :value="true">Yes</option>
+            <option :value="false">No</option>
+          </select>
+        </div>
+
+        <div v-if="editError" class="error-msg">{{ editError }}</div>
+
+        <div class="modal-actions">
+          <button class="btn edit" @click="saveEdit" :disabled="saving">
+            {{ saving ? 'Saving...' : 'Save' }}
+          </button>
+          <button class="btn delete" @click="editingMember = null">Cancel</button>
+        </div>
       </div>
     </div>
 
     <!-- DELETE MODAL -->
-
     <div class="modal-overlay" v-if="deletingMember" @click.self="deletingMember = null">
       <div class="modal">
-
         <h3>Delete Member?</h3>
-
         <p class="delete-msg">
           Are you sure you want to delete
-          <span>{{ deletingMember.firstname }} {{ deletingMember.lastname }}</span> ?
+          <span>{{ deletingMember.firstname }} {{ deletingMember.lastname }}</span>?
         </p>
-
+        <div v-if="deleteError" class="error-msg">{{ deleteError }}</div>
         <div class="modal-actions">
-          <button class="btn delete" @click="confirmDelete">Yes, Delete</button>
+          <button class="btn delete" @click="confirmDelete" :disabled="deleting">
+            {{ deleting ? 'Deleting...' : 'Yes, Delete' }}
+          </button>
           <button class="btn edit" @click="deletingMember = null">Cancel</button>
         </div>
-
       </div>
     </div>
 
@@ -171,122 +212,142 @@
 </template>
 
 <script>
+const BASE_URL = 'http://localhost:3500/admins/members'
+
 export default {
+  data() {
+    return {
+      search: '',
+      members: [],
+      selectedMember: null,
+      editingMember: null,
+      deletingMember: null,
+      loading: false,
+      saving: false,
+      deleting: false,
+      error: null,
+      editError: null,
+      deleteError: null,
+    }
+  },
 
-data() {
-return {
+  computed: {
+    filteredMembers() {
+      const s = this.search.toLowerCase()
+      return this.members.filter(m =>
+        (m.firstname + ' ' + m.lastname).toLowerCase().includes(s) ||
+        m.membershipStatus.some(ms =>
+          ms.category.toLowerCase().includes(s) ||
+          ms.branch.toLowerCase().includes(s)
+        ) ||
+        m.contactNum.includes(s)
+      )
+    }
+  },
 
-search: '',
-selectedMember: null,
-editingMember: null,
-deletingMember: null,
+  methods: {
+    getToken() { return localStorage.getItem('adminToken') },
+    authHeaders() {
+      return {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.getToken()}`
+      }
+    },
+    initials(first, last) {
+      return (first[0] + last[0]).toUpperCase()
+    },
+    formatDate(date) {
+      if (!date) return '—'
+      return new Date(date).toLocaleDateString()
+    },
+    viewMember(member) {
+      this.selectedMember = { ...member }
+    },
+    editMember(member) {
+      this.editingMember = JSON.parse(JSON.stringify(member))
+      this.editingMember.membershipStatus = this.editingMember.membershipStatus.map(ms => ({
+        ...ms,
+        startDate:  ms.startDate  ? ms.startDate.split('T')[0]  : '',
+        expiryDate: ms.expiryDate ? ms.expiryDate.split('T')[0] : ''
+      }))
+      this.editError = null
+    },
+    addMembershipSlot() {
+      this.editingMember.membershipStatus.push({
+        category: 'Standard',
+        branch: 'General Luna',
+        startDate: '',
+        expiryDate: '',
+        isActive: true,
+        remainingDays: 0
+      })
+    },
+    removeMembershipSlot(index) {
+      this.editingMember.membershipStatus.splice(index, 1)
+    },
 
-members: [
+    async fetchMembers() {
+      this.loading = true
+      this.error = null
+      try {
+        const res = await fetch(BASE_URL, { headers: this.authHeaders() })
+        const data = await res.json()
+        if (!res.ok) { this.error = data.message || 'Failed to fetch.'; return }
+        this.members = data.members
+      } catch {
+        this.error = 'Network error.'
+      } finally {
+        this.loading = false
+      }
+    },
 
-{
-id:1,
-firstname:"Abegail",
-lastname:"Moyaen",
-email:"abegail@email.com",
-contactNum:"09123123123",
-contactPerson:"Juan Moyaen",
-contactPersonNum:"0912312312",
-address:"General Luna",
-gymId:"GYM001",
-rfid:"RF001",
-assignedTrainer:"Coach Mike",
-membershipStatus:[
-{
-category:"Premium (Regular)",
-branch:"General Luna",
-startDate:"2025-05-01",
-expiryDate:"2025-06-01",
-remainingDays:30,
-isActive:true
-}
-]
-},
+    async saveEdit() {
+      this.saving = true
+      this.editError = null
+      try {
+        const res = await fetch(`${BASE_URL}/${this.editingMember._id}`, {
+          method: 'PUT',
+          headers: this.authHeaders(),
+          body: JSON.stringify(this.editingMember)
+        })
+        const data = await res.json()
+        if (!res.ok) { this.editError = data.message || 'Failed to update.'; return }
+        const index = this.members.findIndex(m => m._id === data.member._id)
+        if (index !== -1) this.members.splice(index, 1, data.member)
+        this.editingMember = null
+      } catch {
+        this.editError = 'Network error.'
+      } finally {
+        this.saving = false
+      }
+    },
 
-{
-id:2,
-firstname:"Jochelle",
-lastname:"Maltu",
-email:"jochelle@email.com",
-contactNum:"091231234",
-contactPerson:"Maria Maltu",
-contactPersonNum:"0912312312",
-address:"General Luna",
-gymId:"GYM002",
-rfid:"RF002",
-assignedTrainer:"Coach Ken",
-membershipStatus:[
-{
-category:"Standard",
-branch:"General Luna",
-startDate:"2025-03-01",
-expiryDate:"2025-04-01",
-remainingDays:30,
-isActive:true
-}
-]
-}
+    async confirmDelete() {
+      this.deleting = true
+      this.deleteError = null
+      try {
+        const res = await fetch(`${BASE_URL}/${this.deletingMember._id}`, {
+          method: 'DELETE',
+          headers: this.authHeaders()
+        })
+        const data = await res.json()
+        if (!res.ok) { this.deleteError = data.message || 'Failed to delete.'; return }
+        this.members = this.members.filter(m => m._id !== this.deletingMember._id)
+        this.deletingMember = null
+      } catch {
+        this.deleteError = 'Network error.'
+      } finally {
+        this.deleting = false
+      }
+    }
+  },
 
-]
-
-}
-},
-
-computed: {
-
-filteredMembers(){
-return this.members.filter(m=>
-(m.firstname+" "+m.lastname).toLowerCase().includes(this.search.toLowerCase()) ||
-m.membershipStatus[0]?.category.toLowerCase().includes(this.search.toLowerCase()) ||
-m.contactNum.includes(this.search)
-)
-}
-
-},
-
-methods: {
-
-initials(first,last){
-return (first[0]+last[0]).toUpperCase()
-},
-
-viewMember(member){
-this.selectedMember={...member}
-},
-
-editMember(member){
-this.editingMember=JSON.parse(JSON.stringify(member))
-},
-
-saveEdit(){
-
-const index=this.members.findIndex(m=>m.id===this.editingMember.id)
-
-if(index!==-1){
-this.members[index]={...this.editingMember}
-}
-
-this.editingMember=null
-},
-
-confirmDelete(){
-this.members=this.members.filter(m=>m.id!==this.deletingMember.id)
-this.deletingMember=null
-}
-
-}
-
+  mounted() { this.fetchMembers() }
 }
 </script>
 
 <style scoped>
-.members-container {
-  width: 100%;
-}
+.members-container { width: 100%; }
 
 .members-header {
   display: flex;
@@ -295,9 +356,12 @@ this.deletingMember=null
   margin-bottom: 24px;
 }
 
-.members-header h2 {
-  color: white;
-  margin: 0;
+.members-header h2 { color: white; margin: 0; }
+
+.header-right {
+  display: flex;
+  gap: 12px;
+  align-items: center;
 }
 
 .search-input {
@@ -307,14 +371,24 @@ this.deletingMember=null
   background: #1a1a1a;
   color: white;
   font-size: 14px;
-  width: 240px;
+  width: 220px;
   outline: none;
   transition: 0.2s;
 }
+.search-input:focus { border-color: #F2613F; }
 
-.search-input:focus {
-  border-color: #F2613F;
+.btn-add {
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: none;
+  background: #F2613F;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
 }
+.btn-add:hover { background: #9B3922; }
 
 .table-wrapper {
   background: #1a1a1a;
@@ -323,15 +397,8 @@ this.deletingMember=null
   overflow: hidden;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-thead {
-  background-color: #0C0C0C;
-}
-
+table { width: 100%; border-collapse: collapse; }
+thead { background-color: #0C0C0C; }
 th {
   padding: 14px 20px;
   text-align: left;
@@ -341,253 +408,181 @@ th {
   letter-spacing: 0.5px;
   border-bottom: 1px solid #481E14;
 }
-
 td {
   padding: 14px 20px;
   color: white;
   font-size: 14px;
   border-bottom: 1px solid #2a2a2a;
 }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background-color: #1f1210; }
 
-tr:last-child td {
-  border-bottom: none;
-}
-
-tr:hover td {
-  background-color: #1f1210;
-}
-
-.member-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
+.member-info { display: flex; align-items: center; gap: 12px; }
 .avatar {
-  width: 36px;
-  height: 36px;
+  width: 36px; height: 36px;
   border-radius: 50%;
   background-color: #9B3922;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  font-weight: bold;
-  color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: bold; color: white;
+  flex-shrink: 0;
 }
 
+.membership-badges { display: flex; flex-wrap: wrap; gap: 6px; }
 .badge {
-  padding: 4px 12px;
+  padding: 3px 10px;
   border-radius: 20px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: bold;
-  background-color:#2a2a2a;
-  color:#aaa;
 }
+.badge.active   { background: #1a2a1a; color: #4caf82; }
+.badge.inactive { background: #2a2a2a; color: #aaa; }
 
-.actions {
-  display: flex;
-  gap: 8px;
-}
-
+.actions { display: flex; gap: 8px; }
 .btn {
   padding: 6px 14px;
   border-radius: 8px;
   border: none;
   font-size: 13px;
   cursor: pointer;
+  transition: 0.15s;
 }
+.btn.view   { background-color: #481E14; color: #F2613F; }
+.btn.edit   { background: #F2613F; color: white; }
+.btn.edit:hover { background: #ff7b5a; }
+.btn.delete { background: transparent; border: 1px solid #444; color: #aaa; }
+.btn.delete:hover { background: #1f1f1f; border-color: #666; }
 
-.btn.view {
-  background-color: #481E14;
-  color: #F2613F;
-}
+.no-results { text-align: center; color: #555; padding: 40px; }
+.loading    { color: #aaa; padding: 20px; }
+.error-msg  { color: #c0392b; font-size: 13px; padding: 8px 0; }
 
-.btn.edit {
-  background-color: #2a2a2a;
-  color: #aaa;
-}
-
-.btn.delete {
-  background-color: #1a1a1a;
-  color: #c0392b;
-  border: 1px solid #c0392b;
-}
-
-.no-results {
-  text-align: center;
-  color: #555;
-  padding: 40px;
-}
-
+/* MODAL */
 .modal-overlay {
-  position: fixed;
-  inset: 0;
+  position: fixed; inset: 0;
   background: rgba(0,0,0,0.75);
   backdrop-filter: blur(6px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   z-index: 1000;
-
   animation: fadeIn 0.2s ease;
 }
-
 .modal {
   background: #121212;
   border: 1px solid #2b2b2b;
   border-radius: 18px;
-  padding: 28px 28px 24px 28px;
-
-  width: 420px;
+  padding: 28px;
+  width: 460px;
   max-height: 85vh;
-
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-
+  display: flex; flex-direction: column; gap: 10px;
   overflow-y: auto;
-
-  box-shadow:
-    0 10px 40px rgba(0,0,0,0.6),
-    0 0 0 1px rgba(255,255,255,0.02);
-
   animation: modalPop 0.18s ease;
 }
+.modal h3 { margin: 0 0 6px; color: white; font-size: 20px; }
+.modal label { font-size: 12px; color: #888; }
+.modal p { margin: 2px 0; font-size: 14px; color: #ddd; }
+.modal p span { color: #888; margin-right: 6px; }
 
-.modal h3 {
-  margin: 0 0 10px 0;
-  color: white;
-  font-size: 20px;
-  font-weight: 600;
-}
-
-.modal label {
-  font-size: 12px;
-  color: #888;
-  margin-top: 4px;
+.modal-avatar {
+  width: 70px; height: 70px;
+  border-radius: 50%;
+  background: linear-gradient(135deg,#9B3922,#F2613F);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: bold; color: white;
+  margin: 0 auto 10px;
 }
 
 .modal-input {
-  padding: 11px 12px;
+  padding: 10px 12px;
   border-radius: 10px;
   border: 1px solid #2a2a2a;
   background: #0C0C0C;
   color: white;
   font-size: 14px;
-
-  transition: all 0.15s ease;
+  width: 100%;
+  box-sizing: border-box;
+  transition: 0.15s;
 }
+.modal-input:focus { outline: none; border-color: #F2613F; }
 
-.modal-input:focus {
-  outline: none;
-  border-color: #F2613F;
-  box-shadow: 0 0 0 2px rgba(242,97,63,0.15);
-}
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px; }
 
-/* AVATAR */
-
-.modal-avatar {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  background: linear-gradient(135deg,#9B3922,#F2613F);
+.section-label {
+  font-size: 12px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 8px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  font-weight: bold;
-  color: white;
-  margin: 0 auto 10px;
+  justify-content: space-between;
 }
 
-/* VIEW TEXT */
-
-.modal p {
-  margin: 2px 0;
-  font-size: 14px;
-  color: #ddd;
-}
-
-.modal p span {
-  color: #888;
-  margin-right: 6px;
-}
-
-
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 14px;
-}
-
-
-.btn {
-  padding: 8px 16px;
+/* View modal membership cards */
+.membership-card {
   border-radius: 10px;
-  border: none;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: 0.15s ease;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
+.ms-active   { background: #0e1f0e; border: 1px solid #2a4a2a; }
+.ms-inactive { background: #1a1a1a; border: 1px solid #2a2a2a; }
 
-.btn.edit {
-  background: #F2613F;
-  color: white;
+.ms-row { display: flex; justify-content: space-between; align-items: center; }
+.ms-category { font-size: 14px; font-weight: bold; color: white; }
+.ms-status { font-size: 11px; font-weight: bold; padding: 2px 8px; border-radius: 20px; }
+.ms-status.active   { background: #1a3a1a; color: #4caf82; }
+.ms-status.inactive { background: #2a2a2a; color: #aaa; }
+.ms-meta { font-size: 12px; color: #888; }
+
+/* Edit modal membership blocks */
+.membership-edit-block {
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: #0c0c0c;
 }
-
-.btn.edit:hover {
-  background: #ff7b5a;
-}
-
-
-.btn.delete {
-  background: transparent;
-  border: 1px solid #444;
+.ms-edit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   color: #aaa;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 4px;
 }
-
-.btn.delete:hover {
-  background: #1f1f1f;
-  border-color: #666;
-}
-
-.delete-msg {
-  color: #bbb;
-  font-size: 14px;
-}
-
-.delete-msg span {
+.btn-add-ms {
+  background: transparent;
+  border: 1px solid #F2613F;
   color: #F2613F;
-  font-weight: 600;
+  border-radius: 6px;
+  padding: 2px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.btn-remove-ms {
+  background: transparent;
+  border: none;
+  color: #c0392b;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0 4px;
 }
 
+.delete-msg { color: #bbb; font-size: 14px; }
+.delete-msg span { color: #F2613F; font-weight: 600; }
 
-.modal::-webkit-scrollbar {
-  width: 6px;
-}
-
-.modal::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 4px;
-}
-
+.modal::-webkit-scrollbar { width: 6px; }
+.modal::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
 
 @keyframes modalPop {
-  from {
-    transform: scale(0.92);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+  from { transform: scale(0.92); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
 }
-
 @keyframes fadeIn {
-  from { opacity:0 }
-  to { opacity:1 }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 </style>

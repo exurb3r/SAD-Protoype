@@ -18,6 +18,7 @@ import BranchLogbook  from '../views/BranchLogbook.vue'
 import CommunityPost  from '../views/CommunityPost.vue'
 import RewardUsers    from '../views/RewardUsers.vue'
 import AdminLogin     from '../views/Login.vue'
+import AddMemberView  from '../views/AddMemberView.vue'
 
 const routes = [
   // ✅ LOGIN (NO SIDEBAR)
@@ -32,7 +33,7 @@ const routes = [
     path: '/',
     component: AppLayout,
     children: [
-      { path: '', name: 'Dashboard', component: Dashboard },
+      { path: 'dashboard', name: 'Dashboard', component: Dashboard },
       { path: 'members', name: 'Active Members', component: ActiveMembers },
       { path: 'add-membership', name: 'Add Membership', component: AddMembership },
       { path: 'users', name: 'App Users', component: AppUsers },
@@ -45,6 +46,7 @@ const routes = [
       { path: 'logbook', name: 'Branch Logbook', component: BranchLogbook },
       { path: 'community-posts', name: 'Community Posts', component: CommunityPost },
       { path: 'reward-users', name: 'Reward Users', component: RewardUsers },
+      { path: 'add-member', name: 'Add Member', component: AddMemberView }
     ]
   }
 ]
@@ -56,13 +58,15 @@ const router = createRouter({
 
 /* 🔐 AUTH GUARD (CRITICAL) */
 router.beforeEach((to, from, next) => {
-  const isAdmin = localStorage.getItem("isAdmin")
+  const token = localStorage.getItem("adminToken")
 
-  if (to.path !== '/login' && !isAdmin) {
+  if (to.path !== '/login' && !token) {
     next('/login')
-  } else if (to.path === '/login' && isAdmin) {
-    next('/')
-  } else {
+  } 
+  else if (to.path === '/login' && token) {
+    next('/dashboard')
+  } 
+  else {
     next()
   }
 })

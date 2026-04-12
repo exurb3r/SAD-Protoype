@@ -20,8 +20,13 @@
     <!-- Toast -->
     <div class="toast" v-if="toast">{{ toast }}</div>
 
+    <!-- Loading -->
+    <div v-if="isLoading" style="text-align:center; color:#aaa; padding:40px;">
+      Loading users...
+    </div>
+
     <!-- Table -->
-    <div class="table-wrapper">
+    <div class="table-wrapper" v-else>
       <table>
         <thead>
           <tr>
@@ -34,7 +39,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="user in filteredUsers" :key="user.id">
+          <tr v-for="user in filteredUsers" :key="user._id">
             <td class="user-info">
               <div class="avatar">{{ initials(user.username) }}</div>
               <span>{{ user.username }}</span>
@@ -133,8 +138,15 @@
         <input v-model="editingUser.confirmPassword" type="password" class="modal-input" placeholder="Confirm new password" />
         <span class="error" v-if="errors.newPassword">{{ errors.newPassword }}</span>
 
+        <!-- Server error -->
+        <p v-if="serverError" style="color:#c0392b; font-size:13px; margin-top:8px;">
+          {{ serverError }}
+        </p>
+
         <div class="modal-actions">
-          <button class="btn-submit" @click="saveEdit">Save Changes</button>
+          <button class="btn-submit" @click="saveEdit" :disabled="isSaving">
+            {{ isSaving ? 'Saving...' : 'Save Changes' }}
+          </button>
           <button class="btn-reset" @click="editingUser = null">Cancel</button>
         </div>
       </div>
@@ -146,7 +158,9 @@
         <h3>Delete User?</h3>
         <p class="delete-msg">Are you sure you want to delete <span>{{ deletingUser.username }}</span>? This cannot be undone.</p>
         <div class="modal-actions">
-          <button class="btn delete" @click="confirmDelete">Yes, Delete</button>
+          <button class="btn delete" @click="confirmDelete" :disabled="isDeleting">
+            {{ isDeleting ? 'Deleting...' : 'Yes, Delete' }}
+          </button>
           <button class="btn-reset" @click="deletingUser = null">Cancel</button>
         </div>
       </div>
@@ -165,41 +179,19 @@ export default {
       editingUser: null,
       deletingUser: null,
       errors: {},
+      serverError: '',
       toast: null,
-      users: [
-        {
-          id: 1, username: 'janine_s', email: 'janine@gym.com',
-          password: 'hashed', membershipStatus: [{ category: 'Premium', branch: 'Makati' }],
-          role: 420, joinDate: new Date('2023-01-01'), status: 'Active'
-        },
-        {
-          id: 2, username: 'abiabi', email: 'abiabi@email.com',
-          password: 'hashed', membershipStatus: [],
-          role: 420, joinDate: new Date('2024-02-03'), status: 'Active'
-        },
-        {
-          id: 3, username: 'roven_s', email: 'robin@email.com',
-          password: 'hashed', membershipStatus: [],
-          role: 420, joinDate: new Date('2024-03-10'), status: 'Inactive'
-        },
-        {
-          id: 4, username: 'carlo_r', email: 'carlo@email.com',
-          password: 'hashed', membershipStatus: [{ category: 'Basic', branch: 'BGC' }],
-          role: 420, joinDate: new Date('2024-04-05'), status: 'Active'
-        },
-        {
-          id: 5, username: 'jochelle_m', email: 'jochelle@email.com',
-          password: 'hashed', membershipStatus: [],
-          role: 420, joinDate: new Date('2024-05-18'), status: 'Inactive'
-        },
-        {
-          id: 6, username: 'kurt_mor', email: 'kurtmor@email.com',
-          password: 'hashed', membershipStatus: [],
-          role: 420, joinDate: new Date('2024-06-22'), status: 'Inactive'
-        },
-      ]
+      isLoading: false,
+      isSaving: false,
+      isDeleting: false,
+      users: []
     }
   },
+
+  async mounted() {
+    await this.fetchUsers()
+  },
+
   computed: {
     filteredUsers() {
       return this.users.filter(u => {
@@ -210,14 +202,37 @@ export default {
       })
     }
   },
+
   methods: {
+    getToken() {
+      return localStorage.getItem('adminToken')
+    },
+
+    async fetchUsers() {
+      this.isLoading = true
+      try {
+        const res = await fetch('http://localhost:3500/admins/appusers/', {
+          headers: { 'Authorization': `Bearer ${this.getToken()}` }
+        })
+        const data = await res.json()
+        if (!res.ok) throw new Error(data.message)
+        this.users = data.users
+      } catch (err) {
+        this.showToast('Failed to load users: ' + err.message)
+      } finally {
+        this.isLoading = false
+      }
+    },
+
     initials(name) {
       return name.split(/[_\s]/).map(n => n[0]).join('').toUpperCase().slice(0, 2)
     },
+
     formatDate(date) {
       if (!date) return '—'
       return new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
     },
+
     levelTier(joinDate) {
       if (!joinDate) return { level: 1, label: 'Rookie', icon: '🌱', tier: 'rookie' }
       const months = (new Date() - new Date(joinDate)) / (1000 * 60 * 60 * 24 * 30)
@@ -225,15 +240,19 @@ export default {
       if (level >= 30) return { level, label: 'Legend',  icon: '🔥', tier: 'legend'  }
       if (level >= 15) return { level, label: 'Veteran', icon: '💪', tier: 'veteran' }
       if (level >= 6)  return { level, label: 'Warrior', icon: '⚔️', tier: 'warrior' }
-      return              { level, label: 'Rookie',  icon: '🌱', tier: 'rookie'  }
+      return                   { level, label: 'Rookie',  icon: '🌱', tier: 'rookie'  }
     },
+
     viewUser(user) {
       this.selectedUser = { ...user }
     },
+
     editUser(user) {
       this.editingUser = { ...user, newEmail: '', newPassword: '', confirmPassword: '' }
       this.errors = {}
+      this.serverError = ''
     },
+
     validate() {
       const errors = {}
       if (!this.editingUser.username.trim()) errors.username = 'Username is required.'
@@ -247,33 +266,108 @@ export default {
       }
       return errors
     },
-    saveEdit() {
+
+    async saveEdit() {
       this.errors = this.validate()
+      this.serverError = ''
       if (Object.keys(this.errors).length > 0) return
-      const index = this.users.findIndex(u => u.id === this.editingUser.id)
-      if (index !== -1) {
-        const updated = { ...this.users[index], username: this.editingUser.username }
-        if (this.editingUser.newEmail)    updated.email    = this.editingUser.newEmail
-        if (this.editingUser.newPassword) updated.password = this.editingUser.newPassword // hash in real app
-        this.users[index] = updated
+
+      this.isSaving = true
+      try {
+        const res = await fetch(`http://localhost:3500/admins/appusers/${this.editingUser._id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.getToken()}`
+          },
+          body: JSON.stringify({
+            username: this.editingUser.username,
+            newEmail: this.editingUser.newEmail || undefined,
+            newPassword: this.editingUser.newPassword || undefined
+          })
+        })
+
+        const data = await res.json()
+        if (!res.ok) {
+          this.serverError = data.message || 'Something went wrong.'
+          return
+        }
+
+        // update the user in the local list with the response from backend
+        const index = this.users.findIndex(u => u._id === this.editingUser._id)
+        if (index !== -1) this.users[index] = { ...this.users[index], ...data.user }
+
+        this.editingUser = null
+        this.showToast('User updated successfully.')
+
+      } catch (err) {
+        this.serverError = 'Network error. Please try again.'
+      } finally {
+        this.isSaving = false
       }
-      this.editingUser = null
-      this.showToast('User updated successfully.')
     },
-    toggleStatus(user) {
-      const index = this.users.findIndex(u => u.id === user.id)
-      if (index !== -1) {
-        this.users[index].status = this.users[index].status === 'Active' ? 'Inactive' : 'Active'
+
+    async toggleStatus(user) {
+      try {
+        const res = await fetch(`http://localhost:3500/admins/appusers/${user._id}/toggle-status`, {
+          method: 'PATCH',
+          headers: { 'Authorization': `Bearer ${this.getToken()}` }
+        })
+
+        const data = await res.json()
+        if (!res.ok) {
+          this.showToast(data.message || 'Failed to update status.')
+          return
+        }
+
+        const index = this.users.findIndex(u => u._id === user._id)
+        if (index !== -1) this.users[index].status = data.status
+
+      } catch (err) {
+        this.showToast('Network error. Please try again.')
       }
     },
-    confirmDelete() {
-      this.users = this.users.filter(u => u.id !== this.deletingUser.id)
-      this.deletingUser = null
-      this.showToast('User deleted.')
+
+    async confirmDelete() {
+      this.isDeleting = true
+      try {
+        const res = await fetch(`http://localhost:3500/admins/appusers/${this.deletingUser._id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${this.getToken()}` }
+        })
+
+        const data = await res.json()
+        if (!res.ok) {
+          this.showToast(data.message || 'Failed to delete user.')
+          return
+        }
+
+        this.users = this.users.filter(u => u._id !== this.deletingUser._id)
+        this.deletingUser = null
+        this.showToast('User deleted.')
+
+      } catch (err) {
+        this.showToast('Network error. Please try again.')
+      } finally {
+        this.isDeleting = false
+      }
     },
-    sendRecovery(user) {
-      this.showToast(`Recovery email sent to ${user.email}`)
+
+    async sendRecovery(user) {
+      try {
+        const res = await fetch(`http://localhost:3500/admins/appusers/${user._id}/send-recovery`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${this.getToken()}` }
+        })
+
+        const data = await res.json()
+        this.showToast(data.message || `Recovery email sent to ${user.email}`)
+
+      } catch (err) {
+        this.showToast('Network error. Please try again.')
+      }
     },
+
     showToast(msg) {
       this.toast = msg
       setTimeout(() => { this.toast = null }, 3000)

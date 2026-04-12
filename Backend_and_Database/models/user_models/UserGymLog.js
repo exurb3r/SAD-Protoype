@@ -27,7 +27,10 @@ const userGymLogSchema = new Schema({
         type: String,
         required: true
     },
-    userlog: [ logSubschema ]
+    userlog: {
+        type: [logSubschema],
+        default: []
+    }
 });
 
 module.exports = mongoose.model('UserSideGymLog', userGymLogSchema);

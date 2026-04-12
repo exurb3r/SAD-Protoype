@@ -16,9 +16,10 @@ import {
 } from "lucide-vue-next"
 
 const router = useRouter()
-
 const handleLogout = () => {
-  localStorage.removeItem("isAdmin")
+  localStorage.removeItem("adminToken")
+  localStorage.removeItem("adminCredentials")
+
   router.replace("/login")
 }
 </script>
@@ -40,7 +41,7 @@ const handleLogout = () => {
 
       <p class="section">MAIN</p>
 
-      <router-link to="/" class="link">
+      <router-link to="/dashboard" class="link">
         <LayoutDashboard class="icon" />
         <span>Dashboard</span>
       </router-link>
