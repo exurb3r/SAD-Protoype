@@ -19,6 +19,9 @@ import CommunityPost  from '../views/CommunityPost.vue'
 import RewardUsers    from '../views/RewardUsers.vue'
 import AdminLogin     from '../views/Login.vue'
 import AddMemberView  from '../views/AddMemberView.vue'
+import AuditTrail     from '../views/AuditTrail.vue'
+import Archives       from '../views/Archives.vue'
+import Leaderboards from '../views/Leaderboards.vue'
 
 const routes = [
   // ✅ LOGIN (NO SIDEBAR)
@@ -46,7 +49,10 @@ const routes = [
       { path: 'logbook', name: 'Branch Logbook', component: BranchLogbook },
       { path: 'community-posts', name: 'Community Posts', component: CommunityPost },
       { path: 'reward-users', name: 'Reward Users', component: RewardUsers },
-      { path: 'add-member', name: 'Add Member', component: AddMemberView }
+      { path: 'add-member', name: 'Add Member', component: AddMemberView },
+      { path: 'audit-trail', name: 'Audit Trail', component: AuditTrail },
+      { path: 'archives', name: 'Archives', component: Archives },
+      { path: 'leaderboards', name: 'Leaderboards', component: Leaderboards },
     ]
   }
 ]
@@ -56,7 +62,6 @@ const router = createRouter({
   routes,
 })
 
-/* 🔐 AUTH GUARD (CRITICAL) */
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("adminToken")
 

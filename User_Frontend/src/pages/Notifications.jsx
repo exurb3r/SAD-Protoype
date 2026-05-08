@@ -3,8 +3,7 @@ import '../assets/Notif.css';
 
 const API_BASE = 'http://localhost:3500/users/notifications';
 
-// Helper to get JWT from storage
-const getToken = () => localStorage.getItem('token'); // adjust key if needed
+const getToken = () => localStorage.getItem('token');
 
 const TABS = [
     { key: "all",             label: "All" },
@@ -86,7 +85,6 @@ function Notifications() {
     const [loading, setLoading]             = useState(true);
     const [error, setError]                 = useState(null);
 
-    // ── Fetch on mount ──────────────────────────────────────────────
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
@@ -105,13 +103,11 @@ function Notifications() {
         fetchNotifications();
     }, []);
 
-    // ── Derived state ───────────────────────────────────────────────
     const unreadCount = notifications.filter(n => !n.read).length;
     const filtered    = activeTab === "all"
         ? notifications
         : notifications.filter(n => n.type === activeTab);
 
-    // ── Handlers ────────────────────────────────────────────────────
     function markRead(id) {
         setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
     }
@@ -170,7 +166,6 @@ function Notifications() {
         }
     }
 
-    // ── Render ───────────────────────────────────────────────────────
     if (loading) return <div className="notifpage-page"><p>Loading…</p></div>;
     if (error)   return <div className="notifpage-page"><p>Error: {error}</p></div>;
 

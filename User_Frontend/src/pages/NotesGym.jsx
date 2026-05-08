@@ -88,8 +88,6 @@ function NotesGym() {
             </div>
 
             <div className="notes-layout">
-
-                {/* Add note panel */}
                 <div className="notes-add-panel">
                     <p className="notes-panel-label">New Note</p>
                     <form onSubmit={addNotes} className="notes-form">
@@ -117,7 +115,6 @@ function NotesGym() {
                     </form>
                 </div>
 
-                {/* Notes grid */}
                 <div className="notes-grid-area">
                     {loading ? (
                         <p className="notes-loading">Loading notes...</p>

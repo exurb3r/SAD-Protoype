@@ -21,12 +21,10 @@ const getUsersForEnrollment = async (req, res) => {
         const firstname = memberRecord?.firstname || u.username;
         const lastname  = memberRecord?.lastname  || "";
 
-        // Check if this user already has an ACTIVE membership at the admin's branch
         const alreadyAtThisBranch = memberRecord?.membershipStatus?.some(
           ms => ms.branch === adminBranch && ms.isActive === true
         ) ?? false;
 
-        // Most recent membership branch (for display)
         const branch = memberRecord?.membershipStatus?.at(-1)?.branch || "Walk-in";
 
         let status = "Walk-in";

@@ -89,7 +89,6 @@ function Progress() {
         <p className="pg-sub">Track your fitness journey over time</p>
       </div>
 
-      {/* Player stats */}
       <div className="pg-section">
         <div className="pg-game-summary">
           <div className="pg-game-box"><h3>Level</h3><p>{level}</p></div>
@@ -107,7 +106,6 @@ function Progress() {
         </div>
       </div>
 
-      {/* Heatmap */}
       <div className="pg-section pg-card">
         <p className="pg-card-label">Activity — 2026</p>
         <div className="pg-heatmap-wrap">
@@ -124,7 +122,6 @@ function Progress() {
         </div>
       </div>
 
-      {/* Charts */}
       <div className="pg-section pg-card">
         <div className="pg-charts-head">
           <p className="pg-card-label">Workout Stats</p>
@@ -183,7 +180,6 @@ function Progress() {
           </div>
         </div>
 
-        {/* Period stat boxes */}
         <div className="pg-game-summary pg-stats-row">
           <div className="pg-game-box"><h3>Total Workouts</h3><p>{totalWorkouts}</p></div>
           <div className="pg-game-box"><h3>Avg / Day</h3><p>{avgWorkout}</p></div>
@@ -193,7 +189,6 @@ function Progress() {
         </div>
       </div>
 
-      {/* History table */}
       <div className="pg-section pg-card">
         <p className="pg-card-label">Routine History</p>
         <div className="pg-table-wrap">

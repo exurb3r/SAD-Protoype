@@ -1,7 +1,5 @@
 <template>
   <div class="rwd-container">
-
-    <!-- HEADER -->
     <div class="rwd-header">
       <div>
         <h2>Reward Users</h2>
@@ -10,10 +8,10 @@
       <input v-model="search" class="rwd-search" placeholder="Search users..." />
     </div>
 
-    <!-- TOAST -->
+
     <div class="rwd-toast" v-if="toast">{{ toast }}</div>
 
-    <!-- LOADING -->
+                                                                                      
     <div class="rwd-loading" v-if="loading">Loading users...</div>
 
     <!-- TABLE -->
@@ -70,8 +68,6 @@
         </tbody>
       </table>
     </div>
-
-    <!-- MODAL -->
     <div class="rwd-modal-overlay" v-if="selectedUser" @click.self="closeModal">
       <div class="rwd-modal">
 
@@ -117,7 +113,7 @@
 </template>
 
 <script>
-const API_BASE = 'http://localhost:3500/admins/reward'
+const API_BASE = 'http://localhost:3500/superadmin/reward'
 
 export default {
   data() {
@@ -147,7 +143,7 @@ export default {
 
   methods: {
     getToken() {
-      return localStorage.getItem('adminToken')
+      return localStorage.getItem('superadminToken')
     },
     authHeaders() {
       return {
@@ -156,7 +152,6 @@ export default {
       }
     },
 
-    // Matches backend's getExpRequired formula
     expRequired(level) {
       return Math.floor(100 * Math.pow(level, 1.5))
     },
@@ -226,7 +221,6 @@ export default {
 
         const result = await res.json()
 
-        // Update local user state to reflect new level + exp from backend response
         const user = this.users.find(u => u.id === this.selectedUser.id)
         if (user) {
           user.level      = result.newLevel

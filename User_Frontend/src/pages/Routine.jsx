@@ -50,7 +50,6 @@ function Routine() {
     return d;
   }
 
-  // Parse a date string to { day, month, year } using UTC so timezones don't shift dates
   function parseDate(dateStr) {
     if (!dateStr) return null;
     const d = new Date(dateStr);
@@ -72,7 +71,6 @@ function Routine() {
 
   useEffect(() => { loadData(); }, [loadData]);
 
-  // Get events for a specific day in the current month/year view
   function getEventsForDay(day) {
     return allEvents.filter(ev => {
       if (!ev.date) return false;
@@ -81,7 +79,6 @@ function Routine() {
     });
   }
 
-  // Get personal events for the day detail modal
   function getPersonalForDay(day) {
     return personalEvents.filter(ev => {
       const p = parseDate(ev.date);
@@ -103,7 +100,6 @@ function Routine() {
     });
   }
 
-  // Month grid
   const firstDayOffset = new Date(currentYear, currentMonth, 1).getDay();
   const daysInMonth    = new Date(currentYear, currentMonth + 1, 0).getDate();
   const monthDays = [
@@ -111,7 +107,6 @@ function Routine() {
     ...Array.from({ length: daysInMonth }, (_, i) => i + 1)
   ];
 
-  // Week grid
   const weekDays = Array.from({ length: 7 }, (_, i) => {
     const d = new Date(weekStart);
     d.setDate(weekStart.getDate() + i);
@@ -221,7 +216,6 @@ function Routine() {
     }
   }
 
-  // Dot color by event type
   function dotColor(ev) {
     const t = ev.type || "";
     if (t === "membership_start" || t === "membership_expiry") return "dot-membership";
@@ -238,7 +232,6 @@ function Routine() {
   return (
     <div className="gc-page">
 
-      {/* HEADER */}
       <div className="gc-header">
         <div>
           <h1 className="gc-title">My Calendar</h1>
@@ -253,7 +246,6 @@ function Routine() {
         </div>
       </div>
 
-      {/* NAV */}
       <div className="gc-nav">
         <button className="gc-nav-btn" onClick={prev}>←</button>
         <div className="gc-nav-center">
@@ -269,7 +261,6 @@ function Routine() {
         <button className="gc-nav-btn" onClick={next}>→</button>
       </div>
 
-      {/* LEGEND */}
       <div className="gc-legend">
         <span className="gc-legend-item routine">● Routine</span>
         <span className="gc-legend-item membership">● Membership</span>
@@ -278,7 +269,6 @@ function Routine() {
         <span className="gc-legend-item invite">● Invite</span>
       </div>
 
-      {/* MONTH VIEW */}
       {view === "month" && (
         <div className="gc-month-grid">
           {DAY_LABELS.map(d => <div key={d} className="gc-day-label">{d}</div>)}
@@ -304,7 +294,6 @@ function Routine() {
         </div>
       )}
 
-      {/* WEEK VIEW */}
       {view === "week" && (
         <div className="gc-week-view">
           {weekDays.map((wd, i) => {
@@ -331,13 +320,11 @@ function Routine() {
         </div>
       )}
 
-      {/* DAY DETAIL MODAL */}
       {selectedDay && (
         <div className="gc-modal-overlay" onClick={() => setSelectedDay(null)}>
           <div className="gc-modal" onClick={e => e.stopPropagation()}>
             <h3 className="gc-modal-title">{MONTH_NAMES[currentMonth]} {selectedDay}, {currentYear}</h3>
 
-            {/* Membership events */}
             {selectedDayMembership.length > 0 && (
               <div className="gc-modal-section">
                 <div className="gc-modal-section-label membership">Membership</div>
@@ -352,7 +339,6 @@ function Routine() {
               </div>
             )}
 
-            {/* Gym events */}
             {selectedDayGym.length > 0 && (
               <div className="gc-modal-section">
                 <div className="gc-modal-section-label gym">Gym Events</div>
@@ -368,7 +354,6 @@ function Routine() {
               </div>
             )}
 
-            {/* Personal events */}
             <div className="gc-modal-section">
               <div className="gc-modal-section-label personal">Your Events</div>
               {selectedDayEvents.length === 0 && (
@@ -401,7 +386,6 @@ function Routine() {
         </div>
       )}
 
-      {/* ADD / EDIT MODAL */}
       {showForm && (
         <div className="gc-modal-overlay" onClick={() => setShowForm(false)}>
           <div className="gc-modal" onClick={e => e.stopPropagation()}>
@@ -459,7 +443,6 @@ function Routine() {
         </div>
       )}
 
-      {/* DELETE CONFIRM */}
       {deletingEvent && (
         <div className="gc-modal-overlay" onClick={() => setDeletingEvent(null)}>
           <div className="gc-modal gc-modal-sm" onClick={e => e.stopPropagation()}>

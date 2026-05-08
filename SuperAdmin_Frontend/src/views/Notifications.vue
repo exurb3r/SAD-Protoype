@@ -62,7 +62,6 @@ const tabs = [
   { label: "All",      value: "all" },
   { label: "Unread",   value: "unread" },
   { label: "Expiring", value: "expire" },
-  { label: "Payments", value: "payment" },
   { label: "New Join", value: "join" },
 ];
 

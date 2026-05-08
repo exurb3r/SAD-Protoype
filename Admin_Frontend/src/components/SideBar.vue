@@ -95,6 +95,21 @@ const handleLogout = () => {
         <span>Reports</span>
       </router-link>
 
+      <router-link to="/audit-trail" class="link">
+        <BarChart3 class="icon" />
+        <span>Audit Trail</span>
+      </router-link>
+
+      <router-link to="/archives" class="link">
+        <BarChart3 class="icon" />
+        <span>Archives</span>
+      </router-link>
+
+      <router-link to="/leaderboards" class="link">
+        <BarChart3 class="icon" />
+        <span>Leaderboards</span>
+      </router-link>
+
       <router-link to="/settings" class="link">
         <Settings class="icon" />
         <span>Settings</span>

@@ -29,11 +29,11 @@ function FriendProfile() {
     const [workoutsPerWeek, setWorkoutsPerWeek] = useState([0,0,0,0,0,0,0]);
     const [workoutDist, setWorkoutDist]         = useState([0,0,0,0,0,0]);
 
-    // Relationship state
+
     const [isFriend, setIsFriend]         = useState(false);
     const [requestSent, setRequestSent]   = useState(false);
 
-    // Invite modal
+
     const [showInvite, setShowInvite]   = useState(false);
     const [inviteData, setInviteData]   = useState({ date: "", time: "", message: "" });
 
@@ -42,7 +42,6 @@ function FriendProfile() {
             try {
                 setLoading(true);
 
-                // Fetch friend's profile
                 const res = await fetch(`http://localhost:3500/users/profile/view/${id}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
@@ -75,7 +74,6 @@ function FriendProfile() {
         fetch_();
     }, [id, token]);
 
-    // ── Actions ────────────────────────────────────────────────────
     const addFriend = async () => {
         try {
             await fetch("http://localhost:3500/users/community/addfriend", {
@@ -121,7 +119,6 @@ function FriendProfile() {
         } catch (err) { console.error(err); }
     };
 
-    // ── Loading / error ───────────────────────────────────────────
     if (loading) return (
         <div className="fp-page fp-center">
             <div className="fp-spinner" />
@@ -171,7 +168,6 @@ function FriendProfile() {
 
             <button className="fp-btn-back" onClick={() => navigate(-1)}>← Back</button>
 
-            {/* Identity card */}
             <div className="fp-card fp-identity-card">
                 <div className="fp-identity-upper">
                     <div className="fp-avatar">
@@ -183,7 +179,6 @@ function FriendProfile() {
                             <span className="fp-level-badge">Lvl {profile.level}</span>
                             <span className="fp-xp-badge">{profile.exp?.toLocaleString()} xp</span>
 
-                            {/* ── Action buttons ── */}
                             <div className="fp-profile-actions">
                                 {isFriend ? (
                                     <>
@@ -230,7 +225,6 @@ function FriendProfile() {
                 </div>
             </div>
 
-            {/* Tab content */}
             <div className="fp-card fp-content-card">
 
                 {tab === "overview" && (
@@ -328,7 +322,6 @@ function FriendProfile() {
                 )}
             </div>
 
-            {/* Friends list */}
             <div className="fp-card">
                 <p className="fp-card-label">Friends ({friends.length})</p>
                 {friends.length === 0 && <p className="fp-empty">No friends yet.</p>}
@@ -347,7 +340,6 @@ function FriendProfile() {
                 ))}
             </div>
 
-            {/* Invite modal */}
             {showInvite && (
                 <div className="fp-modal-overlay" onClick={() => setShowInvite(false)}>
                     <div className="fp-modal" onClick={e => e.stopPropagation()}>

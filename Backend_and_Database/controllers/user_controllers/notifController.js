@@ -25,7 +25,6 @@ const getNotifications = async (req, res) => {
             });
         }
 
-        // ✅ FRIEND REQUESTS
         if (social?.friendRequests?.length > 0) {
             social.friendRequests.forEach((f, index) => {
                 notifications.push({
@@ -42,7 +41,6 @@ const getNotifications = async (req, res) => {
             });
         }
 
-        // Replace the invitationsSent block with this:
         if (social?.invitationsReceived?.length > 0) {
             social.invitationsReceived.forEach((inv, index) => {
                 notifications.push({
@@ -55,7 +53,7 @@ const getNotifications = async (req, res) => {
                     timestamp: formatTime(inv.date),
                     date:      inv.date,
                     read:      false,
-                    userId:    inv.userId  // the sender's userId
+                    userId:    inv.userId  
                 });
             });
         }
@@ -74,26 +72,21 @@ const acceptFriendRequest = async (req, res) => {
         const { userId: friendId } = req.body;
         const userId = req.user.id;
 
-        // Get both users' social docs
         const userSocial   = await UserSocial.findOne({ userId });
         const friendSocial = await UserSocial.findOne({ userId: friendId });
         const AppUser      = require("../../models/user_models/AppUsers");
 
-        // Find the incoming request on the receiver's side
         const request = userSocial.friendRequests.find(
             f => f.userId.toString() === friendId
         );
         if (!request) return res.status(404).json({ message: "Request not found" });
 
-        // 1. Add sender → receiver's friends list
         userSocial.friends.push(request);
 
-        // 2. Remove from receiver's friendRequests
         userSocial.friendRequests = userSocial.friendRequests.filter(
             f => f.userId.toString() !== friendId
         );
 
-        // 3. Add receiver → sender's friends list
         const receiver = await AppUser.findById(userId);
         friendSocial.friends.push({
             userId:   userId,
@@ -101,7 +94,6 @@ const acceptFriendRequest = async (req, res) => {
             email:    receiver.email,
         });
 
-        // 4. Remove from sender's invitationsSent
         friendSocial.invitationsSent = friendSocial.invitationsSent.filter(
             inv => inv.userId.toString() !== userId
         );
@@ -143,8 +135,8 @@ const declineFriendRequest = async (req, res) => {
 };
 const acceptInvitation = async (req, res) => {
     try {
-        const { userId: senderId } = req.body;  // the person who sent the invite
-        const receiverId = req.user.id;           // the person accepting
+        const { userId: senderId } = req.body; 
+        const receiverId = req.user.id;           
 
         const receiverSocial = await UserSocial.findOne({ userId: receiverId });
         const senderSocial   = await UserSocial.findOne({ userId: senderId });
@@ -153,7 +145,6 @@ const acceptInvitation = async (req, res) => {
             return res.status(404).json({ message: "User social data not found" });
         }
 
-        // Find the invite in the receiver's inbox
         const invite = receiverSocial.invitationsReceived.find(
             inv => inv.userId.toString() === senderId
         );
@@ -165,16 +156,13 @@ const acceptInvitation = async (req, res) => {
             time:  invite.time
         };
 
-        // Add to both calendars
         receiverSocial.calendar.push(eventData);
         senderSocial.calendar.push(eventData);
 
-        // Remove from receiver's inbox
         receiverSocial.invitationsReceived = receiverSocial.invitationsReceived.filter(
             inv => inv.userId.toString() !== senderId
         );
 
-        // Remove from sender's outbox
         senderSocial.invitationsSent = senderSocial.invitationsSent.filter(
             inv => inv.userId.toString() !== receiverId
         );
@@ -201,12 +189,10 @@ const declineInvitation = async (req, res) => {
             return res.status(404).json({ message: "User social data not found" });
         }
 
-        // Remove from receiver's inbox
         receiverSocial.invitationsReceived = receiverSocial.invitationsReceived.filter(
             inv => inv.userId.toString() !== senderId
         );
 
-        // Remove from sender's outbox
         senderSocial.invitationsSent = senderSocial.invitationsSent.filter(
             inv => inv.userId.toString() !== receiverId
         );

@@ -10,7 +10,6 @@ const getGymHistory = async (req, res) => {
 
     const allMemberships = user.membershipStatus || [];
 
-    // If user has ANY non-Walk-in membership, strip all Walk-in entries
     const hasRealMembership = allMemberships.some(m => m.branch !== "Walk-in");
     const memberships = hasRealMembership
       ? allMemberships.filter(m => m.branch !== "Walk-in")
@@ -21,7 +20,6 @@ const getGymHistory = async (req, res) => {
       ? [...logDoc.userlog].sort((a, b) => new Date(b.date) - new Date(a.date))
       : [];
 
-    // Mirror the same logic for logs — hide Walk-in logs if real memberships exist
     const logs = hasRealMembership
       ? allLogs.filter(log => log.branch !== "Walk-in")
       : allLogs;

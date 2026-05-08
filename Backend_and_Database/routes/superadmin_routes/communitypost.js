@@ -6,7 +6,7 @@ const {
   addPost,
   editPost,
   deletePost
-} = require("../../controllers/admin_controllers/communitypostController")
+} = require("../../controllers/superadmin_controllers/communitypostController")
 
 router.get("/",       getPosts)
 router.post("/",      addPost)

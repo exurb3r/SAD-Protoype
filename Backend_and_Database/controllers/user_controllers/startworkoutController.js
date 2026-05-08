@@ -251,13 +251,11 @@ const finishedWorkoutSession = async (req, res) => {
 
     await userProgress.save();
 
-    // ✅ 🔥 CRITICAL FIX (NO MORE NaN)
     userGameDetails.exp_points = Number(userGameDetails.exp_points) || 0;
     userGameDetails.level = Number(userGameDetails.level) || 1;
 
     userGameDetails.exp_points += expGained;
 
-    // ✅ LEVEL SYSTEM
     function getExpRequired(level) {
       return Math.floor(100 * Math.pow(level, 1.5));
     }

@@ -32,14 +32,11 @@ function GymLoginHistory() {
 
   return (
     <div className="gs-page">
-
-      {/* HEADER */}
       <div className="gs-header">
         <h1 className="gs-title">My Gym Status</h1>
         <p className="gs-sub">Membership info and visit history</p>
       </div>
 
-      {/* MEMBERSHIP STRIP — horizontal scroll if multiple */}
       {memberships.length === 0 ? (
         <div className="gs-no-membership">No active memberships found.</div>
       ) : (
@@ -62,7 +59,6 @@ function GymLoginHistory() {
         </div>
       )}
 
-      {/* CALENDAR + LOG */}
       <div className="gs-layout">
 
         <div className="gs-card gs-calendar-card">

@@ -109,8 +109,6 @@ function EditWorkout() {
 
     return (
         <div className="aw-page">
-
-            {/* Top bar */}
             <div className="aw-topbar">
                 <button className="aw-back-btn" onClick={returnToPreviousStage}>← Back</button>
                 <div>
@@ -120,11 +118,7 @@ function EditWorkout() {
             </div>
 
             <div className="aw-layout">
-
-                {/* Left — form + list */}
                 <div className="aw-left">
-
-                    {/* Meta row */}
                     <div className="aw-card">
                         <p className="aw-card-label">Routine Details</p>
                         <input
@@ -148,8 +142,6 @@ function EditWorkout() {
                             </div>
                         </div>
                     </div>
-
-                    {/* Add exercise form */}
                     <div className="aw-card">
                         <p className="aw-card-label">Add Exercise</p>
                         <form onSubmit={handleAddExercise} className="aw-exercise-form">
@@ -174,8 +166,6 @@ function EditWorkout() {
                             <button type="submit" className="aw-btn-primary">+ Add</button>
                         </form>
                     </div>
-
-                    {/* Exercise list */}
                     <div className="aw-card aw-list-card">
                         <div className="aw-list-header">
                             <p className="aw-card-label">Exercises</p>
@@ -222,8 +212,6 @@ function EditWorkout() {
                         </ul>
                     </div>
                 </div>
-
-                {/* Right — overview */}
                 <div className="aw-right">
                     <div className="aw-card aw-overview-card">
                         <p className="aw-card-label">Overview</p>

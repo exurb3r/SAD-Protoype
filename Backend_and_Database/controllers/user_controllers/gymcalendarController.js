@@ -27,7 +27,6 @@ const gymcalendarData = async (req, res) => {
       });
     }
 
-    // ── Workout Invites ───────────────────────────────────────
     const gameDetails = await UserGameDetails.findOne({ userId });
     if (gameDetails) {
       gameDetails.acceptedInvites.forEach(invite => {
@@ -40,7 +39,6 @@ const gymcalendarData = async (req, res) => {
       });
     }
 
-    // ── Memberships — ALL of them ─────────────────────────────
     const user = await AppUsers.findOne({ userId });
     if (user) {
       const allMemberships = user.membershipStatus || [];
@@ -77,7 +75,6 @@ const gymcalendarData = async (req, res) => {
       });
     }
 
-    // ── Gym Events ────────────────────────────────────────────
     const gymEventsDoc = await GymEvents.findOne();
     if (gymEventsDoc) {
       gymEventsDoc.event.forEach(ev => {

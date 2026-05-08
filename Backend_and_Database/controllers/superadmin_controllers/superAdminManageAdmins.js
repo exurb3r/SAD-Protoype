@@ -9,8 +9,7 @@ const getAllAdmins = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
- 
-// POST create new admin
+
 const createAdmin = async (req, res) => {
     try {
         const { firstname, lastname, username, email, password, contactNum, address, branch } = req.body;
@@ -84,8 +83,7 @@ const updateAdmin = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
- 
-// DELETE admin
+
 const deleteAdmin = async (req, res) => {
     try {
         const { id } = req.params;

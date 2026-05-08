@@ -1,6 +1,6 @@
 const Users = require('../../models/admin_models/Users');
 const GymLog = require('../../models/admin_models/GymLogbook');
-const UserSideGymLog = require('../../models/user_models/UserGymLog'); // ADD THIS
+const UserSideGymLog = require('../../models/user_models/UserGymLog'); 
 
 const getTodayKey = () => new Date().toISOString().split("T")[0];
 

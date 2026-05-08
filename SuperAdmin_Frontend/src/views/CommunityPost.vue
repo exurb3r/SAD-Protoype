@@ -50,14 +50,13 @@
         </div>
 
         <!-- ACTIONS — only visible to owner -->
+<!-- ACTIONS — visible to all (superadmin has full access) -->
         <div class="log-right">
           <div class="actions">
-            <template v-if="p.isOwner">
-              <button v-if="editIndex !== index" @click="startEdit(index)">✏️</button>
-              <button v-if="editIndex === index" @click="saveEdit(index)">💾</button>
-              <button v-if="editIndex === index" @click="editIndex = null">✕</button>
-              <button @click="deletePost(index)">🗑️</button>
-            </template>
+            <button v-if="editIndex !== index" @click="startEdit(index)">✏️</button>
+            <button v-if="editIndex === index" @click="saveEdit(index)">💾</button>
+            <button v-if="editIndex === index" @click="editIndex = null">✕</button>
+            <button @click="deletePost(index)">🗑️</button>
           </div>
         </div>
 
@@ -75,7 +74,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 
-const BASE_URL = "http://localhost:3500/admins/communitypost";
+const BASE_URL = "http://localhost:3500/superadmin/communitypost";
 
 const posts     = ref([]);
 const loading   = ref(false);
@@ -87,7 +86,7 @@ const editIndex     = ref(null);
 const editForm      = ref({ title: "", contents: "" });
 const editPostId    = ref(null);
 
-const getToken    = () => localStorage.getItem("adminToken");
+const getToken    = () => localStorage.getItem("superadminToken");
 const authHeaders = () => ({
   "Content-Type": "application/json",
   Authorization: `Bearer ${getToken()}`,
@@ -97,7 +96,6 @@ onMounted(() => {
   fetchPosts();
 });
 
-/* ── FETCH ALL POSTS ── */
 const fetchPosts = async () => {
   loading.value = true;
   error.value   = "";
@@ -105,7 +103,7 @@ const fetchPosts = async () => {
     const res  = await fetch(BASE_URL, { headers: authHeaders() });
     const data = await res.json();
     if (!res.ok) { error.value = data.message; return; }
-    posts.value = data.posts; // each post has isOwner & ownerEmail from backend
+    posts.value = data.posts; 
   } catch {
     error.value = "Network error.";
   } finally {
@@ -113,7 +111,7 @@ const fetchPosts = async () => {
   }
 };
 
-/* ── ADD POST ── */
+
 const addPost = async () => {
   if (!form.value.title || !form.value.contents) return;
   error.value = "";

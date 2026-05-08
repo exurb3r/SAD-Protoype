@@ -9,5 +9,8 @@ router.use(permit(ROLES.SUPERADMIN));
 router.use("/editadmin", require("./superadmin_routes/editadmins"));
 router.use("/members", require("./superadmin_routes/members"));
 router.use("/logbook", require("./superadmin_routes/logbook"));
+router.use("/reward", require("./admin_routes/reward"));
+router.use("/communitypost",  require("./admin_routes/communitypost"));
+
 
 module.exports = router;

@@ -78,7 +78,6 @@ function StartWorkout() {
 
             <div className="sw-layout">
 
-                {/* Routines list */}
                 <div className="sw-panel">
                     <div className="sw-panel-head">
                         <span className="sw-panel-title">Your Routines</span>
@@ -114,7 +113,6 @@ function StartWorkout() {
                     </Link>
                 </div>
 
-                {/* Exercise preview */}
                 <div className="sw-panel">
                     <div className="sw-panel-head">
                         <span className="sw-panel-title">
@@ -152,7 +150,6 @@ function StartWorkout() {
                     )}
                 </div>
 
-                {/* Overview */}
                 <div className="sw-panel">
                     <div className="sw-panel-head">
                         <span className="sw-panel-title">Overview</span>

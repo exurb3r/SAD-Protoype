@@ -115,7 +115,6 @@ function StartingWorkout() {
 
     return (
         <div className="sw-page">
-            {/* Header */}
             <div className="sw-header">
                 <div className="sw-header-row">
                     <button
@@ -135,8 +134,6 @@ function StartingWorkout() {
             </div>
 
             <div className="sw-layout two-col">
-
-                {/* Exercise checklist */}
                 <div className="sw-panel">
                     <div className="sw-panel-head">
                         <span className="sw-panel-title">Exercises</span>
@@ -183,8 +180,6 @@ function StartingWorkout() {
                         <p className="sw-hint">Resume to continue</p>
                     )}
                 </div>
-
-                {/* Controls */}
                 <div className="sw-panel sw-controls-panel">
                     <div className="sw-panel-head">
                         <span className="sw-panel-title">Timer</span>

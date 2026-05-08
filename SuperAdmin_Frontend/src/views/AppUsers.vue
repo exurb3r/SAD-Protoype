@@ -73,7 +73,7 @@
       </table>
     </div>
 
-    <!-- View Modal -->
+
     <div class="modal-overlay" v-if="selectedUser" @click.self="selectedUser = null">
       <div class="modal">
         <div :class="['modal-avatar', levelTier(selectedUser.joinDate).tier]">
@@ -115,7 +115,7 @@
       </div>
     </div>
 
-    <!-- Edit Modal -->
+
     <div class="modal-overlay" v-if="editingUser" @click.self="editingUser = null">
       <div class="modal">
         <h3>Edit User</h3>
@@ -138,7 +138,7 @@
         <input v-model="editingUser.confirmPassword" type="password" class="modal-input" placeholder="Confirm new password" />
         <span class="error" v-if="errors.newPassword">{{ errors.newPassword }}</span>
 
-        <!-- Server error -->
+
         <p v-if="serverError" style="color:#c0392b; font-size:13px; margin-top:8px;">
           {{ serverError }}
         </p>
@@ -152,7 +152,7 @@
       </div>
     </div>
 
-    <!-- Delete Confirmation Modal -->
+
     <div class="modal-overlay" v-if="deletingUser" @click.self="deletingUser = null">
       <div class="modal">
         <h3>Delete User?</h3>

@@ -61,13 +61,11 @@ function Community() {
     return (
         <div className="cm-page">
 
-            {/* Header */}
             <div className="cm-header">
                 <h1 className="cm-title">Community</h1>
                 <p className="cm-sub">Connect with members, meet coaches, stay updated</p>
             </div>
 
-            {/* Coaches  */}
             <section className="cm-section">
                 <div className="cm-section-head">
                     <p className="cm-section-label">Meet the Coaches</p>
@@ -86,7 +84,6 @@ function Community() {
                 </div>
             </section>
 
-            {/* Find Friends */}
             <section className="cm-section">
                 <div className="cm-section-head">
                     <p className="cm-section-label">Find Friends</p>
@@ -130,7 +127,6 @@ function Community() {
                 </div>
             </section>
 
-            {/*  Announcements  */}
             <section className="cm-section">
                 <div className="cm-section-head">
                     <p className="cm-section-label">Announcements</p>

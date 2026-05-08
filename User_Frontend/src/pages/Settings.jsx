@@ -12,7 +12,6 @@ function Settings() {
     const [loading, setLoading] = useState(false);
     const [toast, setToast] = useState({ show: false, type: "success", msg: "" });
 
-    // Profile
     const [profileData, setProfileData] = useState({
         username: "",
         firstName: "",
@@ -22,7 +21,6 @@ function Settings() {
         motto: ""
     });
 
-    // Password
     const [passwordData, setPasswordData] = useState({
         currentPassword: "",
         newPassword: "",
@@ -30,7 +28,6 @@ function Settings() {
     });
     const [passwordError, setPasswordError] = useState("");
 
-    // Notifications
     const [notifications, setNotifications] = useState({
         emailNotifications: true,
         workoutReminders: true,
@@ -39,7 +36,6 @@ function Settings() {
         weeklyReport: false
     });
 
-    // Security
     const [security, setSecurity] = useState({
         twoFactorAuth: false,
         sessionTimeout: 30
@@ -129,7 +125,6 @@ function Settings() {
     return (
         <div className="st-page">
 
-            {/* Toast */}
             {toast.show && (
                 <div className={`st-toast ${toast.type}`}>
                     {toast.type === "success" ? "✅" : "❌"} {toast.msg}
@@ -143,7 +138,6 @@ function Settings() {
 
             <div className="st-layout">
 
-                {/* Sidebar */}
                 <div className="st-sidebar">
                     {TABS.map(t => (
                         <button
@@ -157,10 +151,8 @@ function Settings() {
                     ))}
                 </div>
 
-                {/* Content */}
                 <div className="st-main">
 
-                    {/* ── PROFILE ── */}
                     {tab === "profile" && (
                         <div className="st-section">
                             <p className="st-section-label">My Profile</p>
@@ -239,13 +231,11 @@ function Settings() {
                         </div>
                     )}
 
-                    {/* ── SECURITY ── */}
                     {tab === "security" && (
                         <div className="st-section">
                             <p className="st-section-label">Security</p>
                             <p className="st-section-desc">Manage your password and account security</p>
 
-                            {/* Change password */}
                             <div className="st-panel">
                                 <p className="st-panel-title">Change Password</p>
 
@@ -289,7 +279,6 @@ function Settings() {
                                 </button>
                             </div>
 
-                            {/* Auth toggles */}
                             <div className="st-panel">
                                 <p className="st-panel-title">Authentication</p>
                                 <div className="st-setting-item">
@@ -308,7 +297,6 @@ function Settings() {
                                 </div>
                             </div>
 
-                            {/* Session */}
                             <div className="st-panel">
                                 <p className="st-panel-title">Session</p>
                                 <div className="st-form-group" style={{ maxWidth: 220 }}>
@@ -327,7 +315,6 @@ function Settings() {
                         </div>
                     )}
 
-                    {/* ── NOTIFICATIONS ── */}
                     {tab === "notifications" && (
                         <div className="st-section">
                             <p className="st-section-label">Notifications</p>

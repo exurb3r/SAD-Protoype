@@ -87,7 +87,6 @@ function Dashboard() {
     return (
         <div className="dashboard-page">
 
-            {/* Header */}
             <div className="dashboard-header">
                 <div>
                     <h1 className="dashboard-title">Dashboard</h1>
@@ -98,10 +97,7 @@ function Dashboard() {
                 </Link>
             </div>
 
-            {/* Top row */}
             <div className="top-row">
-
-                {/* Level card */}
                 <div className="card level-card">
                     <div className="level-ring">
                         <CircularProgressbar
@@ -126,7 +122,6 @@ function Dashboard() {
                     </div>
                 </div>
 
-                {/* Stats row */}
                 <div className="card stats-card">
                     <div className="stats-top-row">
                         <StatCard label="Current Streak" value={`${currentStreak}`} sub="days" />
@@ -145,7 +140,6 @@ function Dashboard() {
                     </div>
                 </div>
 
-                {/* Last workout */}
                 <div className="card last-workout-card">
                     <p className="card-label">Last Workout</p>
                     <div className="last-workout-grid">
@@ -172,7 +166,6 @@ function Dashboard() {
                 </div>
             </div>
 
-            {/* Charts */}
             <div className="charts-row">
                 <div className="card chart-card chart-bar">
                     <SectionTitle>Your Week</SectionTitle>
@@ -243,7 +236,6 @@ function Dashboard() {
                 </div>
             </div>
 
-            {/* Notifications */}
             <div className="notif-section">
                 <SectionTitle>Notifications</SectionTitle>
                 <div className="notif-list">

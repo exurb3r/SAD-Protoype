@@ -1,7 +1,5 @@
 <template>
   <div class="notif-container">
-
-    <!-- Header -->
     <div class="notif-header">
       <div>
         <h2 class="notif-title">Notifications</h2>
@@ -9,8 +7,6 @@
       </div>
       <button class="btn-readall" @click="markAllRead">✅ Mark all as read</button>
     </div>
-
-    <!-- Filter Tabs -->
     <div class="filter-tabs">
       <button
         v-for="tab in tabs" :key="tab.value"
@@ -23,7 +19,6 @@
       </button>
     </div>
 
-    <!-- Notifications List -->
     <div class="panel">
       <div
         v-for="notif in filteredNotifs" :key="notif.id"
@@ -62,7 +57,6 @@ const tabs = [
   { label: "All",      value: "all" },
   { label: "Unread",   value: "unread" },
   { label: "Expiring", value: "expire" },
-  { label: "Payments", value: "payment" },
   { label: "New Join", value: "join" },
 ];
 
@@ -74,7 +68,6 @@ const filteredNotifs = computed(() => {
 
 const typeIcon = (type) => {
   if (type === "expire")  return "⏰";
-  if (type === "payment") return "💳";
   if (type === "join")    return "🏋️";
   return "🔔";
 };
@@ -98,10 +91,9 @@ const typeIcon = (type) => {
 .tab-count { background: #2a2a2a; color: #aaa; padding: 1px 7px; border-radius: 99px; font-size: 11px; }
 .tab-count.unread { background: #e8531a; color: white; }
 
-/* Panel */
 .panel { background: #1a1a1a; border-radius: 16px; border: 1px solid #481E14; overflow: hidden; }
 
-/* Notif Item */
+
 .notif-item {
   display: flex; align-items: center; gap: 14px;
   padding: 16px 20px; border-bottom: 1px solid #1f1f1f;
